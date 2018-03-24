@@ -7,7 +7,7 @@ const sheets = google.sheets('v4');
 
 module.exports = function (auth, data) {
 
-    const spreadsheetid = '1ukZDSkkwd_HEqf2rGDUkSvFfNjNDS8powhTv0bChkC0';
+    const spreadsheetid = process.env.SPREADSHEET_ID;
 
     return sheets.spreadsheets.values.append({
         auth: auth,

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const puppeteer = require('puppeteer');
@@ -14,4 +15,11 @@ app.set('view engine', 'ejs');
 
 app.listen(port, function() {
     console.log('App listening on port ' + port);
+
+    if(process.env.HEROKU) {
+        console.log('Running on Heroku');
+    } else {
+        console.log('Not running on Heroku');
+    }
+
 });
