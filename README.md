@@ -1,4 +1,4 @@
-# Gene Beagle
+# Beagle
 
 A Node.js app that runs a bunch of FE tests, returns a success or fail, and stores the data.
 
