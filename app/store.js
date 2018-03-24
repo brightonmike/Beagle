@@ -20,10 +20,11 @@ module.exports = function (auth, data) {
                 data.mobilescore,
                 data.mobileusability,
                 data.desktopscore,
-                data.lighthousescore,
-                data.fmp,
-                data.speedindex,
-                data.tti
+                data.perf,
+                data.pwa,
+                data.accessibility,
+                data.bestpractice,
+                data.seo
             ] ]
         }
     }, (err, response) => {
