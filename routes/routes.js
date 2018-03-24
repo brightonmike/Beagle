@@ -11,6 +11,8 @@ const data = [];
 module.exports = function(app, db) {
     app.get('/report', (req, res) => {
 
+        console.log('Doing stuff');
+
         res.render('../views/pages/sent');
         res.end();
 
