@@ -1,7 +1,7 @@
 const LighthouseCron = require('lighthouse-cron');
 
 module.exports = function (res, url) {
-
+    console.log('Running lighthouse cron...');
     return new LighthouseCron(
         [
             {
