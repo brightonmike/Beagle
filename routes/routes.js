@@ -41,6 +41,7 @@ module.exports = function(app, db) {
         let DesktopResult = PSDesktop(res, data.url);
 
         auth.then(auth => {
+            console.log('App authenticated');
             Promise.all([MobileResult, DesktopResult]).then(function (values) {
 
                 /**
@@ -63,6 +64,7 @@ module.exports = function(app, db) {
                     data.speedindex = report.results['speed-index-metric']['value'];
                     data.tti = report.results['time-to-interactive']['value'];
 
+                    console.log('Storing data..');
                     storeData(auth, data);
 
                     if(data.mobileusability < MIN_USABILITY_SCORE) {
