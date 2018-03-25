@@ -1,19 +1,18 @@
-require('dotenv').config();
 const express = require('express');
 const app = express();
-const puppeteer = require('puppeteer');
-const psi = require('psi');
 const port = process.env.PORT || 5000;
-const path = require('path')
-const validUrl = require('valid-url');
+const path = require('path');
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
-require('./routes')(app, {});
+require('dotenv').config();
+require('./routes')(app, io, {});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.listen(port, function() {
+http.listen(port, function() {
     console.log('App listening on port ' + port);
 
     if(process.env.HEROKU) {
@@ -23,3 +22,7 @@ app.listen(port, function() {
     }
 
 });
+
+// io.on('connection', function(socket){
+//     socket.emit('beagle-result', { hello: 'world' });
+// });

@@ -58,6 +58,17 @@ module.exports = function(req, res, data) {
                     data.bestpractice = values[2].reportCategories[3].score;
                     data.seo = values[2].reportCategories[4].score;
 
+                    const resultData = [
+                            data.mobilescore,
+                            data.mobileusability,
+                            data.desktopscore,
+                            data.perf,
+                            data.pwa,
+                            data.accessibility,
+                            data.bestpractice,
+                            data.seo
+                        ];
+
                     console.log('Storing data..');
                     storeData(auth, data);
 
@@ -86,9 +97,9 @@ module.exports = function(req, res, data) {
                      */
 
                     if (TEST_FAIL === false) {
-                        reject('Your test was a fail');
+                        reject(['Your test was a fail' + resultData]);
                     } else {
-                        resolve('Your test was a success');
+                        resolve(['Your test was a succes' + resultData]);
                     }
 
                 });
