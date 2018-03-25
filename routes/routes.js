@@ -32,6 +32,10 @@ module.exports = function(app, io) {
                 socket.emit('beagle-result', result, req.query.url);
                 console.log('Results: ' + result);
                 running = false;
+            }).catch(function (result) {
+                socket.emit('beagle-result', result, req.query.url);
+                console.log('Results: ' + result);
+                running = false;
             });
 
 

@@ -109,6 +109,8 @@ module.exports = function(req, res, data) {
 
     return runBeagle(req, res, data).then(result => {
         return result;
+    }).catch(result => {
+        return result;
     });
 };
 
