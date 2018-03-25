@@ -15,8 +15,14 @@ module.exports = function(app, io) {
         res.end();
 
         io.on('connection', function (socket) {
+
+            if(!req.query.url) {
+                socket.emit('beagle-result', ['You must supply a valid URL!']);
+                return;
+            }
+
             Beagle(req, res, data).then(result => {
-                socket.emit('beagle-result', 'Results: ' + result);
+                socket.emit('beagle-result', result);
                 console.log('Results: ' + result);
             });
         });

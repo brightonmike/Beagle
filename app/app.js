@@ -97,9 +97,9 @@ module.exports = function(req, res, data) {
                      */
 
                     if (TEST_FAIL === false) {
-                        reject(['Your test was a fail' + resultData]);
+                        reject(['Test finished', 'Your test was a fail', resultData]);
                     } else {
-                        resolve(['Your test was a succes' + resultData]);
+                        resolve(['Test finished', 'Your test was a success', resultData]);
                     }
 
                 });

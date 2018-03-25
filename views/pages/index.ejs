@@ -8,30 +8,33 @@
 
   <% include ../partials/nav.ejs %>
 
-<div class="jumbotron text-center">
-  <div class="container">
-    <a href="/" class="lang-logo">
-      <img src="/lang-logo.png">
-    </a>
-    <h1>Beagle</h1>
+<section class="hero">
+
+  <div class="hero__container">
+
+    <h1 class="hero__title">
+      <a href="/">
+        Beagle
+      </a>
+    </h1>
+
     <p>
       Use Beagle to run a bunch of FE tests all at once and compile into a report. Beagle can also be integrated into your workflow, so tests run automatically.
     </p>
 
     <form action="/report/" method="get">
-      <h4>Run a one-off test:</h4>
       <input type="url" placeholder="type URL" id="url" name="url">
       <button type="submit">submit it</button>
     </form>
+
   </div>
-</div>
+
+</section>
+
 <div class="container">
-  <div class="alert alert-info text-center" role="alert">
-  </div>
-  <hr>
   <div class="row">
-    <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-info-sign"></span> How Beagle works?</h3>
+    <div class="column-6">
+      <h3>How Beagle works?</h3>
       <ul>
         <li>Rather than manually running tests on PageSpeed, Lighthouse, WebPageTest and Axe manually - Beagle does it all for you.</li>
         <li>Beagle then compiles all the results and, based of minimum performance criteria established by Gene, will pass or fail your build.</li>
@@ -42,32 +45,28 @@
       <ul>
         <li>Clone the repository.</li>
         <li>Run `npm install` and then run `npm run start`. This will start the service.</li>
-        <li>In another terminal window, run `curl localhost:5000/?url=your-local-url-here`.</li>
-        <li>Sit back and wait for Beagle to do it's thing.</li>
+        <li>Visit localhost:5000 in your browser and start a test.</li>
       </ul>
     </div>
-    <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-link"></span> Caveats</h3>
+    <div class="column-6">
+      <h3>Caveats</h3>
       <ul>
         <li>Beagle is running a lot of tests, so be patient. You'll get notified when they're done.</li>
         <li>Avoid running lots of concurrent tests. This will increase the rate of failure.</li>
         <li>Beagle uses APIs that may get busy, or go down.</li>
       </ul>
       </ul>
-      <h3><span class="glyphicon glyphicon-link"></span> Helpful Links</h3>
+      <h3>Helpful Links</h3>
       <ul>
-        <li><a href="https://www.heroku.com/home">Heroku</a></li>
-        <li><a href="https://devcenter.heroku.com/">Heroku Dev Center</a></li>
-        <li><a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">Getting Started with Node on Heroku</a></li>
-        <li><a href="https://devcenter.heroku.com/articles/deploying-nodejs">Deploying Node Apps on Heroku</a></li>
+
       </ul>
     </div>
-  </div> <!-- row -->
-   <div class="alert alert-info text-center" role="alert">
-    Beagle was created by Michael Gunner.
   </div>
 </div>
 
+  <footer>
+    Beagle was created by Michael Gunner.
+  </footer>
 
 </body>
 </html>

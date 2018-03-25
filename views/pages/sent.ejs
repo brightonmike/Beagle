@@ -8,39 +8,70 @@
 
   <% include ../partials/nav.ejs %>
 
-<div class="jumbotron text-center">
-  <div class="container">
-    <a href="/" class="lang-logo">
-      <img src="/lang-logo.png">
-    </a>
-    <h1>Report Generating</h1>
-    <p>Your report is being generated. Please wait...</p>
-  </div>
-</div>
-<div class="container">
+<section class="hero">
+
+    <div class="hero__container">
+
+      <h2>Report Generating</h2>
+      <p class="js-status">Your report is being generated. Please wait...</p>
+
+    </div>
+
+
+</section>
+<div class="container" style="display: none;">
 
   <div class="row">
-    <div class="col-md-6">
-      <div class="js-result"></div></div>
-    </div>
-    <div class="col-md-6">
+    <div class="column-12">
+
+      <h3 class="js-summary"></h3>
+      <p class="js-result"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <td>PS Mobile Score</td>
+            <td>PS Mobile Usability</td>
+            <td>PS Desktop Score</td>
+            <td>Lighthouse Performance</td>
+            <td>Lighthouse PWA</td>
+            <td>Lighthouse a11y</td>
+            <td>Lighthouse Best Practise</td>
+            <td>Lighthouse SEO</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="js-row"></tr>
+        </tbody>
+      </table>
+
+      <p>Your report is stored on Google Drive.</p>
 
     </div>
   </div>
-   <div class="alert alert-info text-center" role="alert">
-
-   </div>
 </div>
 
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script>
-    var socket = io();
-    var resultContainer = document.querySelector('.js-result');
+    const socket = io();
+    const resultContainer = document.querySelector('.js-result');
+    const resultSummary = document.querySelector('.js-summary');
+
     socket.on('beagle-result', function (data) {
-        console.log(data);
-        resultContainer.append(data);
+        resultContainer.append(data[1]);
+        resultSummary.append(data[0]);
+        document.querySelector('.container').style.display = "block";
+
+        const tr = document.querySelector('.js-row');
+        const obj = data[2];
+
+        obj.forEach(function(item) {
+            let cell = document.createElement("td");
+            cell.textContent = item;
+            tr.appendChild(cell);
+        });
     });
 </script>
 </html>
