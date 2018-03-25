@@ -17,12 +17,11 @@ module.exports = function(app, io) {
 
         io.on('connection', function (socket) {
 
-            // if(running === true) {
-            //     socket.emit('beagle-result', ['Test currently running. Come back later!']);
-            //     return;
-            // }
-            //
-            // running = true;
+            if(running === true) {
+                return;
+            }
+
+            running = true;
 
             if(!req.query.url) {
                 socket.emit('beagle-result', ['You must supply a valid URL!']);
@@ -30,10 +29,12 @@ module.exports = function(app, io) {
             }
 
             Beagle(req, res, data).then(result => {
-                // running = false;
-                socket.emit('beagle-result', result);
+                socket.emit('beagle-result', result, req.query.url);
                 console.log('Results: ' + result);
+                running = false;
             });
+
+
         });
 
     });
