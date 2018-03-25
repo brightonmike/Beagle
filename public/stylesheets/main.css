@@ -44,6 +44,27 @@ ul li {
   line-height: 1.8;
 }
 
+table {
+  text-align: center;
+}
+
+table tr {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+table td {
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  flex: 1 0 200px;
+  padding: 40px;
+  margin: 20px;
+}
+
+table td span {
+  font-size: 45px;
+}
+
 .container {
   max-width: 900px;
   margin: 0 auto;

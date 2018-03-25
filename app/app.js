@@ -58,16 +58,16 @@ module.exports = function(req, res, data) {
                     data.bestpractice = values[2].reportCategories[3].score;
                     data.seo = values[2].reportCategories[4].score;
 
-                    const resultData = [
-                            data.mobilescore,
-                            data.mobileusability,
-                            data.desktopscore,
-                            data.perf,
-                            data.pwa,
-                            data.accessibility,
-                            data.bestpractice,
-                            data.seo
-                        ];
+                    const resultData = {
+                        "PS Mobile Score" : data.mobilescore,
+                        "PS Mobile Usability" : data.mobileusability,
+                        "PS Desktop Score" : data.desktopscore,
+                        "LH Performance" : data.perf,
+                        "LH PWA" : data.pwa,
+                        "LH a11y" : data.accessibility,
+                        "LH Best Practice" : data.bestpractice,
+                        "LH SEO" : data.seo
+                    };
 
                     console.log('Storing data..');
                     storeData(auth, data);

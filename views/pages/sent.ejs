@@ -28,18 +28,6 @@
       <p class="js-result"></p>
 
       <table>
-        <thead>
-          <tr>
-            <td>PS Mobile Score</td>
-            <td>PS Mobile Usability</td>
-            <td>PS Desktop Score</td>
-            <td>Lighthouse Performance</td>
-            <td>Lighthouse PWA</td>
-            <td>Lighthouse a11y</td>
-            <td>Lighthouse Best Practise</td>
-            <td>Lighthouse SEO</td>
-          </tr>
-        </thead>
         <tbody>
           <tr class="js-row"></tr>
         </tbody>
@@ -67,9 +55,12 @@
         const tr = document.querySelector('.js-row');
         const obj = data[2];
 
-        obj.forEach(function(item) {
+        Object.keys(obj).forEach(key => {
             let cell = document.createElement("td");
-            cell.textContent = item;
+            console.log(Math.round(parseInt(obj[key])));
+
+            cell.innerHTML = "<h4>" + key + "</h4><span>" + Math.round(parseInt(obj[key])) + "</span>";
+
             tr.appendChild(cell);
         });
     });

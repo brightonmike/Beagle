@@ -1,6 +1,7 @@
 const Beagle = require('../app/app');
 const data = [];
 const options = [];
+let running = false;
 
 module.exports = function(app, io) {
 
@@ -16,12 +17,20 @@ module.exports = function(app, io) {
 
         io.on('connection', function (socket) {
 
+            // if(running === true) {
+            //     socket.emit('beagle-result', ['Test currently running. Come back later!']);
+            //     return;
+            // }
+            //
+            // running = true;
+
             if(!req.query.url) {
                 socket.emit('beagle-result', ['You must supply a valid URL!']);
                 return;
             }
 
             Beagle(req, res, data).then(result => {
+                // running = false;
                 socket.emit('beagle-result', result);
                 console.log('Results: ' + result);
             });
@@ -33,8 +42,4 @@ module.exports = function(app, io) {
     app.get('/', (req, res) => {
         return res.render('../views/pages/index');
     });
-
-    // io.on('connection', function (socket) {
-    //     socket.emit('beagle-result', 'Results: ');
-    // });
 };
