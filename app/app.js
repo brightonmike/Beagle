@@ -96,7 +96,7 @@ module.exports = function(req, res, data) {
                      * We're done here.
                      */
 
-                    if (TEST_FAIL === false) {
+                    if (TEST_FAIL === true) {
                         reject(['Test finished for: ' + data.url, 'Your test was a fail. Your build does not meet the minimum criteria.', resultData]);
                     } else {
                         resolve(['Test finished for: ' + data.url, 'Your test was a success. Your build adheres to the minimum criteria.', resultData]);
