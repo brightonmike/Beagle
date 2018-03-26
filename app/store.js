@@ -16,6 +16,8 @@ module.exports = function (auth, data, site) {
         valueInputOption: "USER_ENTERED",
         resource: {
             values: [ [
+                site.id,
+                site.time,
                 site.url,
                 data.mobilescore,
                 data.mobileusability,

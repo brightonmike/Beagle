@@ -1,4 +1,5 @@
 const Beagle = require('../app/app');
+const uuidv1 = require('uuid/v1');
 const data = [];
 const site = [];
 const options = [];
@@ -16,7 +17,7 @@ module.exports = function(app, io) {
 
         site.time = +new Date();
         site.url = req.query.url;
-        site.id = uuidv4();
+        site.id = uuidv1();
 
         res.render('../views/pages/sent');
         res.end();
@@ -31,6 +32,9 @@ module.exports = function(app, io) {
 
             if(!site.url) {
                 socket.emit('beagle-result', ['You must supply a valid URL!']);
+
+                clearData();
+
                 return;
             }
 
@@ -43,9 +47,7 @@ module.exports = function(app, io) {
                     console.log('Disconnected');
                 });
 
-                for (const prop of Object.keys(site)) {
-                    delete site[prop];
-                }
+                clearData();
 
             }).catch(function (result) {
                 socket.emit('beagle-result', result, site.url);
@@ -56,9 +58,7 @@ module.exports = function(app, io) {
                     console.log('Disconnected');
                 });
 
-                for (const prop of Object.keys(site)) {
-                    delete site[prop];
-                }
+                clearData();
 
             });
 
@@ -73,8 +73,8 @@ module.exports = function(app, io) {
     });
 };
 
-function uuidv4() {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    )
+function clearData(){
+    for (const prop of Object.keys(site)) {
+        delete site[prop];
+    }
 }

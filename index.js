@@ -16,9 +16,9 @@ http.listen(port, function() {
     console.log('App listening on port ' + port);
 
     if(process.env.HEROKU) {
-        console.log('Running on Heroku');
+        console.log('Running on Heroku. Ready..');
     } else {
-        console.log('Not running on Heroku');
+        console.log('Running locally. Ready..');
     }
 
 });
