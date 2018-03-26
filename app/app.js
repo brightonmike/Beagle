@@ -5,13 +5,11 @@ const PSMobile = require('./pagespeed-mobile');
 const PSDesktop = require('./pagespeed-desktop');
 const LightHouse = require('./lighthouse');
 
-module.exports = function(req, res, data) {
+module.exports = function(site, res, data) {
 
-    function runBeagle(req, res, data){
+    function runBeagle(site, res, data){
         return new Promise(function (resolve, reject) {
-            console.log('Running Beagle...');
-
-            data.url = req.query.url;
+            console.log('Running Beagle on.. ' + site.url);
 
             /**
              * Authenticate for Google Sheets API
@@ -37,9 +35,9 @@ module.exports = function(req, res, data) {
             /**
              * Run the Mobile/Desktop PS Tests
              */
-            let MobileResult = PSMobile(res, data.url);
-            let DesktopResult = PSDesktop(res, data.url);
-            let LightHouseResult = LightHouse(res, data.url, lhconfig);
+            let MobileResult = PSMobile(res, site.url);
+            let DesktopResult = PSDesktop(res, site.url);
+            let LightHouseResult = LightHouse(res, site.url, lhconfig);
 
 
             return auth.then(auth => {
@@ -70,7 +68,7 @@ module.exports = function(req, res, data) {
                     };
 
                     console.log('Storing data..');
-                    storeData(auth, data);
+                    storeData(auth, data, site);
 
                     if(data.mobileusability < MIN_USABILITY_SCORE) {
                         TEST_FAIL = true;
@@ -97,9 +95,9 @@ module.exports = function(req, res, data) {
                      */
 
                     if (TEST_FAIL === true) {
-                        reject(['Test finished for: ' + data.url, 'Your test was a fail. Your build does not meet the minimum criteria.', resultData]);
+                        reject(['Test finished for: ' + site.url, 'Your test was a fail. Your build does not meet the minimum criteria.', resultData]);
                     } else {
-                        resolve(['Test finished for: ' + data.url, 'Your test was a success. Your build adheres to the minimum criteria.', resultData]);
+                        resolve(['Test finished for: ' + site.url, 'Your test was a success. Your build adheres to the minimum criteria.', resultData]);
                     }
 
                 });
@@ -107,7 +105,7 @@ module.exports = function(req, res, data) {
         });
     }
 
-    return runBeagle(req, res, data).then(result => {
+    return runBeagle(site, res, data).then(result => {
         return result;
     }).catch(result => {
         return result;

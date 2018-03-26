@@ -22,7 +22,3 @@ http.listen(port, function() {
     }
 
 });
-
-// io.on('connection', function(socket){
-//     socket.emit('beagle-result', { hello: 'world' });
-// });

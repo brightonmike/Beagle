@@ -5,7 +5,7 @@
 const google = require('googleapis');
 const sheets = google.sheets('v4');
 
-module.exports = function (auth, data) {
+module.exports = function (auth, data, site) {
 
     const spreadsheetid = process.env.SPREADSHEET_ID;
 
@@ -16,7 +16,7 @@ module.exports = function (auth, data) {
         valueInputOption: "USER_ENTERED",
         resource: {
             values: [ [
-                data.url,
+                site.url,
                 data.mobilescore,
                 data.mobileusability,
                 data.desktopscore,
