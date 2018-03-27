@@ -1,16 +1,40 @@
 const Beagle = require('../app/app');
+const kue = require('kue');
+const queue = kue.createQueue();
 const uuidv1 = require('uuid/v1');
-const data = [];
-const site = [];
-const options = [];
 let running = false;
+
+queue.process('test', (job, done) => {
+    console.log('job data', job.data);
+
+    if(!job.data.params.url) {
+        done();
+    }
+
+    Beagle(job.data).then(result => {
+        done();
+    }).catch(function (result) {
+        done();
+    });
+});
 
 module.exports = function(app, io) {
 
+    app.use('/kue-ui', kue.app);
+
     app.get('/generate', (req, res) => {
-        Beagle(req, res, data).then(result => {
-           console.log('Results: ' + result);
+
+        let job = queue.create('test', {
+            title: 'job ran at ' + Date.now(),
+            time: +new Date(),
+            params: req.query,
+            id: uuidv1()
+        }).save( function(err){
+            if( !err ) console.log( job.id );
         });
+
+        res.render('../views/pages/sent');
+        res.end();
     });
 
     app.get('/report', (req, res) => {
@@ -19,8 +43,6 @@ module.exports = function(app, io) {
         site.url = req.query.url;
         site.id = uuidv1();
 
-        res.render('../views/pages/sent');
-        res.end();
 
         io.on('connection', function (socket) {
 
