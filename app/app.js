@@ -15,7 +15,7 @@ module.exports = function(job, res) {
         };
 
         return new Promise(function (resolve, reject) {
-            console.log('Running Beagle on.. ' + data.url);
+            console.log('Running Beagle on.. ' + data.id + " Site: " + data.url);
 
             /**
              * Authenticate for Google Sheets API
@@ -62,7 +62,7 @@ module.exports = function(job, res) {
                     data.bestpractice = values[2].reportCategories[3].score;
                     data.seo = values[2].reportCategories[4].score;
 
-                    const resultData = {
+                    data.formatted = {
                         "PS Mobile Score" : data.mobilescore,
                         "PS Mobile Usability" : data.mobileusability,
                         "PS Desktop Score" : data.desktopscore,
@@ -100,9 +100,9 @@ module.exports = function(job, res) {
                      */
 
                     if (TEST_FAIL === true) {
-                        reject(['Test finished for: ' + data.url, 'Your test was a fail. Your build does not meet the minimum criteria.', resultData]);
+                        reject(['Test finished for: ' + data.url, 'Your test was a fail. Your build does not meet the minimum criteria.', data.formatted]);
                     } else {
-                        resolve(['Test finished for: ' + data.url, 'Your test was a success. Your build adheres to the minimum criteria.', resultData]);
+                        resolve(['Test finished for: ' + data.url, 'Your test was a success. Your build adheres to the minimum criteria.', data.formatted]);
                     }
 
                 });

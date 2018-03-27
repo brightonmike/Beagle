@@ -4,21 +4,19 @@ const queue = kue.createQueue();
 const uuidv1 = require('uuid/v1');
 let running = false;
 
-queue.process('test', (job, done) => {
-    console.log('job data', job.data);
-
-    if(!job.data.params.url) {
-        done();
-    }
-
-    Beagle(job.data).then(result => {
-        done();
-    }).catch(function (result) {
-        done();
-    });
-});
-
 module.exports = function(app, io) {
+
+    queue.process('test', (job, done) => {
+        if(!job.data.params.url) {
+            done();
+        }
+
+        Beagle(job.data).then(result => {
+            done();
+        }).catch(result => {
+            done();
+        });
+    });
 
     app.use('/kue-ui', kue.app);
 
@@ -30,7 +28,7 @@ module.exports = function(app, io) {
             params: req.query,
             id: uuidv1()
         }).save( function(err){
-            if( !err ) console.log( job.id );
+            if( !err ) console.log( 'Job ID: ' + job.id );
         });
 
         res.render('../views/pages/sent');
