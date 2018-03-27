@@ -6,6 +6,8 @@ A Node.js app that runs a bunch of FE tests, returns a success or fail, and stor
 
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
 
+You also need to be running Redis: `redis-server`. If you do not have Redis, install it using homebrew.
+
 ```sh
 $ git clone git@github.com:brightonmike/Beagle.git or clone your own fork
 $ cd Beagle
@@ -30,7 +32,7 @@ The first time you run Beagle, you'll need to authenticate on Google. Follow the
 - You should see a download icon at the right side. Click on this to download the json file containing credentials.
 - Rename the file as credentials.json and save in the `lib` directory of your the Beagle folder.
 
-The first time you run Beagle locally, the app will generate and store locally a Refresh Token. It should not need to do this again.
+The first time you run Beagle locally and request a report, the app will generate and store locally a Refresh Token. It should not need to do this again.
 
 ## Running a test
 
