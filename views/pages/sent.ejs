@@ -47,7 +47,20 @@
     const resultContainer = document.querySelector('.js-result');
     const resultSummary = document.querySelector('.js-summary');
 
+    socket.on('connect', function() {
+        console.log(socket.id);
+    });
+
+    function sendSite() {
+        socket.emit ('player move', {map: 4, coords: '0.0'});
+    }
+
+    socket.on ('updatePlayer', function (msg) {
+        console.log ('A player moves on map ' + msg.map + ' on coords ' + msg.coords);
+    });
+
     socket.on('beagle-result', function (data) {
+        console.log(data);
         resultContainer.append(data[1]);
         resultSummary.append(data[0]);
         document.querySelector('.container').style.display = "block";

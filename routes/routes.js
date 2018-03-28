@@ -7,94 +7,44 @@ let running = false;
 module.exports = function(app, io) {
 
     queue.process('test', (job, done) => {
-        if(!job.data.params.url) {
+
+        if(!job.data.site) {
             done();
         }
 
-        Beagle(job.data).then(result => {
-            done();
+        Beagle(job).then(result => {
+            done(null, result);=
         }).catch(result => {
-            done();
+            done(null, result);
+        });
+    });
+
+    io.on('connection', (socket) => {
+        console.log('a user connected');
+
+        socket.on('disconnect', () => {
+            console.log('user disconnected');
+        });
+
+        socket.on ('send site', function (request) {
+            let job = queue.create('test', {
+                title: 'job ran at ' + Date.now(),
+                time: +new Date(),
+                site: request.url,
+                id: uuidv1(),
+                report: {},
+                socketId: socket.id
+            }).save(function (err) {
+                if (!err) console.log('Job ID queued: ' + job.id + ' Socket:' + socket.id);
+            }).on('complete', function(result) {
+                socket.emit('beagle-result', result);
+            });
         });
     });
 
     app.use('/kue-ui', kue.app);
 
-    app.get('/generate', (req, res) => {
-
-        let job = queue.create('test', {
-            title: 'job ran at ' + Date.now(),
-            time: +new Date(),
-            params: req.query,
-            id: uuidv1()
-        }).save( function(err){
-            if( !err ) console.log( 'Job ID: ' + job.id );
-        });
-
-        res.render('../views/pages/sent');
-        res.end();
-    });
-
-    app.get('/report', (req, res) => {
-
-        site.time = +new Date();
-        site.url = req.query.url;
-        site.id = uuidv1();
-
-
-        io.on('connection', function (socket) {
-
-            if(running === true) {
-                return;
-            }
-
-            running = true;
-
-            if(!site.url) {
-                socket.emit('beagle-result', ['You must supply a valid URL!']);
-
-                clearData();
-
-                return;
-            }
-
-            Beagle(site, res, data).then(result => {
-                socket.emit('beagle-result', result, site.url);
-                console.log('Results: ' + result);
-                running = false;
-
-                socket.on('disconnect', function() {
-                    console.log('Disconnected');
-                });
-
-                clearData();
-
-            }).catch(function (result) {
-                socket.emit('beagle-result', result, site.url);
-                console.log('Results: ' + result);
-                running = false;
-
-                socket.on('disconnect', function() {
-                    console.log('Disconnected');
-                });
-
-                clearData();
-
-            });
-
-
-        });
-
-    });
-
-
     app.get('/', (req, res) => {
         return res.render('../views/pages/index');
     });
 };
-
-function clearData(){
-    for (const prop of Object.keys(site)) {
-        delete site[prop];
-    }
-}

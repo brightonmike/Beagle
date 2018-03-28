@@ -22,51 +22,76 @@
       Use Beagle to run multiple Frontend tests all at once and compile into a single report. Beagle can also be integrated into your workflow, so tests run automatically when you deploy.
     </p>
 
-    <form action="/generate/" method="get">
-      <input type="url" placeholder="type URL" id="url" name="url">
-      <button type="submit">start tests</button>
+    <form action="/generate/" method="get" class="js-get-report inactive">
+      <input type="url" placeholder="type URL" id="url" name="url" value="">
+      <button type="submit" class="submit">start tests</button>
     </form>
 
   </div>
 
 </section>
 
-<div class="container">
-  <div class="row">
-    <div class="column-6">
-      <h3>How Beagle works?</h3>
-      <ul>
-        <li>Rather than manually running tests on PageSpeed, Lighthouse, WebPageTest and Axe manually - Beagle does it all for you.</li>
-        <li>Beagle then compiles all the results and, based of minimum performance criteria established by Gene, will pass or fail your build.</li>
-        <li>The key metrics are then stored in a spreadsheet so you can analyse.</li>
-      </ul>
-      <h3>Run Beagle locally</h3>
-      <p>To use Beagle in your workflow, you should run it locally.</p>
-      <ul>
-        <li>Clone the repository.</li>
-        <li>Run `npm install` and then run `npm run start`. This will start the service.</li>
-        <li>Visit localhost:5000 in your browser and start a test.</li>
-      </ul>
-    </div>
-    <div class="column-6">
-      <h3>Caveats</h3>
-      <ul>
-        <li>Beagle is running a lot of tests, so be patient. You'll get notified when they're done.</li>
-        <li>Avoid running lots of concurrent tests. This will increase the rate of failure.</li>
-        <li>Beagle uses APIs that may get busy, or go down.</li>
-      </ul>
-      </ul>
-      <h3>Helpful Links</h3>
-      <ul>
+  <div class="container js-report" style="display: none;">
 
-      </ul>
+    <div class="row">
+      <div class="column-12">
+
+        <h3 class="js-summary"></h3>
+        <p class="js-result"></p>
+
+        <table>
+          <tbody>
+          <tr class="js-row"></tr>
+          </tbody>
+        </table>
+
+        <p>Your report is stored on Google Drive.</p>
+
+      </div>
     </div>
   </div>
-</div>
 
   <footer>
     Beagle was created by Michael Gunner.
   </footer>
 
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script>
+    const socket = io();
+    const resultContainer = document.querySelector('.js-result');
+    const resultSummary = document.querySelector('.js-summary');
+    const form = document.querySelector('.js-get-report');
+
+    form.addEventListener("submit", function(e){
+        let siteUrl = document.getElementById("url").value;
+
+        siteUrl
+        socket.emit ('send site', { url: siteUrl });
+        e.preventDefault();
+    });
+
+    socket.on('connect', function() {
+        form.className += " active";
+    });
+
+    //
+    socket.on('beagle-result', function (data) {
+        resultSummary.append(data.site);
+        document.querySelector('.js-report').style.display = "block";
+
+        const tr = document.querySelector('.js-row');
+        const data = data.report.formatted;
+
+        Object.keys(data).forEach(key => {
+            let cell = document.createElement("td");
+            console.log(Math.round(parseInt(data[key])));
+
+            cell.innerHTML = "<h4>" + key + "</h4><span>" + Math.round(parseInt(data[key])) + "</span>";
+
+            tr.appendChild(cell);
+        });
+    });
+</script>
 </html>

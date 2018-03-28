@@ -8,14 +8,10 @@ const LightHouse = require('./lighthouse');
 module.exports = function(job, res) {
 
     function runBeagle(job, res){
-        let data = {
-            url: job.params.url,
-            time: job.time,
-            id: job.id
-        };
+        job.data.report.url = job.data.site;
 
         return new Promise(function (resolve, reject) {
-            console.log('Running Beagle on.. ' + data.id + " Site: " + data.url);
+            console.log('Running Beagle on.. ' + job.id + " Site: " + job.data.report.url + " Socket: " + job.data.socketId);
 
             /**
              * Authenticate for Google Sheets API
@@ -41,57 +37,56 @@ module.exports = function(job, res) {
             /**
              * Run the Mobile/Desktop PS Tests
              */
-            let MobileResult = PSMobile(res, data.url);
-            let DesktopResult = PSDesktop(res, data.url);
-            let LightHouseResult = LightHouse(res, data.url, lhconfig);
+            let MobileResult = PSMobile(res, job.data.report.url);
+            let DesktopResult = PSDesktop(res, job.data.report.url);
+            let LightHouseResult = LightHouse(res, job.data.report.url, lhconfig);
 
 
             return auth.then(auth => {
-                console.log('App authenticated');
                 Promise.all([MobileResult, DesktopResult, LightHouseResult]).then(function (values) {
 
                     console.log(values[2].reportCategories[0].score);
 
-                    data.mobilescore = values[0].ruleGroups.SPEED.score;
-                    data.mobileusability = values[0].ruleGroups.USABILITY.score;
-                    data.desktopscore = values[1].ruleGroups.SPEED.score;
+                    job.data.report.mobilescore = values[0].ruleGroups.SPEED.score;
+                    job.data.report.mobileusability = values[0].ruleGroups.USABILITY.score;
+                    job.data.report.desktopscore = values[1].ruleGroups.SPEED.score;
 
-                    data.perf = values[2].reportCategories[0].score;
-                    data.pwa = values[2].reportCategories[1].score;
-                    data.accessibility = values[2].reportCategories[2].score;
-                    data.bestpractice = values[2].reportCategories[3].score;
-                    data.seo = values[2].reportCategories[4].score;
+                    job.data.report.perf = values[2].reportCategories[0].score;
+                    job.data.report.pwa = values[2].reportCategories[1].score;
+                    job.data.report.accessibility = values[2].reportCategories[2].score;
+                    job.data.report.bestpractice = values[2].reportCategories[3].score;
+                    job.data.report.seo = values[2].reportCategories[4].score;
 
-                    data.formatted = {
-                        "PS Mobile Score" : data.mobilescore,
-                        "PS Mobile Usability" : data.mobileusability,
-                        "PS Desktop Score" : data.desktopscore,
-                        "LH Performance" : data.perf,
-                        "LH PWA" : data.pwa,
-                        "LH a11y" : data.accessibility,
-                        "LH Best Practice" : data.bestpractice,
-                        "LH SEO" : data.seo
+                    job.data.report.formatted = {
+                        "PS Mobile Score" : job.data.report.mobilescore,
+                        "PS Mobile Usability" : job.data.report.mobileusability,
+                        "PS Desktop Score" : job.data.report.desktopscore,
+                        "LH Performance" : job.data.report.perf,
+                        "LH PWA" : job.data.report.pwa,
+                        "LH a11y" : job.data.report.accessibility,
+                        "LH Best Practice" : job.data.report.bestpractice,
+                        "LH SEO" : job.data.report.seo
                     };
 
-                    storeData(auth, data);
+                    storeData(auth, job);
 
-                    if(data.mobileusability < MIN_USABILITY_SCORE) {
+                    if(job.data.report.mobileusability < MIN_USABILITY_SCORE) {
                         TEST_FAIL = true;
                     }
 
-                    if (data.mobilescore < MIN_MOBILE_SCORE) {
+                    if (job.data.report.mobilescore < MIN_MOBILE_SCORE) {
                         TEST_FAIL = true;
                     }
 
-                    if (data.desktopscore < MIN_DESKTOP_SCORE) {
+                    if (job.data.report.desktopscore < MIN_DESKTOP_SCORE) {
                         TEST_FAIL = true;
                     }
 
-                    if (data.perf < MIN_LS_SCORE) {
+                    if (job.data.report.perf < MIN_LS_SCORE) {
                         TEST_FAIL = true;
                     }
 
-                    if (data.accessibility < MIN_ALLY_SCORE) {
+                    if (job.data.report.accessibility < MIN_ALLY_SCORE) {
                         TEST_FAIL = true;
                     }
 
@@ -100,9 +95,9 @@ module.exports = function(job, res) {
                      */
 
                     if (TEST_FAIL === true) {
-                        reject(['Test finished for: ' + data.url, 'Your test was a fail. Your build does not meet the minimum criteria.', data.formatted]);
+                        reject(job.data);
                     } else {
-                        resolve(['Test finished for: ' + data.url, 'Your test was a success. Your build adheres to the minimum criteria.', data.formatted]);
+                        resolve(job.data);
                     }
 
                 });
