@@ -92,7 +92,8 @@ table td span {
 
 .menu {
   list-style: none;
-  display: block;
+  display: flex;
+  justify-content: center;
   margin: 0 auto;
 }
 
@@ -133,6 +134,25 @@ table td span {
   text-decoration: none;
 }
 
+form.inactive {
+  opacity: 0.5;
+}
+
+form.active {
+  opacity: 1;
+}
+
+form.inactive input, form.inactive button {
+  pointer-events: none;
+  cursor: wait;
+}
+
+form.active input, form.active button {
+  pointer-events: auto;
+  cursor: default;
+}
+
+
 input {
   width: 400px;
   border: 1px solid #f8f8f8;
@@ -154,7 +174,7 @@ input:focus {
   color: #fff;
 }
 
-button {
+.button {
   padding: 11px 16px;
   border: 2px solid #260079;
   background: #ffffff;
@@ -162,7 +182,31 @@ button {
   border-radius: 8px;
 }
 
-button:hover {
+.button:hover {
   background: #260079;
   color: #ffffff;
+}
+
+.error {
+  display: none;
+  color: red;
+  font-weight: bold;
+}
+
+.loading, .report {
+  display: none;
+}
+
+.u-hide {
+  display: none;
+}
+
+.u-show {
+  display: block;
+}
+
+
+.footer {
+  text-align: center;
+  padding: 20px 0;
 }

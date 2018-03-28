@@ -11,7 +11,7 @@ module.exports = function(job, res) {
         job.data.report.url = job.data.site;
 
         return new Promise(function (resolve, reject) {
-            console.log('Running Beagle on.. ' + job.id + " Site: " + job.data.report.url + " Socket: " + job.data.socketId);
+            console.log('Running Beagle on.. ' + job.id + " Site: " + job.data.report.url);
 
             /**
              * Authenticate for Google Sheets API

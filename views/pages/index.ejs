@@ -12,86 +12,95 @@
 
   <div class="hero__container">
 
-    <h1 class="hero__title">
+    <h1 class="hero__title home">
       <a href="/">
         Beagle
       </a>
     </h1>
 
-    <p>
+    <p class="home">
       Use Beagle to run multiple Frontend tests all at once and compile into a single report. Beagle can also be integrated into your workflow, so tests run automatically when you deploy.
     </p>
 
-    <form action="/generate/" method="get" class="js-get-report inactive">
+      <p class="loading">
+          Your report is generating. Please wait.
+          <span>If you close this tab, you will lose it.</span>
+      </p>
+
+    <form action="/" method="get" class="js-get-report js-hide home">
       <input type="url" placeholder="type URL" id="url" name="url" value="">
-      <button type="submit" class="submit">start tests</button>
+      <button type="submit" class="button submit">start tests</button>
+        <span class="error">Please enter a valid URL!</span>
     </form>
+
+    <div class="container report js-report">
+
+      <div class="row">
+        <div class="column-12">
+
+          <h3 class="js-summary"></h3>
+          <p class="js-result"></p>
+
+          <table>
+            <tbody>
+            <tr class="js-row"></tr>
+            </tbody>
+          </table>
+
+          <p>Your report is stored on Google Drive.</p>
+
+        </div>
+      </div>
+    </div>
 
   </div>
 
 </section>
 
-  <div class="container js-report" style="display: none;">
-
-    <div class="row">
-      <div class="column-12">
-
-        <h3 class="js-summary"></h3>
-        <p class="js-result"></p>
-
-        <table>
-          <tbody>
-          <tr class="js-row"></tr>
-          </tbody>
-        </table>
-
-        <p>Your report is stored on Google Drive.</p>
-
-      </div>
-    </div>
-  </div>
-
-  <footer>
+  <footer class="footer">
     Beagle was created by Michael Gunner.
   </footer>
 
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     const socket = io();
-    const resultContainer = document.querySelector('.js-result');
-    const resultSummary = document.querySelector('.js-summary');
-    const form = document.querySelector('.js-get-report');
+    const resultSummary = $('.js-summary');
+    const form = $('.js-get-report');
 
-    form.addEventListener("submit", function(e){
-        let siteUrl = document.getElementById("url").value;
+    form.on("submit", function(e){
+        let siteUrl = $("#url").val();
 
-        siteUrl
-        socket.emit ('send site', { url: siteUrl });
+        if(!siteUrl) {
+            $('.error').css('display', 'block');
+        } else {
+            $('.home').addClass('u-hide');
+            $('.loading').addClass('u-show');
+            socket.emit ('send site', { url: siteUrl });
+        }
         e.preventDefault();
     });
 
     socket.on('connect', function() {
-        form.className += " active";
+        form.addClass('active');
     });
 
-    //
     socket.on('beagle-result', function (data) {
-        resultSummary.append(data.site);
-        document.querySelector('.js-report').style.display = "block";
+        $(resultSummary).html(data.site);
+        $('.js-report').addClass('u-show');
+        $('.loading').addClass('u-hide');
 
-        const tr = document.querySelector('.js-row');
-        const data = data.report.formatted;
+        const tr = $('.js-row');
+        const report = data.report.formatted;
 
-        Object.keys(data).forEach(key => {
+        $.each( report, function( key, value ) {
             let cell = document.createElement("td");
-            console.log(Math.round(parseInt(data[key])));
-
-            cell.innerHTML = "<h4>" + key + "</h4><span>" + Math.round(parseInt(data[key])) + "</span>";
-
-            tr.appendChild(cell);
+            cell.innerHTML = "<h4>" + key + "</h4><span>" + Math.round(parseInt(report[key])) + "</span>";
+            tr.append(cell);
         });
+
     });
 </script>
 </html>
