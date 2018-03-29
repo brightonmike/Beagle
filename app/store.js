@@ -17,8 +17,8 @@ module.exports = function (auth, job) {
         resource: {
             values: [ [
                 job.id,
-                job.data.report.id,
-                job.data.report.time,
+                job.data.id,
+                job.data.time,
                 job.data.report.url,
                 job.data.report.mobilescore,
                 job.data.report.mobileusability,

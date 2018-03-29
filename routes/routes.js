@@ -2,7 +2,6 @@ const Beagle = require('../app/app');
 const kue = require('kue');
 const queue = kue.createQueue();
 const uuidv1 = require('uuid/v1');
-let running = false;
 
 module.exports = function(app, io) {
 
@@ -41,6 +40,8 @@ module.exports = function(app, io) {
             });
         });
     });
+
+    // actual routes
 
     app.use('/kue-ui', kue.app);
 
