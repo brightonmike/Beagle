@@ -73,22 +73,108 @@ module.exports = function(job, res) {
                     job.data.report.visualComplete = values[3].average.firstView.visualComplete;
                     job.data.report.SpeedIndex = values[3].average.firstView.SpeedIndex;
 
+                    const rankings = {
+                        type: "high",
+                        poor: 70,
+                        average: 80,
+                        good: 90,
+                        perfect: 100
+                    };
+
                     // Quick Report for front end
                     job.data.report.formatted = {
-                        "PS Mobile Score" : job.data.report.mobilescore,
-                        "PS Mobile Usability" : job.data.report.mobileusability,
-                        "PS Desktop Score" : job.data.report.desktopscore,
-                        "LH Performance" : job.data.report.perf,
-                        "LH PWA" : job.data.report.pwa,
-                        "LH a11y" : job.data.report.accessibility,
-                        "LH Best Practice" : job.data.report.bestpractice,
-                        "LH SEO" : job.data.report.seo,
-                        "WPT Load" : job.data.report.loadTime,
-                        "WPT TTFB" : job.data.report.TTFB,
-                        "WPT Fully Loaded" : job.data.report.fullyLoaded,
-                        "WPT First Paint" : job.data.report.firstPaint,
-                        "WPT Vis-Complete" : job.data.report.visualComplete,
-                        "WPT SpeedIndex" : job.data.report.SpeedIndex
+                        "PS Mobile Score" : {
+                            result: job.data.report.mobilescore,
+                            ranking: rankings
+                        },
+                        "PS Mobile Usability" : {
+                            result: job.data.report.mobileusability,
+                            ranking: rankings
+                        },
+                        "PS Desktop Score" : {
+                            result: job.data.report.desktopscore,
+                            ranking: rankings
+                        },
+                        "LH Performance" : {
+                            result: job.data.report.perf,
+                            ranking: rankings
+                        },
+                        "LH PWA" : {
+                            result: job.data.report.pwa,
+                            ranking: rankings
+                        },
+                        "LH a11y" : {
+                            result: job.data.report.accessibility,
+                            ranking: rankings
+                        },
+                        "LH Best Practice" : {
+                            result: job.data.report.bestpractice,
+                            ranking: rankings
+                        },
+                        "LH SEO" : {
+                            result: job.data.report.seo,
+                            ranking: rankings
+                        },
+                        "WPT Load" : {
+                            result: job.data.report.loadTime,
+                            ranking: {
+                                type: "low",
+                                poor: 14000,
+                                average: 9000,
+                                good: 6000,
+                                perfect: 3000
+                            }
+                        },
+                        "WPT TTFB" : {
+                            result: job.data.report.TTFB,
+                            ranking: {
+                                type: "low",
+                                poor: 2000,
+                                average: 1500,
+                                good: 1000,
+                                perfect: 500
+                            }
+                        },
+                        "WPT Fully Loaded" : {
+                            result: job.data.report.fullyLoaded,
+                            ranking: {
+                                type: "low",
+                                poor: 9000,
+                                average: 6000,
+                                good: 4000,
+                                perfect: 2000
+                            }
+                        },
+                        "WPT First Paint" : {
+                            result: job.data.report.firstPaint,
+                            ranking: {
+                                type: "low",
+                                poor: 4000,
+                                average: 3000,
+                                good: 2000,
+                                perfect: 1000
+                            }
+                        },
+                        "WPT Vis-Complete" : {
+                            result: job.data.report.visualComplete,
+                            ranking: {
+                                type: "low",
+                                poor: 9000,
+                                average: 6000,
+                                good: 4000,
+                                perfect: 2000
+                            }
+                        },
+                        "WPT SpeedIndex" : {
+                            result: job.data.report.SpeedIndex,
+                            ranking: {
+                                type: "low",
+                                poor: 9000,
+                                average: 6000,
+                                good: 4000,
+                                perfect: 2000
+                            }
+                        },
                     };
 
                    storeData(auth, job);

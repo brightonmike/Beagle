@@ -34,7 +34,4 @@ module.exports = function (res, url) {
         return err;
     });
 
-    // return wptPublic.runTest(url, (err, data) => {
-    //     console.log(err || data);
-    // });
 };

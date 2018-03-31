@@ -75,8 +75,18 @@ table td span {
   flex-wrap: wrap;
 }
 
+.column-4 {
+  flex: 0 0 33.34%;
+  padding: 0 20px;
+}
+
 .column-6 {
   flex: 0 0 50%;
+  padding: 0 20px;
+}
+
+.column-8 {
+  flex: 0 0 66.66%;
   padding: 0 20px;
 }
 
@@ -85,7 +95,7 @@ table td span {
 }
 
 @media (max-width: 600px) {
-  .column-6 {
+  .column-4, .column-6, .column-8 {
     flex: 0 0 100%;
   }
 }
@@ -102,8 +112,13 @@ table td span {
   padding: 8px 12px;
   color: #fff;
   text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+}
+
+.menu a:hover {
+  text-decoration: underline;
 }
 
 .hero {
@@ -132,6 +147,19 @@ table td span {
 .hero__title a:visited {
   color: #820098;
   text-decoration: none;
+}
+
+.score {
+  float: right;
+  width: 100px;
+  height: 100px;
+  font-size: 40px;
+  background: linear-gradient(45deg, #5a0b7d 0%,#820098 50%,#af0cc3 100%);
+  color: #fff;
+  text-align: center;
+  display: block;
+  border-radius: 50%;
+  line-height: 100px;
 }
 
 form.inactive {
