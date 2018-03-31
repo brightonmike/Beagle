@@ -36,9 +36,13 @@ The first time you run Beagle locally and request a report, the app will generat
 
 ## Running a test
 
-`curl localhost:5000?url=YOUR_URL_HERE`
+Visit localhost:5000 in your browser. You can also ping the webhook:
 
-Get a cuppa and wait. This may take some time.
+`localhost:5000/generate/?url=YOUR_URL_HERE`
+
+In browser, the most crucial metrics are displayed. This includes your page speed scores, lighthouse scores, and key metrics from WebPageTest.
+
+This data is also inserted into Google Sheets.
 
 ## Deploying to Heroku
 

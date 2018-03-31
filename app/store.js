@@ -27,13 +27,19 @@ module.exports = function (auth, job) {
                 job.data.report.pwa,
                 job.data.report.accessibility,
                 job.data.report.bestpractice,
-                job.data.report.seo
+                job.data.report.seo,
+                job.data.report.loadTime,
+                job.data.report.TTFB,
+                job.data.report.fullyLoaded,
+                job.data.report.firstPaint,
+                job.data.report.visualComplete,
+                job.data.report.SpeedIndex
             ] ]
         }
     }, (err, response) => {
         if (err) {
             console.log('The API returned an error: ' + err);
-            return;
+            return err;
         } else {
             console.log('Data added to sheet.');
             return response;

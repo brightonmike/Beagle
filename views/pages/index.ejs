@@ -36,10 +36,18 @@
     <div class="container report js-report">
 
       <div class="row">
-        <div class="column-12">
+        <div class="column-8">
 
-          <h3 class="js-summary"></h3>
-          <p class="js-result"></p>
+            <h3 class="js-summary"></h3>
+            <p class="js-result"></p>
+
+        </div>
+        <div class="column-4">
+
+            <span class="score js-score"></span>
+
+        </div>
+        <div class="column-12">
 
           <table>
             <tbody>
@@ -89,17 +97,56 @@
 
     socket.on('beagle-result', function (data) {
         $(resultSummary).html(data.site);
-        $('.js-report').addClass('u-show');
-        $('.loading').addClass('u-hide');
+        $('.js-report').removeClass('u-hide').addClass('u-show');
+        $('.loading').removeClass('u-show').addClass('u-hide');
 
         const tr = $('.js-row');
         const report = data.report.formatted;
+        let size = 0;
+        let sum = 0;
 
         $.each( report, function( key, value ) {
             let cell = document.createElement("td");
-            cell.innerHTML = "<h4>" + key + "</h4><span>" + Math.round(parseInt(report[key])) + "</span>";
+            let cellValue = Math.round(parseInt(value.result));
+            let cellStyle = null;
+
+            size++;
+
+            if(value.ranking.type === "high") {
+
+                sum += cellValue;
+                console.log(sum);
+
+                if(cellValue < value.ranking.poor) {
+                    cellStyle = "color: red;";
+                } else if (cellValue >= value.ranking.poor && cellValue < value.ranking.average) {
+                    cellStyle = "color: orange;";
+                } else if (cellValue >= value.ranking.average && cellValue < value.ranking.good) {
+                    cellStyle = "color: yellow;";
+                } else if (cellValue >= value.ranking.good && cellValue <= value.ranking.perfect) {
+                    cellStyle = "color: green;";
+                }
+
+            } else {
+
+                if(cellValue <= value.ranking.perfect) {
+                    cellStyle = "color: green;";
+                } else if (cellValue > value.ranking.perfect && cellValue <= value.ranking.good) {
+                    cellStyle = "color: yellow;";
+                } else if (cellValue > value.ranking.good && cellValue <= value.ranking.average) {
+                    cellStyle = "color: orange;";
+                } else if (cellValue > value.ranking.average) {
+                    cellStyle = "color: red;";
+                }
+
+            }
+
+            cell.innerHTML = "<h4>" + key + "</h4><span style='" + cellStyle + "'>" + cellValue + "</span>";
             tr.append(cell);
         });
+
+        $('.js-score').html(Math.round(sum/size));
+
 
     });
 </script>
