@@ -91,7 +91,7 @@ module.exports = function(job, res) {
                         "WPT SpeedIndex" : job.data.report.SpeedIndex
                     };
 
-                   // storeData(auth, job);
+                   storeData(auth, job);
 
                     if(job.data.report.mobileusability < MIN_USABILITY_SCORE) {
                         TEST_FAIL = true;
