@@ -97,7 +97,20 @@
 
         $.each( report, function( key, value ) {
             let cell = document.createElement("td");
-            cell.innerHTML = "<h4>" + key + "</h4><span>" + Math.round(parseInt(report[key])) + "</span>";
+            let cellValue = Math.round(parseInt(report[key]));
+            let cellStyle = null;
+
+            if(cellValue < 70) {
+                cellStyle = "color: red;";
+            } else if (cellValue >= 70 && cellValue < 80) {
+                cellStyle = "color: orange;";
+            } else if (cellValue >= 80 && cellValue < 90) {
+                cellStyle = "color: yellow;";
+            } else if (cellValue >= 90 && cellValue <= 100) {
+                cellStyle = "color: green;";
+            }
+
+            cell.innerHTML = "<h4>" + key + "</h4><span style='" + cellStyle + "'>" + cellValue + "</span>";
             tr.append(cell);
         });
 
