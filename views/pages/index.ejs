@@ -2,68 +2,87 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+    <svg style="height:0;width:0">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+            </filter>
+        </defs>
+    </svg>
 </head>
 
 <body>
 
   <% include ../partials/nav.ejs %>
 
-<section class="hero">
+    <main class="page">
 
-  <div class="hero__container">
+      <div class="page__container">
 
-    <h1 class="hero__title home">
-      <a href="/">
-        Beagle
-      </a>
-    </h1>
+          <div class="split split--left">
+              <h1 class="page__title home">
+                  <a href="/">
+                     Beagle
+                  </a>
+              </h1>
 
-    <p class="home">
-      Use Beagle to run multiple Frontend tests all at once and compile into a single report. Beagle can also be integrated into your workflow, so tests run automatically when you deploy.
-    </p>
+              <p class="home">
+              Beagle runs PageSpeed, Lighthouse and Webpagetest.org simultaneously.
+              </p>
 
-      <p class="loading">
-          Your report is generating. Please wait.
-          <span>If you close this tab, you will lose it.</span>
-      </p>
+              <p class="status js-status">Beagle is unavailable :(</p>
+          </div>
 
-    <form action="/" method="get" class="js-get-report js-hide home">
-      <input type="url" placeholder="type URL" id="url" name="url" value="">
-      <button type="submit" class="button submit">start tests</button>
-        <span class="error">Please enter a valid URL!</span>
-    </form>
+          <div class="split split--right">
 
-    <div class="container report js-report">
+              <span class="split__fade"></span>
 
-      <div class="row">
-        <div class="column-8">
+              <form action="/" method="get" class="js-get-report js-hide home">
+                  <input type="url" placeholder="type address..." id="url" name="url" value="">
+                  <span class="focusline"></span>
+                  <button type="submit" class="button submit">
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 535.5 535.5" style="enable-background:new 0 0 535.5 535.5;" xml:space="preserve">
+                          <polygon points="0,497.25 535.5,267.75 0,38.25 0,216.75 382.5,267.75 0,318.75   " fill="#FFFFFF"/>
+                      </svg>
+                  </button>
+                  <span class="error">Please enter a valid URL!</span>
+              </form>
 
-            <h3 class="js-summary"></h3>
-            <p class="js-result"></p>
+              <div class="report">
 
-        </div>
-        <div class="column-4">
+                  <header class="report__header">
+                      <h3>Results for: <span class="js-summary"></span></h3>
+                      <p class="js-result"></p>
+                      <span class="score js-score"></span>
+                  </header>
 
-            <span class="score js-score"></span>
+                  <div class="loading">
+                      Your report is generating. Please wait.
+                      <span>If you close this tab, you will lose it.</span>
 
-        </div>
-        <div class="column-12">
+                      <div class="loading__animation">
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                      </div>
+                  </div>
 
-          <table>
-            <tbody>
-            <tr class="js-row"></tr>
-            </tbody>
-          </table>
+                  <table>
+                      <tbody>
+                      <tr class="js-row"></tr>
+                      </tbody>
+                  </table>
 
-          <p>Your report is stored on Google Drive.</p>
+              </div>
 
-        </div>
+          </div>
+
       </div>
-    </div>
 
-  </div>
-
-</section>
+    </main>
 
   <footer class="footer">
     Beagle was created by Michael Gunner.
@@ -78,27 +97,29 @@
     const resultSummary = $('.js-summary');
     const form = $('.js-get-report');
 
+    socket.on('connect', function() {
+        $('.js-status').html('Beagle is available.').addClass('status--ready');
+    });
+
     form.on("submit", function(e){
         let siteUrl = $("#url").val();
 
         if(!siteUrl) {
             $('.error').css('display', 'block');
         } else {
-            $('.home').addClass('u-hide');
-            $('.loading').addClass('u-show');
+            $('.error').css('display', 'none');
+            $('.menu').addClass('is-active');
+            $('.split--right').addClass('is-sending');
+            $('.loading').addClass('is-active');
             socket.emit ('send site', { url: siteUrl });
         }
         e.preventDefault();
     });
 
-    socket.on('connect', function() {
-        form.addClass('active');
-    });
-
     socket.on('beagle-result', function (data) {
         $(resultSummary).html(data.site);
-        $('.js-report').removeClass('u-hide').addClass('u-show');
-        $('.loading').removeClass('u-show').addClass('u-hide');
+        $('.loading').removeClass('is-active');
+        $('.report__header').addClass('is-active');
 
         const tr = $('.js-row');
         const report = data.report.formatted;
@@ -109,6 +130,7 @@
             let cell = document.createElement("td");
             let cellValue = Math.round(parseInt(value.result));
             let cellStyle = null;
+            let cellResult = '🙂';
 
             size++;
 
@@ -118,35 +140,42 @@
                 console.log(sum);
 
                 if(cellValue < value.ranking.poor) {
-                    cellStyle = "color: red;";
+                    cellStyle = "color: #f44336;";
+                    cellResult = '☹️';
                 } else if (cellValue >= value.ranking.poor && cellValue < value.ranking.average) {
-                    cellStyle = "color: orange;";
+                    cellStyle = "color: #e06c15;";
+                    cellResult = '😐';
                 } else if (cellValue >= value.ranking.average && cellValue < value.ranking.good) {
-                    cellStyle = "color: yellow;";
+                    cellStyle = "color: #a7bb5c;";
+                    cellResult = '🙂';
                 } else if (cellValue >= value.ranking.good && cellValue <= value.ranking.perfect) {
-                    cellStyle = "color: green;";
+                    cellStyle = "color: #51bd51;";
+                    cellResult = '😀';
                 }
 
             } else {
 
                 if(cellValue <= value.ranking.perfect) {
-                    cellStyle = "color: green;";
+                    cellStyle = "color: #51bd51;";
+                    cellResult = '😀';
                 } else if (cellValue > value.ranking.perfect && cellValue <= value.ranking.good) {
-                    cellStyle = "color: yellow;";
+                    cellStyle = "color: #a7bb5c;";
+                    cellResult = '🙂';
                 } else if (cellValue > value.ranking.good && cellValue <= value.ranking.average) {
-                    cellStyle = "color: orange;";
+                    cellStyle = "color: #e06c15;";
+                    cellResult = '😐';
                 } else if (cellValue > value.ranking.average) {
-                    cellStyle = "color: red;";
+                    cellStyle = "color: #f44336;";
+                    cellResult = '☹️';
                 }
 
             }
 
-            cell.innerHTML = "<h4>" + key + "</h4><span style='" + cellStyle + "'>" + cellValue + "</span>";
+            cell.innerHTML = "<h4>" + key + "</h4><span>" + cellResult + "</span><span style='" + cellStyle + "'>" + cellValue + "</span>";
             tr.append(cell);
         });
 
-        $('.js-score').html(Math.round(sum/size));
-
+        //$('.js-score').html(Math.round(sum/size));
 
     });
 </script>
