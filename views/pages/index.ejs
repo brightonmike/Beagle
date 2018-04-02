@@ -85,6 +85,18 @@
       <footer class="report__footer">
           <a href="" target="_blank" rel="noopener" class="report__button js-wpt-link">View full WPT report</a>
       </footer>
+
+      <dialog id="dialog" class="dialog">
+          <section>
+              <h4>Error <span class="js-data-code"></span></h4>
+              <div class="js-errors dialog__content">
+
+              </div>
+          </section>
+          <menu>
+              <button id="cancel" type="reset" class="dialog__button">Close</button>
+          </menu>
+      </dialog>
   </div>
 
   <footer class="footer">
@@ -99,6 +111,8 @@
     const socket = io();
     const resultSummary = $('.js-summary');
     const form = $('.js-get-report');
+    const errorDialog = document.getElementById('dialog');
+    const errorClose = document.getElementById('cancel');
 
     socket.on('connect', function() {
         $('.js-status').html('Beagle is available.').addClass('status--ready');
@@ -120,6 +134,34 @@
     });
 
     socket.on('beagle-result', function (data) {
+        if(data.errors) {
+            errorHandler(data);
+        } else {
+            buildReport(data);
+        }
+    });
+
+    function errorHandler(data){
+        $('js-data-code').html(data.code);
+        const errorContainer = $('.js-errors');
+
+        $.each( data.errors, function( key, value ) {
+            let error = document.createElement("p");
+            error.innerHTML = "<strong>" + value.domain + ":</strong><span>" + value.message + "</span>";
+            errorContainer.append(error);
+        });
+
+        $('.menu').removeClass('is-active');
+        $('.split--right').removeClass('is-sending');
+        $('.loading').removeClass('is-active');
+        errorDialog.showModal();
+
+        errorClose.addEventListener('click', function() {
+            errorDialog.close();
+        });
+    }
+
+    function buildReport(data){
         $(resultSummary).html(data.site);
         $('.loading').removeClass('is-active');
         $('.report').addClass('is-active');
@@ -136,8 +178,6 @@
             let cell = document.createElement("td");
             let cellValue = Math.round(parseInt(value.result));
             let cellStyle = null;
-            let cellResult = '🙂';
-
             size++;
 
             if(value.ranking.type === "high") {
@@ -147,32 +187,24 @@
 
                 if(cellValue < value.ranking.poor) {
                     cellStyle = "color: #f44336;";
-                    cellResult = '☹️';
                 } else if (cellValue >= value.ranking.poor && cellValue < value.ranking.average) {
                     cellStyle = "color: #e06c15;";
-                    cellResult = '😐';
                 } else if (cellValue >= value.ranking.average && cellValue < value.ranking.good) {
                     cellStyle = "color: #a7bb5c;";
-                    cellResult = '🙂';
                 } else if (cellValue >= value.ranking.good && cellValue <= value.ranking.perfect) {
                     cellStyle = "color: #51bd51;";
-                    cellResult = '😀';
                 }
 
             } else {
 
                 if(cellValue <= value.ranking.perfect) {
                     cellStyle = "color: #51bd51;";
-                    cellResult = '😀';
                 } else if (cellValue > value.ranking.perfect && cellValue <= value.ranking.good) {
                     cellStyle = "color: #a7bb5c;";
-                    cellResult = '🙂';
                 } else if (cellValue > value.ranking.good && cellValue <= value.ranking.average) {
                     cellStyle = "color: #e06c15;";
-                    cellResult = '😐';
                 } else if (cellValue > value.ranking.average) {
                     cellStyle = "color: #f44336;";
-                    cellResult = '☹️';
                 }
 
             }
@@ -180,11 +212,6 @@
             cell.innerHTML = "<h4>" + key + "</h4><span style='" + cellStyle + "'>" + cellValue + "</span>";
             tr.append(cell);
         });
-
-    });
-
-    socket.on('beagle-progress', function (data) {
-        console.log(data);
-    });
+    }
 </script>
 </html>

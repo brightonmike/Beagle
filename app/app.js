@@ -40,11 +40,7 @@ module.exports = function(job, res) {
 
         return auth.then(auth => {
             return Promise.all(promiseArray)
-                .catch(function(err) {
-                    // log that I have an error, return the entire array;
-                    console.log('A promise failed to resolve', err);
-                    return promiseArray;
-                }).then(function (values) {
+                .then(function (values) {
 
                 // Add PS data to sheet report
                 job.data.report.mobilescore = values[0].ruleGroups.SPEED.score;
@@ -174,6 +170,11 @@ module.exports = function(job, res) {
 
                storeData(auth, job);
                return job.data;
+
+            }).catch(function(err) {
+                // log that I have an error, return the entire array;
+                console.log('A promise failed to resolve', err);
+                return err;
             });
         });
     }
@@ -181,6 +182,7 @@ module.exports = function(job, res) {
     return runBeagle(job, res).then(result => {
         return result;
     }).catch(err => {
+        console.log('FAIL');
         console.log(err);
         return err;
     });
