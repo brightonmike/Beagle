@@ -2,68 +2,102 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+    <svg style="height:0;width:0">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+            </filter>
+        </defs>
+    </svg>
 </head>
 
 <body>
 
   <% include ../partials/nav.ejs %>
 
-<section class="hero">
+    <main class="page">
 
-  <div class="hero__container">
+      <div class="page__container">
 
-    <h1 class="hero__title home">
-      <a href="/">
-        Beagle
-      </a>
-    </h1>
+          <div class="loading">
+              <h5>
+                  Your report is generating. Please wait.
+                  <span>If you close this tab, you will lose it.</span>
+              </h5>
 
-    <p class="home">
-      Use Beagle to run multiple Frontend tests all at once and compile into a single report. Beagle can also be integrated into your workflow, so tests run automatically when you deploy.
-    </p>
+              <div class="loading__animation">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+              </div>
+          </div>
 
-      <p class="loading">
-          Your report is generating. Please wait.
-          <span>If you close this tab, you will lose it.</span>
-      </p>
+          <div class="split split--left">
+              <h1 class="page__title home">
+                  <a href="/">
+                     Beagle
+                  </a>
+              </h1>
 
-    <form action="/" method="get" class="js-get-report js-hide home">
-      <input type="url" placeholder="type URL" id="url" name="url" value="">
-      <button type="submit" class="button submit">start tests</button>
-        <span class="error">Please enter a valid URL!</span>
-    </form>
+              <p class="home">
+              Beagle runs PageSpeed, Lighthouse and Webpagetest.org simultaneously.
+              </p>
 
-    <div class="container report js-report">
+              <p class="status js-status">Beagle is unavailable :(</p>
+          </div>
 
-      <div class="row">
-        <div class="column-8">
+          <div class="split split--right">
 
-            <h3 class="js-summary"></h3>
-            <p class="js-result"></p>
+              <form action="/" method="get" class="js-get-report js-hide home">
+                  <input type="url" placeholder="type address..." id="url" name="url" value="">
+                  <span class="focusline"></span>
+                  <button type="submit" class="button submit">
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 535.5 535.5" style="enable-background:new 0 0 535.5 535.5;" xml:space="preserve">
+                          <polygon points="0,497.25 535.5,267.75 0,38.25 0,216.75 382.5,267.75 0,318.75   " fill="#FFFFFF"/>
+                      </svg>
+                  </button>
+                  <span class="error">Please enter a valid URL!</span>
+              </form>
 
-        </div>
-        <div class="column-4">
+          </div>
 
-            <span class="score js-score"></span>
-
-        </div>
-        <div class="column-12">
-
-          <table>
-            <tbody>
-            <tr class="js-row"></tr>
-            </tbody>
-          </table>
-
-          <p>Your report is stored on Google Drive.</p>
-
-        </div>
       </div>
-    </div>
 
+    </main>
+
+
+
+
+  <div class="report">
+      <header class="report__header">
+      <h3>Results for: <span class="js-summary"></span></h3>
+      </header>
+
+      <table>
+      <tbody>
+      <tr class="js-row"></tr>
+      </tbody>
+      </table>
+
+      <footer class="report__footer">
+          <a href="" target="_blank" rel="noopener" class="report__button js-wpt-link">View full WPT report</a>
+      </footer>
+
+      <dialog id="dialog" class="dialog">
+          <section>
+              <h4>Error <span class="js-data-code"></span></h4>
+              <div class="js-errors dialog__content">
+
+              </div>
+          </section>
+          <menu>
+              <button id="cancel" type="reset" class="dialog__button">Close</button>
+          </menu>
+      </dialog>
   </div>
-
-</section>
 
   <footer class="footer">
     Beagle was created by Michael Gunner.
@@ -77,6 +111,12 @@
     const socket = io();
     const resultSummary = $('.js-summary');
     const form = $('.js-get-report');
+    const errorDialog = document.getElementById('dialog');
+    const errorClose = document.getElementById('cancel');
+
+    socket.on('connect', function() {
+        $('.js-status').html('Beagle is available.').addClass('status--ready');
+    });
 
     form.on("submit", function(e){
         let siteUrl = $("#url").val();
@@ -84,32 +124,60 @@
         if(!siteUrl) {
             $('.error').css('display', 'block');
         } else {
-            $('.home').addClass('u-hide');
-            $('.loading').addClass('u-show');
+            $('.error').css('display', 'none');
+            $('.menu').addClass('is-active');
+            $('.split--right').addClass('is-sending');
+            $('.loading').addClass('is-active');
             socket.emit ('send site', { url: siteUrl });
         }
         e.preventDefault();
     });
 
-    socket.on('connect', function() {
-        form.addClass('active');
+    socket.on('beagle-result', function (data) {
+        if(data.errors) {
+            errorHandler(data);
+        } else {
+            buildReport(data);
+        }
     });
 
-    socket.on('beagle-result', function (data) {
+    function errorHandler(data){
+        $('js-data-code').html(data.code);
+        const errorContainer = $('.js-errors');
+
+        $.each( data.errors, function( key, value ) {
+            let error = document.createElement("p");
+            error.innerHTML = "<strong>" + value.domain + ":</strong><span>" + value.message + "</span>";
+            errorContainer.append(error);
+        });
+
+        $('.menu').removeClass('is-active');
+        $('.split--right').removeClass('is-sending');
+        $('.loading').removeClass('is-active');
+        errorDialog.showModal();
+
+        errorClose.addEventListener('click', function() {
+            errorDialog.close();
+        });
+    }
+
+    function buildReport(data){
         $(resultSummary).html(data.site);
-        $('.js-report').removeClass('u-hide').addClass('u-show');
-        $('.loading').removeClass('u-show').addClass('u-hide');
+        $('.loading').removeClass('is-active');
+        $('.report').addClass('is-active');
 
         const tr = $('.js-row');
         const report = data.report.formatted;
+        const wptlink = data.report.wptlink;
         let size = 0;
         let sum = 0;
+
+        $('.js-wpt-link').attr('href', wptlink);
 
         $.each( report, function( key, value ) {
             let cell = document.createElement("td");
             let cellValue = Math.round(parseInt(value.result));
             let cellStyle = null;
-
             size++;
 
             if(value.ranking.type === "high") {
@@ -118,25 +186,25 @@
                 console.log(sum);
 
                 if(cellValue < value.ranking.poor) {
-                    cellStyle = "color: red;";
+                    cellStyle = "color: #f44336;";
                 } else if (cellValue >= value.ranking.poor && cellValue < value.ranking.average) {
-                    cellStyle = "color: orange;";
+                    cellStyle = "color: #e06c15;";
                 } else if (cellValue >= value.ranking.average && cellValue < value.ranking.good) {
-                    cellStyle = "color: yellow;";
+                    cellStyle = "color: #a7bb5c;";
                 } else if (cellValue >= value.ranking.good && cellValue <= value.ranking.perfect) {
-                    cellStyle = "color: green;";
+                    cellStyle = "color: #51bd51;";
                 }
 
             } else {
 
                 if(cellValue <= value.ranking.perfect) {
-                    cellStyle = "color: green;";
+                    cellStyle = "color: #51bd51;";
                 } else if (cellValue > value.ranking.perfect && cellValue <= value.ranking.good) {
-                    cellStyle = "color: yellow;";
+                    cellStyle = "color: #a7bb5c;";
                 } else if (cellValue > value.ranking.good && cellValue <= value.ranking.average) {
-                    cellStyle = "color: orange;";
+                    cellStyle = "color: #e06c15;";
                 } else if (cellValue > value.ranking.average) {
-                    cellStyle = "color: red;";
+                    cellStyle = "color: #f44336;";
                 }
 
             }
@@ -144,10 +212,6 @@
             cell.innerHTML = "<h4>" + key + "</h4><span style='" + cellStyle + "'>" + cellValue + "</span>";
             tr.append(cell);
         });
-
-        $('.js-score').html(Math.round(sum/size));
-
-
-    });
+    }
 </script>
 </html>

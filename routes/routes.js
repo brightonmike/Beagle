@@ -33,7 +33,7 @@ module.exports = function(app, io) {
                 id: uuidv1(),
                 report: {},
                 socketId: socket.id
-            }).save(function (err) {
+            }).removeOnComplete(true).save(function (err) {
                 if (!err) console.log('Job ID queued: ' + job.id + ' Socket:' + socket.id);
             }).on('complete', function(result) {
                 socket.emit('beagle-result', result);

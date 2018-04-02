@@ -33,7 +33,8 @@ module.exports = function (auth, job) {
                 job.data.report.fullyLoaded,
                 job.data.report.firstPaint,
                 job.data.report.visualComplete,
-                job.data.report.SpeedIndex
+                job.data.report.SpeedIndex,
+                job.data.report.wptlink
             ] ]
         }
     }, (err, response) => {
