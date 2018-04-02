@@ -12,8 +12,10 @@ module.exports = function(app, io) {
         }
 
         Beagle(job).then(result => {
+            console.log('yes');
             done(null, result);
         }).catch(result => {
+            console.log('no' + result);
             done(null, result);
         });
     });
@@ -35,9 +37,8 @@ module.exports = function(app, io) {
                 socketId: socket.id
             }).save(function (err) {
                 if (!err) console.log('Job ID queued: ' + job.id + ' Socket:' + socket.id);
-            }).on('progress', function(progress) {
-                socket.emit('beagle-progress', progress);
             }).on('complete', function(result) {
+                console.log(result);
                 socket.emit('beagle-result', result);
             });
         });
