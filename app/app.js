@@ -48,10 +48,6 @@ module.exports = function(job, res) {
             return auth.then(auth => {
                 Promise.all([MobileResult, DesktopResult, LightHouseResult, WebPageTestResult]).then(function (values) {
 
-                    console.log(values[3]);
-
-                    console.log(values[2].reportCategories[0].score);
-
                     // Add PS data to sheet report
                     job.data.report.mobilescore = values[0].ruleGroups.SPEED.score;
                     job.data.report.mobileusability = values[0].ruleGroups.USABILITY.score;
@@ -72,6 +68,7 @@ module.exports = function(job, res) {
                     job.data.report.firstPaint = values[3].average.firstView.firstPaint;
                     job.data.report.visualComplete = values[3].average.firstView.visualComplete;
                     job.data.report.SpeedIndex = values[3].average.firstView.SpeedIndex;
+                    job.data.report.wptlink = values[3].summary;
 
                     const rankings = {
                         type: "high",

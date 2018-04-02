@@ -35,6 +35,8 @@ module.exports = function(app, io) {
                 socketId: socket.id
             }).save(function (err) {
                 if (!err) console.log('Job ID queued: ' + job.id + ' Socket:' + socket.id);
+            }).on('progress', function(progress) {
+                socket.emit('beagle-progress', progress);
             }).on('complete', function(result) {
                 socket.emit('beagle-result', result);
             });

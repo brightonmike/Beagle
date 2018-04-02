@@ -3,7 +3,7 @@ const wpkey = process.env.WPTAPI;
 const wptPublic = new WebPageTest('www.webpagetest.org', wpkey);
 
 module.exports = function (res, url) {
-    console.log("Running webpagetest..");
+    console.log("Running webpagetest...");
 
     function runWPT(url){
 

@@ -20,6 +20,21 @@
 
       <div class="page__container">
 
+          <div class="loading">
+              <h5>
+                  Your report is generating. Please wait.
+                  <span>If you close this tab, you will lose it.</span>
+              </h5>
+
+              <div class="loading__animation">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+              </div>
+          </div>
+
           <div class="split split--left">
               <h1 class="page__title home">
                   <a href="/">
@@ -36,8 +51,6 @@
 
           <div class="split split--right">
 
-              <span class="split__fade"></span>
-
               <form action="/" method="get" class="js-get-report js-hide home">
                   <input type="url" placeholder="type address..." id="url" name="url" value="">
                   <span class="focusline"></span>
@@ -49,40 +62,30 @@
                   <span class="error">Please enter a valid URL!</span>
               </form>
 
-              <div class="report">
-
-                  <header class="report__header">
-                      <h3>Results for: <span class="js-summary"></span></h3>
-                      <p class="js-result"></p>
-                      <span class="score js-score"></span>
-                  </header>
-
-                  <div class="loading">
-                      Your report is generating. Please wait.
-                      <span>If you close this tab, you will lose it.</span>
-
-                      <div class="loading__animation">
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                      </div>
-                  </div>
-
-                  <table>
-                      <tbody>
-                      <tr class="js-row"></tr>
-                      </tbody>
-                  </table>
-
-              </div>
-
           </div>
 
       </div>
 
     </main>
+
+
+
+
+  <div class="report">
+      <header class="report__header">
+      <h3>Results for: <span class="js-summary"></span></h3>
+      </header>
+
+      <table>
+      <tbody>
+      <tr class="js-row"></tr>
+      </tbody>
+      </table>
+
+      <footer class="report__footer">
+          <a href="" target="_blank" rel="noopener" class="report__button js-wpt-link">View full WPT report</a>
+      </footer>
+  </div>
 
   <footer class="footer">
     Beagle was created by Michael Gunner.
@@ -119,12 +122,15 @@
     socket.on('beagle-result', function (data) {
         $(resultSummary).html(data.site);
         $('.loading').removeClass('is-active');
-        $('.report__header').addClass('is-active');
+        $('.report').addClass('is-active');
 
         const tr = $('.js-row');
         const report = data.report.formatted;
+        const wptlink = data.report.wptlink;
         let size = 0;
         let sum = 0;
+
+        $('.js-wpt-link').attr('href', wptlink);
 
         $.each( report, function( key, value ) {
             let cell = document.createElement("td");
@@ -171,12 +177,14 @@
 
             }
 
-            cell.innerHTML = "<h4>" + key + "</h4><span>" + cellResult + "</span><span style='" + cellStyle + "'>" + cellValue + "</span>";
+            cell.innerHTML = "<h4>" + key + "</h4><span style='" + cellStyle + "'>" + cellValue + "</span>";
             tr.append(cell);
         });
 
-        //$('.js-score').html(Math.round(sum/size));
+    });
 
+    socket.on('beagle-progress', function (data) {
+        console.log(data);
     });
 </script>
 </html>
