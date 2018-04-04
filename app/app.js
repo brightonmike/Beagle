@@ -42,10 +42,15 @@ module.exports = function(job, res) {
             return Promise.all(promiseArray)
                 .then(function (values) {
 
+                    console.log(values[0].formattedResults.ruleResults);
+
                 // Add PS data to sheet report
                 job.data.report.mobilescore = values[0].ruleGroups.SPEED.score;
                 job.data.report.mobileusability = values[0].ruleGroups.USABILITY.score;
                 job.data.report.desktopscore = values[1].ruleGroups.SPEED.score;
+
+
+                    console.log(values[2].audits);
 
                 // Add LH data to sheet report
                 job.data.report.perf = values[2].reportCategories[0].score;
@@ -53,8 +58,11 @@ module.exports = function(job, res) {
                 job.data.report.accessibility = values[2].reportCategories[2].score;
                 job.data.report.bestpractice = values[2].reportCategories[3].score;
                 job.data.report.seo = values[2].reportCategories[4].score;
+                job.data.report.lhAudit = values[2].audits;
 
                 // Add WPT data to sheet report
+
+                    console.log(values[3]);
 
                 job.data.report.loadTime = values[3].average.firstView.loadTime;
                 job.data.report.TTFB = values[3].average.firstView.TTFB;

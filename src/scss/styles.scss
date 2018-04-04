@@ -507,3 +507,44 @@ form {
   font-size: 80%;
   opacity: 0.8;
 }
+
+.audit {
+  max-width: 816px;
+  margin: 100px auto 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.audit__item--pass {
+  order: 2;
+
+  .summary {
+    color: #51bd51;
+  }
+}
+
+.audit__item--fail {
+  order: 1;
+
+  .summary {
+    color: #f44336;
+  }
+}
+
+.audit__score {
+  float: right;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 20px 20px;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+
+  p {
+    font-size: 22px;
+    margin: 0;
+  }
+}
+

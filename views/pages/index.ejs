@@ -82,6 +82,8 @@
       </tbody>
       </table>
 
+      <div class="audit js-audit"></div>
+
       <footer class="report__footer">
           <a href="" target="_blank" rel="noopener" class="report__button js-wpt-link">View full WPT report</a>
       </footer>
@@ -93,6 +95,7 @@
 
               </div>
           </section>
+
           <menu>
               <button id="cancel" type="reset" class="dialog__button">Close</button>
           </menu>
@@ -107,6 +110,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
     const socket = io();
     const resultSummary = $('.js-summary');
@@ -167,12 +171,44 @@
         $('.report').addClass('is-active');
 
         const tr = $('.js-row');
+        const audit = $('.js-audit');
         const report = data.report.formatted;
         const wptlink = data.report.wptlink;
+        const lhAudit = data.report.lhAudit;
         let size = 0;
         let sum = 0;
 
+        console.log(lhAudit);
+
         $('.js-wpt-link').attr('href', wptlink);
+
+        $.each( lhAudit, function( key, value ) {
+            let itemClass = "audit__item";
+            let score = '';
+
+            let description = marked(value.description);
+            let helpText = marked(value.helpText);
+
+            if(value.scoringMode === "numeric") {
+                score = value.score;
+                if(value.score < 85) {
+                    itemClass = "audit__item--fail";
+                } else {
+                    itemClass = "audit__item--pass";
+                }
+            } else {
+                if(value.score === false) {
+                    score = "Fail";
+                    itemClass = "audit__item--fail";
+                } else {
+                    score = "Pass";
+                    itemClass = "audit__item--pass";
+                }
+            }
+
+            let item = "<details class='" + itemClass + "'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
+            audit.append(item);
+        });
 
         $.each( report, function( key, value ) {
             let cell = document.createElement("td");

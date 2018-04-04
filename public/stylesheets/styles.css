@@ -420,3 +420,38 @@ form {
   text-transform: uppercase;
   font-size: 80%;
   opacity: 0.8; }
+
+.audit {
+  max-width: 816px;
+  margin: 100px auto 0;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+
+.audit__item--pass {
+  -ms-flex-order: 2;
+  order: 2; }
+  .audit__item--pass .summary {
+    color: #51bd51; }
+
+.audit__item--fail {
+  -ms-flex-order: 1;
+  order: 1; }
+  .audit__item--fail .summary {
+    color: #f44336; }
+
+.audit__score {
+  float: right;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 20px 20px; }
+
+.summary {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center; }
+  .summary p {
+    font-size: 22px;
+    margin: 0; }
