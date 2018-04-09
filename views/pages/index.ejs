@@ -14,8 +14,6 @@
 
 <body>
 
-  <% include ../partials/nav.ejs %>
-
     <main class="page">
 
       <div class="page__container">
@@ -35,7 +33,7 @@
               </div>
           </div>
 
-          <div class="split split--left">
+          <div class="page__content">
               <h1 class="page__title home">
                   <a href="/">
                      Beagle
@@ -47,9 +45,6 @@
               </p>
 
               <p class="status js-status">Beagle is unavailable :(</p>
-          </div>
-
-          <div class="split split--right">
 
               <form action="/" method="get" class="js-get-report js-hide home">
                   <input type="url" placeholder="type address..." id="url" name="url" value="">
@@ -141,6 +136,7 @@
         if(data.errors) {
             errorHandler(data);
         } else {
+            console.log(data);
             buildReport(data);
         }
     });

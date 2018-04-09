@@ -6,12 +6,13 @@ const PSMobile = require('./tests/pagespeed-mobile');
 const PSDesktop = require('./tests/pagespeed-desktop');
 const LightHouse = require('./tests/lighthouse');
 const WebPageTest = require('./tests/wpt');
+const consola = require('consola');
 
 module.exports = function(job, res) {
 
     function runBeagle(job, res){
         job.data.report.url = job.data.site;
-        console.log('Running Beagle on.. ' + job.id + " Site: " + job.data.report.url);
+        consola.start('Running Beagle on.. ' + job.id + " Site: " + job.data.report.url);
 
         /**
          * Authenticate for Google Sheets API
@@ -42,7 +43,7 @@ module.exports = function(job, res) {
             return Promise.all(promiseArray)
                 .then(function (values) {
 
-                    console.log(values[0].formattedResults.ruleResults);
+                    consola.info(values[0].formattedResults.ruleResults);
 
                 // Add PS data to sheet report
                 job.data.report.mobilescore = values[0].ruleGroups.SPEED.score;
@@ -50,7 +51,7 @@ module.exports = function(job, res) {
                 job.data.report.desktopscore = values[1].ruleGroups.SPEED.score;
 
 
-                    console.log(values[2].audits);
+                    consola.info(values[2].audits);
 
                 // Add LH data to sheet report
                 job.data.report.perf = values[2].reportCategories[0].score;
@@ -62,7 +63,7 @@ module.exports = function(job, res) {
 
                 // Add WPT data to sheet report
 
-                    console.log(values[3]);
+                    consola.info(values[3]);
 
                 job.data.report.loadTime = values[3].average.firstView.loadTime;
                 job.data.report.TTFB = values[3].average.firstView.TTFB;
@@ -181,7 +182,7 @@ module.exports = function(job, res) {
 
             }).catch(function(err) {
                 // log that I have an error, return the entire array;
-                console.log('A promise failed to resolve', err);
+                consola.error('A promise failed to resolve', err);
                 return err;
             });
         });
@@ -190,8 +191,8 @@ module.exports = function(job, res) {
     return runBeagle(job, res).then(result => {
         return result;
     }).catch(err => {
-        console.log('FAIL');
-        console.log(err);
+        consola.error('FAIL');
+        consola.error(err);
         return err;
     });
 };

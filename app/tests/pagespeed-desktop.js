@@ -3,9 +3,10 @@
  * @type {psi}
  */
 const psi = require('psi');
+const consola = require('consola');
 
 module.exports = function (res, url) {
-    console.log('Running desktop PS...');
+    consola.info('Running desktop PS...');
     return psi(url, {
         nokey: 'true',
         strategy: 'desktop',

@@ -2,6 +2,7 @@ const Beagle = require('../app/app');
 const kue = require('kue');
 const queue = kue.createQueue();
 const uuidv1 = require('uuid/v1');
+const consola = require('consola');
 
 module.exports = function(app, io) {
 
@@ -19,10 +20,10 @@ module.exports = function(app, io) {
     });
 
     io.on('connection', (socket) => {
-        console.log('a user connected');
+        consola.info('a user connected');
 
         socket.on('disconnect', () => {
-            console.log('user disconnected');
+            consola.info('user disconnected');
         });
 
         socket.on ('send site', function (request) {
@@ -34,7 +35,7 @@ module.exports = function(app, io) {
                 report: {},
                 socketId: socket.id
             }).removeOnComplete(true).save(function (err) {
-                if (!err) console.log('Job ID queued: ' + job.id + ' Socket:' + socket.id);
+                if (!err) consola.info('Job ID queued: ' + job.id + ' Socket:' + socket.id);
             }).on('complete', function(result) {
                 socket.emit('beagle-result', result);
             });
@@ -57,7 +58,7 @@ module.exports = function(app, io) {
             id: uuidv1(),
             report: {}
         }).save(function (err) {
-            if (!err) console.log('Job ID queued: ' + job.id);
+            if (!err) consola.info('Job ID queued: ' + job.id);
         }).on('complete', function(result) {
             res.send(result);
         });

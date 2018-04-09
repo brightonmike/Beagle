@@ -1,9 +1,10 @@
 const lighthouse = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');
+const consola = require('consola');
 
 module.exports = function (res, url, opts) {
 
-    console.log("Running lighthouse..");
+    consola.info("Running lighthouse..");
 
     function launchChromeAndRunLighthouse(url, opts, config = null) {
         return chromeLauncher.launch({chromeFlags: opts.chromeFlags}).then(chrome => {

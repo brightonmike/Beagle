@@ -4,6 +4,7 @@
  */
 const google = require('googleapis');
 const sheets = google.sheets('v4');
+const consola = require('consola');
 
 module.exports = function (auth, job) {
 
@@ -39,10 +40,10 @@ module.exports = function (auth, job) {
         }
     }, (err, response) => {
         if (err) {
-            console.log('The API returned an error: ' + err);
+            consola.error('The API returned an error: ' + err);
             return err;
         } else {
-            console.log('Data added to sheet.');
+            consola.info('Data added to sheet.');
             return response;
         }
     });

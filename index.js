@@ -4,6 +4,7 @@ const port = process.env.PORT || 5000;
 const path = require('path');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const consola = require('consola');
 
 require('dotenv').config();
 require('./routes')(app, io, {});
@@ -13,12 +14,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 http.listen(port, function() {
-    console.log('App listening on port ' + port);
+    consola.start('App listening on port ' + port);
 
     if(process.env.HEROKU) {
-        console.log('Running on Heroku. Ready..');
+        consola.start('Running on Heroku. Ready..');
     } else {
-        console.log('Running locally. Ready..');
+        consola.start('Running locally. Ready..');
     }
 
 });
