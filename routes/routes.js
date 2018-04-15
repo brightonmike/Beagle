@@ -6,26 +6,32 @@ const consola = require('consola');
 
 module.exports = function(app, io) {
 
+    // Process Jobs as they are added to the queue
     queue.process('test', (job, done) => {
 
         if(!job.data.site) {
             done();
         }
 
+        // Run Beagle
         Beagle(job).then(result => {
             done(null, result);
         }).catch(result => {
             done(null, result);
         });
+
     });
 
+    // Create connection to users
     io.on('connection', (socket) => {
         consola.info('a user connected');
 
+        // We'll add something here
         socket.on('disconnect', () => {
             consola.info('user disconnected');
         });
 
+        // When send site is created, process the job
         socket.on ('send site', function (request) {
             let job = queue.create('test', {
                 title: 'job ran at ' + Date.now(),
@@ -42,14 +48,15 @@ module.exports = function(app, io) {
         });
     });
 
-    // actual routes
-
+    // Express Routes
     app.use('/kue-ui', kue.app);
 
+    // Browser
     app.get('/', (req, res) => {
         return res.render('../views/pages/index');
     });
 
+    // Generate end point for web hooks
     app.get('/generate', (req, res) => {
         let job = queue.create('test', {
             title: 'job ran at ' + Date.now(),
