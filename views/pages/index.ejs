@@ -12,9 +12,7 @@
     </svg>
 </head>
 
-<body>
-
-  <% include ../partials/nav.ejs %>
+<body class="has-report">
 
     <main class="page">
 
@@ -35,21 +33,14 @@
               </div>
           </div>
 
-          <div class="split split--left">
+          <div class="page__content">
               <h1 class="page__title home">
                   <a href="/">
                      Beagle
                   </a>
               </h1>
 
-              <p class="home">
-              Beagle runs PageSpeed, Lighthouse and Webpagetest.org simultaneously.
-              </p>
-
               <p class="status js-status">Beagle is unavailable :(</p>
-          </div>
-
-          <div class="split split--right">
 
               <form action="/" method="get" class="js-get-report js-hide home">
                   <input type="url" placeholder="type address..." id="url" name="url" value="">
@@ -69,24 +60,52 @@
     </main>
 
 
-
-
   <div class="report">
       <header class="report__header">
       <h3>Results for: <span class="js-summary"></span></h3>
       </header>
 
-      <table>
-      <tbody>
-      <tr class="js-row"></tr>
-      </tbody>
-      </table>
+      <div class="report__container">
+
+          <div class="graph">
+              <canvas id="lh-chart" width="400" height="400"></canvas>
+          </div>
+
+          <div class="panel">
+
+              <div class="panel__header">
+                  <h4>Key Scores</h4>
+              </div>
+              <!--<table>-->
+                  <!--<tbody>-->
+                  <!--<tr class="js-row"><td><h4>PS Mobile Score</h4><span style="color:#c1ba7f;">75</span></td><td><h4>PS Mobile Usability</h4><span style="color:#49c0b7;">100</span></td><td><h4>PS Desktop Score</h4><span style="color:#49c0b7;">91</span></td><td><h4>LH Performance</h4><span style="color:#4abc6a;">85</span></td><td><h4>LH PWA</h4><span style="color:#4abc6a;">81</span></td><td><h4>LH a11y</h4><span style="color:#49c0b7;">100</span></td><td><h4>LH Best Practice</h4><span style="color:#4abc6a;">87</span></td><td><h4>LH SEO</h4><span style="color:#4abc6a;">88</span></td></tr>-->
+                  <!--</tbody>-->
+              <!--</table>-->
+              <table>
+                  <tbody>
+                  <tr class="js-row"></tr>
+                  </tbody>
+              </table>
+
+          </div>
+
+          <div class="panel">
+
+              <div class="panel__header">
+                  <h4>Lighthouse Audit</h4>
+              </div>
+              <div class="audit js-audit"></div>
+
+          </div>
+
+      </div>
 
       <footer class="report__footer">
           <a href="" target="_blank" rel="noopener" class="report__button js-wpt-link">View full WPT report</a>
       </footer>
 
       <dialog id="dialog" class="dialog">
+
           <section>
               <h4>Error <span class="js-data-code"></span></h4>
               <div class="js-errors dialog__content">
@@ -96,6 +115,7 @@
           <menu>
               <button id="cancel" type="reset" class="dialog__button">Close</button>
           </menu>
+          
       </dialog>
   </div>
 
@@ -107,111 +127,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-    const socket = io();
-    const resultSummary = $('.js-summary');
-    const form = $('.js-get-report');
-    const errorDialog = document.getElementById('dialog');
-    const errorClose = document.getElementById('cancel');
-
-    socket.on('connect', function() {
-        $('.js-status').html('Beagle is available.').addClass('status--ready');
-    });
-
-    form.on("submit", function(e){
-        let siteUrl = $("#url").val();
-
-        if(!siteUrl) {
-            $('.error').css('display', 'block');
-        } else {
-            $('.error').css('display', 'none');
-            $('.menu').addClass('is-active');
-            $('.split--right').addClass('is-sending');
-            $('.loading').addClass('is-active');
-            socket.emit ('send site', { url: siteUrl });
-        }
-        e.preventDefault();
-    });
-
-    socket.on('beagle-result', function (data) {
-        if(data.errors) {
-            errorHandler(data);
-        } else {
-            buildReport(data);
-        }
-    });
-
-    function errorHandler(data){
-        $('js-data-code').html(data.code);
-        const errorContainer = $('.js-errors');
-
-        $.each( data.errors, function( key, value ) {
-            let error = document.createElement("p");
-            error.innerHTML = "<strong>" + value.domain + ":</strong><span>" + value.message + "</span>";
-            errorContainer.append(error);
-        });
-
-        $('.menu').removeClass('is-active');
-        $('.split--right').removeClass('is-sending');
-        $('.loading').removeClass('is-active');
-        errorDialog.showModal();
-
-        errorClose.addEventListener('click', function() {
-            errorDialog.close();
-        });
-    }
-
-    function buildReport(data){
-        $(resultSummary).html(data.site);
-        $('.loading').removeClass('is-active');
-        $('.report').addClass('is-active');
-
-        const tr = $('.js-row');
-        const report = data.report.formatted;
-        const wptlink = data.report.wptlink;
-        let size = 0;
-        let sum = 0;
-
-        $('.js-wpt-link').attr('href', wptlink);
-
-        $.each( report, function( key, value ) {
-            let cell = document.createElement("td");
-            let cellValue = Math.round(parseInt(value.result));
-            let cellStyle = null;
-            size++;
-
-            if(value.ranking.type === "high") {
-
-                sum += cellValue;
-                console.log(sum);
-
-                if(cellValue < value.ranking.poor) {
-                    cellStyle = "color: #f44336;";
-                } else if (cellValue >= value.ranking.poor && cellValue < value.ranking.average) {
-                    cellStyle = "color: #e06c15;";
-                } else if (cellValue >= value.ranking.average && cellValue < value.ranking.good) {
-                    cellStyle = "color: #a7bb5c;";
-                } else if (cellValue >= value.ranking.good && cellValue <= value.ranking.perfect) {
-                    cellStyle = "color: #51bd51;";
-                }
-
-            } else {
-
-                if(cellValue <= value.ranking.perfect) {
-                    cellStyle = "color: #51bd51;";
-                } else if (cellValue > value.ranking.perfect && cellValue <= value.ranking.good) {
-                    cellStyle = "color: #a7bb5c;";
-                } else if (cellValue > value.ranking.good && cellValue <= value.ranking.average) {
-                    cellStyle = "color: #e06c15;";
-                } else if (cellValue > value.ranking.average) {
-                    cellStyle = "color: #f44336;";
-                }
-
-            }
-
-            cell.innerHTML = "<h4>" + key + "</h4><span style='" + cellStyle + "'>" + cellValue + "</span>";
-            tr.append(cell);
-        });
-    }
-</script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="/js/chart.js"></script>
+<script src="/js/app.js"></script>
 </html>

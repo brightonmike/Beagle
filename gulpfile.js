@@ -9,7 +9,8 @@ const gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     rename = require('gulp-rename'),
     autoprefixer = require('gulp-autoprefixer'),
-    sourcemaps = require('gulp-sourcemaps');
+    sourcemaps = require('gulp-sourcemaps'),
+    webpack = require('webpack-stream');
 
 
 gulp.task('styles', function() {
@@ -31,8 +32,20 @@ gulp.task('styles', function() {
         .pipe(gulp.dest('./public/stylesheets/'))
 });
 
+gulp.task('beagle-js', function() {
+    return gulp.src([
+        './node_modules/chart.js/dist/chart.js',
+        './src/js/app.js'
+    ])
+        .pipe(webpack( require('./webpack.config.js') ))
+        .pipe(gulp.dest('./public/js/'));
+});
 
-gulp.task('default', ['styles', 'browser-sync'], function () {
+gulp.task('build', ['styles', 'beagle-js'], function () {
+
+});
+
+gulp.task('default', ['styles', 'beagle-js', 'browser-sync'], function () {
 
 });
 
@@ -44,7 +57,7 @@ gulp.task('browser-sync', ['nodemon'], function() {
         port: 7000,
     });
 
-    gulp.watch('./src/scss/**/*.scss', ['styles']);
+    gulp.watch(['./src/scss/**/*.scss', './src/js/*.js'], ['styles', 'beagle-js']);
 });
 
 gulp.task('nodemon', function (cb) {
