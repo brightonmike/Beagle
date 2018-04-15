@@ -52,7 +52,7 @@ function errorHandler(data){
 
 function buildReport(data){
     $(resultSummary).html(data.site);
-    $('body').addClass('has-report');
+    $('body').removeClass('is-sending').addClass('has-report');
 
     const tr = $('.js-row');
     const audit = $('.js-audit');

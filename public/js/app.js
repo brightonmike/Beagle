@@ -136,7 +136,7 @@ function errorHandler(data) {
 
 function buildReport(data) {
     $(resultSummary).html(data.site);
-    $('body').addClass('has-report');
+    $('body').removeClass('is-sending').addClass('has-report');
 
     var tr = $('.js-row');
     var audit = $('.js-audit');
