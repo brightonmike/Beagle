@@ -56,13 +56,15 @@ function buildReport(data){
 
     const tr = $('.js-row');
     const audit = $('.js-audit');
+    const pa11ycontainer = $('.js-pally');
     const report = data.report.formatted;
-    const wptlink = data.report.wptlink;
+    // const wptlink = data.report.wptlink;
     const lhAudit = data.report.lhAudit;
+    const pa11y = data.report.pa11y;
     let size = 0;
     let sum = 0;
 
-    $('.js-wpt-link').attr('href', wptlink);
+    // $('.js-wpt-link').attr('href', wptlink);
 
     $.each( lhAudit, function( key, value ) {
         let itemClass = "audit__item";
@@ -90,6 +92,15 @@ function buildReport(data){
 
         let item = "<details class='" + itemClass + "'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
         audit.append(item);
+    });
+
+    $.each( pa11y, function( key, value ) {
+        let description = marked(value.context);
+        let helpText = marked(value.message);
+        let selector = marked(value.selector);
+
+        let item = "<details class='audit__item'><summary class='summary'>" + helpText + "</summary>" + description + "<div>" + selector + "</div></details>";
+        pa11ycontainer.append(item);
     });
 
     let graphDataNew = [];

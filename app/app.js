@@ -5,6 +5,7 @@ const retrieveData = require('./retrieve');
 const PSMobile = require('./tests/pagespeed-mobile');
 const PSDesktop = require('./tests/pagespeed-desktop');
 const LightHouse = require('./tests/lighthouse');
+const Pally = require('./tests/pally');
 const WebPageTest = require('./tests/wpt');
 const consola = require('consola');
 
@@ -60,11 +61,12 @@ module.exports = function(job, res) {
             let mobileResult = PSMobile(res, job.data.report.url);
             let desktopResult = PSDesktop(res, job.data.report.url);
             let lightHouseResult = LightHouse(res, job.data.report.url, lhConfig);
+            let accessibilityResult = Pally(job.data.report.url);
             // WPT is not working currently *shrug*
             //let webPageTestResult = WebPageTest(res, job.data.report.url);
 
             // Now return all the promises
-            const promiseArray = [mobileResult, desktopResult, lightHouseResult];
+            const promiseArray = [mobileResult, desktopResult, lightHouseResult, accessibilityResult];
             return Promise.all(promiseArray);
 
         }).then(values => {
@@ -83,6 +85,9 @@ module.exports = function(job, res) {
             job.data.report.bestpractice = values[2].reportCategories[3].score;
             job.data.report.seo = values[2].reportCategories[4].score;
             job.data.report.lhAudit = values[2].audits;
+
+            // Add Pa11y data to report
+            job.data.report.pa11y = values[3].issues;
 
             const rankings = {
                 type: "high",
