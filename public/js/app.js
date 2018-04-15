@@ -136,17 +136,19 @@ function errorHandler(data) {
 
 function buildReport(data) {
     $(resultSummary).html(data.site);
-    $('body').addClass('has-report');
+    $('body').removeClass('is-sending').addClass('has-report');
 
     var tr = $('.js-row');
     var audit = $('.js-audit');
+    var pa11ycontainer = $('.js-pally');
     var report = data.report.formatted;
-    var wptlink = data.report.wptlink;
+    // const wptlink = data.report.wptlink;
     var lhAudit = data.report.lhAudit;
+    var pa11y = data.report.pa11y;
     var size = 0;
     var sum = 0;
 
-    $('.js-wpt-link').attr('href', wptlink);
+    // $('.js-wpt-link').attr('href', wptlink);
 
     $.each(lhAudit, function (key, value) {
         var itemClass = "audit__item";
@@ -174,6 +176,15 @@ function buildReport(data) {
 
         var item = "<details class='" + itemClass + "'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
         audit.append(item);
+    });
+
+    $.each(pa11y, function (key, value) {
+        var description = marked(value.context);
+        var helpText = marked(value.message);
+        var selector = marked(value.selector);
+
+        var item = "<details class='audit__item'><summary class='summary'>" + helpText + "</summary>" + description + "<div>" + selector + "</div></details>";
+        pa11ycontainer.append(item);
     });
 
     var graphDataNew = [];
