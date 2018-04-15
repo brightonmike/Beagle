@@ -67,264 +67,37 @@
 
       <div class="report__container">
 
+          <div class="graph">
+              <canvas id="lh-chart" width="400" height="400"></canvas>
+          </div>
+
           <div class="panel">
+
               <div class="panel__header">
                   <h4>Key Scores</h4>
               </div>
-
               <!--<table>-->
                   <!--<tbody>-->
                   <!--<tr class="js-row"><td><h4>PS Mobile Score</h4><span style="color:#c1ba7f;">75</span></td><td><h4>PS Mobile Usability</h4><span style="color:#49c0b7;">100</span></td><td><h4>PS Desktop Score</h4><span style="color:#49c0b7;">91</span></td><td><h4>LH Performance</h4><span style="color:#4abc6a;">85</span></td><td><h4>LH PWA</h4><span style="color:#4abc6a;">81</span></td><td><h4>LH a11y</h4><span style="color:#49c0b7;">100</span></td><td><h4>LH Best Practice</h4><span style="color:#4abc6a;">87</span></td><td><h4>LH SEO</h4><span style="color:#4abc6a;">88</span></td></tr>-->
                   <!--</tbody>-->
               <!--</table>-->
-
               <table>
                   <tbody>
                   <tr class="js-row"></tr>
                   </tbody>
               </table>
+
           </div>
 
-
-
           <div class="panel">
+
               <div class="panel__header">
                   <h4>Lighthouse Audit</h4>
               </div>
-
-              <div class="audit js-audit">
-
-                      <details class="audit__item--fail"><summary class="summary"><p>Does not use HTTPS</p>
-                      </summary><p>All sites should be protected with HTTPS, even ones that don't handle sensitive data. HTTPS prevents intruders from tampering with or passively listening in on the communications between your app and your users, and is a prerequisite for HTTP/2 and many new web platform APIs. <a href="https://developers.google.com/web/tools/lighthouse/audits/https">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>Redirects HTTP traffic to HTTPS</p>
-                      </summary><p>If you've already set up HTTPS, make sure that you redirect all HTTP traffic to HTTPS. <a href="https://developers.google.com/web/tools/lighthouse/audits/http-redirects-to-https">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Registers a service worker</p>
-                      </summary><p>The service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. <a href="https://developers.google.com/web/tools/lighthouse/audits/registered-service-worker">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Responds with a 200 when offline</p>
-                      </summary><p>If you're building a Progressive Web App, consider using a service worker so that your app can work offline. <a href="https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Has a <code>&lt;meta name="viewport"&gt;</code> tag with <code>width</code> or <code>initial-scale</code></p>
-                      </summary><p>Add a viewport meta tag to optimize your app for mobile screens. <a href="https://developers.google.com/web/tools/lighthouse/audits/has-viewport-meta-tag">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Contains some content when JavaScript is not available</p>
-                      </summary><p>Your app should display some content when JavaScript is disabled, even if it's just a warning to the user that JavaScript is required to use the app. <a href="https://developers.google.com/web/tools/lighthouse/audits/no-js">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>First meaningful paint</p>
-                      </summary><p>First meaningful paint measures when the primary content of a page is visible. <a href="https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint">Learn more</a>.</p>
-                      <div class="audit__score">71</div></details><details class="audit__item--pass"><summary class="summary"><p>Page load is fast enough on 3G</p>
-                      </summary><p>A fast page load over a 3G network ensures a good mobile user experience. <a href="https://developers.google.com/web/tools/lighthouse/audits/fast-3g">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>Perceptual Speed Index</p>
-                      </summary><p>Speed Index shows how quickly the contents of a page are visibly populated. <a href="https://developers.google.com/web/tools/lighthouse/audits/speed-index">Learn more</a>.</p>
-                      <div class="audit__score">84</div></details><details class="audit__item--pass"><summary class="summary"><p>Screenshot Thumbnails</p>
-                      </summary><p>This is what the load of your site looked like.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Estimated Input Latency</p>
-                      </summary><p>The score above is an estimate of how long your app takes to respond to user input, in milliseconds. There is a 90% probability that a user encounters this amount of latency, or less. 10% of the time a user can expect additional latency. If your latency is higher than 50 ms, users may perceive your app as laggy. <a href="https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency">Learn more</a>.</p>
-                      <div class="audit__score">100</div></details><details class="audit__item--pass"><summary class="summary"><p>No browser errors logged to the console</p>
-                      </summary><p>Errors logged to the console indicate unresolved problems. They can come from network request failures and other browser concerns.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Keep server response times low (TTFB)</p>
-                      </summary><p>Time To First Byte identifies the time at which your server sends a response. <a href="https://developers.google.com/web/tools/chrome-devtools/network-performance/issues">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>First Interactive (beta)</p>
-                      </summary><p>First Interactive marks the time at which the page is minimally interactive. <a href="https://developers.google.com/web/tools/lighthouse/audits/first-interactive">Learn more</a>.</p>
-                      <div class="audit__score">94</div></details><details class="audit__item--pass"><summary class="summary"><p>Consistently Interactive (beta)</p>
-                      </summary><p>Consistently Interactive marks the time at which the page is fully interactive. <a href="https://developers.google.com/web/tools/lighthouse/audits/consistently-interactive">Learn more</a>.</p>
-                      <div class="audit__score">94</div></details><details class="audit__item--pass"><summary class="summary"><p>User Timing marks and measures</p>
-                      </summary><p>Consider instrumenting your app with the User Timing API to create custom, real-world measurements of key user experiences. <a href="https://developers.google.com/web/tools/lighthouse/audits/user-timing">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>Critical Request Chains</p>
-                      </summary><p>The Critical Request Chains below show you what resources are issued with a high priority. Consider reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load. <a href="https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids page redirects</p>
-                      </summary><p>Redirects introduce additional delays before the page can be loaded. <a href="https://developers.google.com/speed/docs/insights/AvoidRedirects">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>User will not be prompted to Install the Web App</p>
-                      </summary><p>Browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. <a href="https://developers.google.com/web/tools/lighthouse/audits/install-prompt">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>Configured for a custom splash screen</p>
-                      </summary><p>A themed splash screen ensures a high-quality experience when users launch your app from their homescreens. <a href="https://developers.google.com/web/tools/lighthouse/audits/custom-splash-screen">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Address bar matches brand colors</p>
-                      </summary><p>The browser address bar can be themed to match your site. <a href="https://developers.google.com/web/tools/lighthouse/audits/address-bar">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Manifest's <code>short_name</code> won't be truncated when displayed on homescreen</p>
-                      </summary><p>Make your app's <code>short_name</code> fewer than 12 characters to ensure that it's not truncated on homescreens. <a href="https://developers.google.com/web/tools/lighthouse/audits/manifest-short_name-is-not-truncated">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Content is sized correctly for the viewport</p>
-                      </summary><p>If the width of your app's content doesn't match the width of the viewport, your app might not be optimized for mobile screens. <a href="https://developers.google.com/web/tools/lighthouse/audits/content-sized-correctly-for-viewport">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Displays images with correct aspect ratio</p>
-                      </summary><p>Image display dimensions should match natural aspect ratio.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids deprecated APIs</p>
-                      </summary><p>Deprecated APIs will eventually be removed from the browser. <a href="https://www.chromestatus.com/features#deprecated">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Main thread work breakdown</p>
-                      </summary><p>Consider reducing the time spent parsing, compiling and executing JS.You may find delivering smaller JS payloads helps with this.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>JavaScript boot-up time</p>
-                      </summary><p>Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. <a href="https://developers.google.com/web/lighthouse/audits/bootup">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Preload key requests</p>
-                      </summary><p>Consider using <link rel="preload"> to prioritize fetching late-discovered resources sooner <a href="https://developers.google.com/web/updates/2016/03/link-rel-preload">Learn more</a>.</p>
-                      <div class="audit__score">100</div></details><details class="audit__item--fail"><summary class="summary"><p>Avoid invisible text while webfonts are loading</p>
-                      </summary><p>Leverage the font-display CSS feature to ensure text is user-visible while webfonts are loading. <a href="https://developers.google.com/web/updates/2016/02/font-display">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>Network Requests</p>
-                      </summary><p>Lists the network requests that were made during page load.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>Site works cross-browser</p>
-                      </summary><p>To reach the most number of users, sites should work across every major browser. <a href="https://developers.google.com/web/progressive-web-apps/checklist#site-works-cross-browser">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Page transitions don't feel like they block on the network</p>
-                      </summary><p>Transitions should feel snappy as you tap around, even on a slow network, a key to perceived performance. <a href="https://developers.google.com/web/progressive-web-apps/checklist#page-transitions-dont-feel-like-they-block-on-the-network">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Each page has a URL</p>
-                      </summary><p>Ensure individual pages are deep linkable via the URLs and that URLs are unique for the purpose of shareability on social media. <a href="https://developers.google.com/web/progressive-web-apps/checklist#each-page-has-a-url">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>[accesskey]</code> values are not unique</p>
-                      </summary><p>Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. <a href="https://dequeuniversity.com/rules/axe/2.2/accesskeys?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>[aria-*]</code> attributes do not match their roles</p>
-                      </summary><p>Each ARIA <code>role</code> supports a specific subset of <code>aria-*</code> attributes. Mismatching these invalidates the <code>aria-*</code> attributes. <a href="https://dequeuniversity.com/rules/axe/2.2/aria-allowed-attr?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>[role]</code>s do not have all required <code>[aria-*]</code> attributes</p>
-                      </summary><p>Some ARIA roles have required attributes that describe the state of the element to screen readers. <a href="https://dequeuniversity.com/rules/axe/2.2/aria-required-attr?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Elements with <code>[role]</code> that require specific children <code>[role]</code>s, are missing.</p>
-                      </summary><p>Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. <a href="https://dequeuniversity.com/rules/axe/2.2/aria-required-children?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>[role]</code>s are not contained by their required parent element</p>
-                      </summary><p>Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. <a href="https://dequeuniversity.com/rules/axe/2.2/aria-required-parent?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>[role]</code> values are not valid</p>
-                      </summary><p>ARIA roles must have valid values in order to perform their intended accessibility functions. <a href="https://dequeuniversity.com/rules/axe/2.2/aria-roles?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>[aria-*]</code> attributes do not have valid values</p>
-                      </summary><p>Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. <a href="https://dequeuniversity.com/rules/axe/2.2/aria-valid-attr-value?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>[aria-*]</code> attributes are not valid or misspelled</p>
-                      </summary><p>Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. <a href="https://dequeuniversity.com/rules/axe/2.2/aria-valid-attr?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>&lt;audio&gt;</code> elements are missing a <code>&lt;track&gt;</code> element with <code>[kind="captions"]</code>.</p>
-                      </summary><p>Captions make audio elements usable for deaf or hearing-impaired users, providing critical information such as who is talking, what they're saying, and other non-speech information. <a href="https://dequeuniversity.com/rules/axe/2.2/audio-caption?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Buttons do not have an accessible name</p>
-                      </summary><p>When a button doesn't have an accessible name, screen readers announce it as "button", making it unusable for users who rely on screen readers. <a href="https://dequeuniversity.com/rules/axe/2.2/button-name?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>The page contains a heading, skip link, or landmark region</p>
-                      </summary><p>Adding ways to bypass repetitive content lets keyboard users navigate the page more efficiently. <a href="https://dequeuniversity.com/rules/axe/2.2/bypass?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Background and foreground colors have a sufficient contrast ratio</p>
-                      </summary><p>Low-contrast text is difficult or impossible for many users to read. <a href="https://dequeuniversity.com/rules/axe/2.2/color-contrast?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p><code>&lt;dl&gt;</code>'s do not contain only properly-ordered <code>&lt;dt&gt;</code> and <code>&lt;dd&gt;</code> groups, <code>&lt;script&gt;</code> or <code>&lt;template&gt;</code> elements.</p>
-                      </summary><p>When definition lists are not properly marked up, screen readers may produce confusing or inaccurate output. <a href="https://dequeuniversity.com/rules/axe/2.2/definition-list?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Definition list items are not wrapped in <code>&lt;dl&gt;</code> elements</p>
-                      </summary><p>Definition list items (<code>&lt;dt&gt;</code> and <code>&lt;dd&gt;</code>) must be wrapped in a parent <code>&lt;dl&gt;</code> element to ensure that screen readers can properly announce them. <a href="https://dequeuniversity.com/rules/axe/2.2/dlitem?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>Document has a <code>&lt;title&gt;</code> element</p>
-                      </summary><p>The title gives screen reader users an overview of the page, and search engine users rely on it heavily to determine if a page is relevant to their search. <a href="https://developers.google.com/web/tools/lighthouse/audits/title">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p><code>[id]</code> attributes on the page are unique</p>
-                      </summary><p>The value of an id attribute must be unique to prevent other instances from being overlooked by assistive technologies. <a href="https://dequeuniversity.com/rules/axe/2.2/duplicate-id?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p><code>&lt;frame&gt;</code> or <code>&lt;iframe&gt;</code> elements do not have a title</p>
-                      </summary><p>Screen reader users rely on frame titles to describe the contents of frames. <a href="https://dequeuniversity.com/rules/axe/2.2/frame-title?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p><code>&lt;html&gt;</code> element has a <code>[lang]</code> attribute</p>
-                      </summary><p>If a page doesn't specify a lang attribute, a screen reader assumes that the page is in the default language that the user chose when setting up the screen reader. If the page isn't actually in the default language, then the screen reader might not announce the page's text correctly. <a href="https://dequeuniversity.com/rules/axe/2.2/html-lang?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p><code>&lt;html&gt;</code> element has a valid value for its <code>[lang]</code> attribute</p>
-                      </summary><p>Specifying a valid <a href="https://www.w3.org/International/questions/qa-choosing-language-tags#question">BCP 47 language</a> helps screen readers announce text properly. <a href="https://dequeuniversity.com/rules/axe/2.2/valid-lang?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>Image elements do not have <code>[alt]</code> attributes</p>
-                      </summary><p>Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute.<a href="https://dequeuniversity.com/rules/axe/2.2/image-alt?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>&lt;input type="image"&gt;</code> elements do not have <code>[alt]</code> text</p>
-                      </summary><p>When an image is being used as an <code>&lt;input&gt;</code> button, providing alternative text can help screen reader users understand the purpose of the button. <a href="https://dequeuniversity.com/rules/axe/2.2/input-image-alt?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Form elements do not have associated labels</p>
-                      </summary><p>Labels ensure that form controls are announced properly by assistive technologies, like screen readers. <a href="https://dequeuniversity.com/rules/axe/2.2/label?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Presentational <code>&lt;table&gt;</code> elements do not avoid using <code>&lt;th&gt;</code>, <code>&lt;caption&gt;</code> or the <code>[summary]</code> attribute.</p>
-                      </summary><p>A table being used for layout purposes should not include data elements, such as the th or caption elements or the summary attribute, because this can create a confusing experience for screen reader users. <a href="https://dequeuniversity.com/rules/axe/2.2/layout-table?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>Links have a discernible name</p>
-                      </summary><p>Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. <a href="https://dequeuniversity.com/rules/axe/2.2/link-name?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>Lists do not contain only <code>&lt;li&gt;</code> elements and script supporting elements (<code>&lt;script&gt;</code> and <code>&lt;template&gt;</code>).</p>
-                      </summary><p>Screen readers have a specific way of announcing lists. Ensuring proper list structure aids screen reader output. <a href="https://dequeuniversity.com/rules/axe/2.2/list?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>List items (<code>&lt;li&gt;</code>) are not contained within <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> parent elements.</p>
-                      </summary><p>Screen readers require list items (<code>&lt;li&gt;</code>) to be contained within a parent <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> to be announced properly. <a href="https://dequeuniversity.com/rules/axe/2.2/listitem?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>The document uses <code>&lt;meta http-equiv="refresh"&gt;</code></p>
-                      </summary><p>Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. <a href="https://dequeuniversity.com/rules/axe/2.2/meta-refresh?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p><code>[user-scalable="no"]</code> is not used in the <code>&lt;meta name="viewport"&gt;</code> element and the <code>[maximum-scale]</code> attribute is not less than 5.</p>
-                      </summary><p>Disabling zooming is problematic for users with low vision who rely on screen magnification to properly see the contents of a web page. <a href="https://dequeuniversity.com/rules/axe/2.2/meta-viewport?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p><code>&lt;object&gt;</code> elements do not have <code>[alt]</code> text</p>
-                      </summary><p>Screen readers cannot translate non-text content. Adding alt text to <code>&lt;object&gt;</code> elements helps screen readers convey meaning to users. <a href="https://dequeuniversity.com/rules/axe/2.2/object-alt?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Some elements have a <code>[tabindex]</code> value greater than 0</p>
-                      </summary><p>A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. <a href="https://dequeuniversity.com/rules/axe/2.2/tabindex?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Cells in a <code>&lt;table&gt;</code> element that use the <code>[headers]</code> attribute refers to other cells of that same table.</p>
-                      </summary><p>Screen readers have features to make navigating tables easier. Ensuring <code>&lt;td&gt;</code> cells using the <code>[headers]</code> attribute only refer to other cells in the same table may improve the experience for screen reader users. <a href="https://dequeuniversity.com/rules/axe/2.2/td-headers-attr?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>&lt;th&gt;</code> elements and elements with <code>[role="columnheader"/"rowheader"]</code> do not have data cells they describe.</p>
-                      </summary><p>Screen readers have features to make navigating tables easier. Ensuring table headers always refer to some set of cells may improve the experience for screen reader users. <a href="https://dequeuniversity.com/rules/axe/2.2/th-has-data-cells?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>[lang]</code> attributes do not have a valid value</p>
-                      </summary><p>Specifying a valid <a href="https://www.w3.org/International/questions/qa-choosing-language-tags#question">BCP 47 language</a> on elements helps ensure that text is pronounced correctly by a screen reader. <a href="https://dequeuniversity.com/rules/axe/2.2/valid-lang?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>&lt;video&gt;</code> elements do not contain a <code>&lt;track&gt;</code> element with <code>[kind="captions"]</code>.</p>
-                      </summary><p>When a video provides a caption it is easier for deaf and hearing impaired users to access its information. <a href="https://dequeuniversity.com/rules/axe/2.2/video-caption?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p><code>&lt;video&gt;</code> elements do not contain a <code>&lt;track&gt;</code> element with <code>[kind="description"]</code>.</p>
-                      </summary><p>Audio descriptions provide relevant information for videos that dialogue cannot, such as facial expressions and scenes. <a href="https://dequeuniversity.com/rules/axe/2.2/video-description?application=lighthouse">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Custom controls have associated labels</p>
-                      </summary><p>Custom interactive controls have associated labels, provided by aria-label or aria-labelledby. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#try_it_with_a_screen_reader">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Custom controls have ARIA roles</p>
-                      </summary><p>Custom interactive controls have appropriate ARIA roles. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#try_it_with_a_screen_reader">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>User focus is not accidentally trapped in a region</p>
-                      </summary><p>A user can tab into and out of any control or region without accidentally trapping their focus. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#start_with_the_keyboard">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Interactive controls are keyboard focusable</p>
-                      </summary><p>Custom interactive controls are keyboard focusable and display a focus indicator. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#start_with_the_keyboard">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Headings don't skip levels</p>
-                      </summary><p>Headings are used to create an outline for the page and heading levels are not skipped. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#take_advantage_of_headings_and_landmarks">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>The page has a logical tab order</p>
-                      </summary><p>Tabbing through the page follows the visual layout. Users cannot focus elements that are offscreen. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#start_with_the_keyboard">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>The user's focus is directed to new content added to the page</p>
-                      </summary><p>If new content, such as a dialog, is added to the page, the user's focus is directed to it. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#start_with_the_keyboard">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Offscreen content is hidden from assistive technology</p>
-                      </summary><p>Offscreen content is hidden with display: none or aria-hidden=true. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#try_it_with_a_screen_reader">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>HTML5 landmark elements are used to improve navigation</p>
-                      </summary><p>Landmark elements (</p><main>, <nav>, etc.) are used to improve the keyboard navigation of the page for assistive technology. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#take_advantage_of_headings_and_landmarks">Learn more</a>.<p></p><div class="audit__score">Fail</div></nav></main></details><details class="audit__item--fail"><summary class="summary"><p>Visual order on the page follows DOM order</p>
-                      </summary><p>DOM order matches the visual order, improving navigation for assistive technology. <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review#try_it_with_a_screen_reader">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>Uses efficient cache policy on static assets</p>
-                      </summary><p>A long cache lifetime can speed up repeat visits to your page. <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#cache-control">Learn more</a>.</p>
-                      <div class="audit__score">100</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids enormous network payloads</p>
-                      </summary><p>Large network payloads cost users real money and are highly correlated with long load times. <a href="https://developers.google.com/web/tools/lighthouse/audits/network-payloads">Learn more</a>.</p>
-                      <div class="audit__score">100</div></details><details class="audit__item--pass"><summary class="summary"><p>Offscreen images</p>
-                      </summary><p>Consider lazy-loading offscreen and hidden images to improve page load speed and time to interactive. <a href="https://developers.google.com/web/tools/lighthouse/audits/offscreen-images">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Minify CSS</p>
-                      </summary><p>Minifying CSS files can reduce network payload sizes. <a href="https://developers.google.com/speed/docs/insights/MinifyResources">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Minify JavaScript</p>
-                      </summary><p>Minifying JavaScript files can reduce payload sizes and script parse time. <a href="https://developers.google.com/speed/docs/insights/MinifyResources">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Unused CSS rules</p>
-                      </summary><p>Remove unused rules from stylesheets to reduce unnecessary bytes consumed by network activity. <a href="https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery">Learn more</a></p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Serve images in next-gen formats</p>
-                      </summary><p>Image formats like JPEG 2000, JPEG XR, and WebP often provide better compression than PNG or JPEG, which means faster downloads and less data consumption. <a href="https://developers.google.com/web/tools/lighthouse/audits/webp">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Optimize images</p>
-                      </summary><p>Optimized images load faster and consume less cellular data. <a href="https://developers.google.com/web/tools/lighthouse/audits/optimize-images">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Enable text compression</p>
-                      </summary><p>Text-based responses should be served with compression (gzip, deflate or brotli) to minimize total network bytes. <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Properly size images</p>
-                      </summary><p>Serve images that are appropriately-sized to save cellular data and improve load time. <a href="https://developers.google.com/web/tools/lighthouse/audits/oversized-images">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids Application Cache</p>
-                      </summary><p>Application Cache is deprecated. <a href="https://developers.google.com/web/tools/lighthouse/audits/appcache">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids an excessive DOM size</p>
-                      </summary><p>Browser engineers recommend pages contain fewer than ~1,500 DOM nodes. The sweet spot is a tree depth &lt; 32 elements and fewer than 60 children/parent element. A large DOM can increase memory usage, cause longer <a href="https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations">style calculations</a>, and produce costly <a href="https://developers.google.com/speed/articles/reflow">layout reflows</a>. <a href="https://developers.google.com/web/fundamentals/performance/rendering/">Learn more</a>.</p>
-                      <div class="audit__score">100</div></details><details class="audit__item--pass"><summary class="summary"><p>Opens external anchors using <code>rel="noopener"</code></p>
-                      </summary><p>Open new tabs using <code>rel="noopener"</code> to improve performance and prevent security vulnerabilities. <a href="https://developers.google.com/web/tools/lighthouse/audits/noopener">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids requesting the geolocation permission on page load</p>
-                      </summary><p>Users are mistrustful of or confused by sites that request their location without context. Consider tying the request to user gestures instead. <a href="https://developers.google.com/web/tools/lighthouse/audits/geolocation-on-load">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Reduce render-blocking stylesheets</p>
-                      </summary><p>External stylesheets are blocking the first paint of your page. Consider delivering critical CSS via <code>&lt;style&gt;</code> tags and deferring non-critical styles. <a href="https://developers.google.com/web/tools/lighthouse/audits/blocking-resources">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids <code>document.write()</code></p>
-                      </summary><p>For users on slow connections, external scripts dynamically injected via <code>document.write()</code> can delay page load by tens of seconds. <a href="https://developers.google.com/web/tools/lighthouse/audits/document-write">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids Mutation Events in its own scripts</p>
-                      </summary><p>Mutation Events are deprecated and harm performance. Consider using Mutation Observers instead. <a href="https://developers.google.com/web/tools/lighthouse/audits/mutation-events">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids front-end JavaScript libraries with known security vulnerabilities</p>
-                      </summary><p>Some third-party scripts may contain known security vulnerabilities  that are easily identified and exploited by attackers.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids WebSQL DB</p>
-                      </summary><p>Web SQL is deprecated. Consider using IndexedDB instead. <a href="https://developers.google.com/web/tools/lighthouse/audits/web-sql">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Avoids requesting the notification permission on page load</p>
-                      </summary><p>Users are mistrustful of or confused by sites that request to send notifications without context. Consider tying the request to user gestures instead. <a href="https://developers.google.com/web/tools/lighthouse/audits/notifications-on-load">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Allows users to paste into password fields</p>
-                      </summary><p>Preventing password pasting undermines good security policy. <a href="https://www.ncsc.gov.uk/blog-post/let-them-paste-passwords">Learn more</a></p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Reduce render-blocking scripts</p>
-                      </summary><p>Script elements are blocking the first paint of your page. Consider inlining critical scripts and deferring non-critical ones. <a href="https://developers.google.com/web/tools/lighthouse/audits/blocking-resources">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>Does not use HTTP/2 for all of its resources</p>
-                      </summary><p>HTTP/2 offers many benefits over HTTP/1.1, including binary headers, multiplexing, and server push. <a href="https://developers.google.com/web/tools/lighthouse/audits/http2">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>Uses passive listeners to improve scrolling performance</p>
-                      </summary><p>Consider marking your touch and wheel event listeners as <code>passive</code> to improve your page's scroll performance. <a href="https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>Document does not have a meta description</p>
-                      </summary><p>Meta descriptions may be included in search results to concisely summarize page content. <a href="https://developers.google.com/web/tools/lighthouse/audits/description">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--pass"><summary class="summary"><p>Page has successful HTTP status code</p>
-                      </summary><p>Pages with unsuccessful HTTP status codes may not be indexed properly. <a href="https://developers.google.com/web/tools/lighthouse/audits/successful-http-code">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Document uses legible font sizes</p>
-                      </summary><p>Font sizes less than 12px are too small to be legible and require mobile visitors to “pinch to zoom” in order to read. Strive to have &gt;60% of page text ≥12px. <a href="https://developers.google.com/web/fundamentals/design-and-ux/responsive/#optimize_text_for_reading">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Links have descriptive text</p>
-                      </summary><p>Descriptive link text helps search engines understand your content. <a href="https://webmasters.googleblog.com/2008/10/importance-of-link-architecture.html">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Page isn’t blocked from indexing</p>
-                      </summary><p>Search engines are unable to include your pages in search results if they don't have permission to crawl them. <a href="https://developers.google.com/lighthouse/audits/indexing">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Document has a valid <code>hreflang</code></p>
-                      </summary><p>hreflang allows crawlers to discover alternate translations of the page content. <a href="https://support.google.com/webmasters/answer/189077">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Document avoids plugins</p>
-                      </summary><p>Most mobile devices do not support plugins, and many desktop browsers restrict them.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--pass"><summary class="summary"><p>Document has a valid <code>rel=canonical</code></p>
-                      </summary><p>Canonical links suggest which URL to show in search results. <a href="https://developers.google.com/web/tools/lighthouse/audits/canonical">Learn more</a>.</p>
-                      <div class="audit__score">Pass</div></details><details class="audit__item--fail"><summary class="summary"><p>Page is mobile friendly</p>
-                      </summary><p>Take the <a href="https://search.google.com/test/mobile-friendly">Mobile-Friendly Test</a> to check for audits not covered by Lighthouse, like sizing tap targets appropriately. <a href="https://developers.google.com/search/mobile-sites/">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details><details class="audit__item--fail"><summary class="summary"><p>Structured data is valid</p>
-                      </summary><p>Run the <a href="https://search.google.com/structured-data/testing-tool/">Structured Data Testing Tool</a> and the <a href="http://linter.structured-data.org/">Structured Data Linter</a> to validate structured data. <a href="https://developers.google.com/search/docs/guides/mark-up-content">Learn more</a>.</p>
-                      <div class="audit__score">Fail</div></details>
-              </div>
-
-              <!--<div class="audit js-audit">-->
-              <!---->
-              <!--</div>-->
+              <div class="audit js-audit"></div>
 
           </div>
+
       </div>
 
       <footer class="report__footer">
@@ -332,16 +105,17 @@
       </footer>
 
       <dialog id="dialog" class="dialog">
+
           <section>
               <h4>Error <span class="js-data-code"></span></h4>
               <div class="js-errors dialog__content">
 
               </div>
           </section>
-
           <menu>
               <button id="cancel" type="reset" class="dialog__button">Close</button>
           </menu>
+          
       </dialog>
   </div>
 
@@ -354,148 +128,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-    const socket = io();
-    const resultSummary = $('.js-summary');
-    const form = $('.js-get-report');
-    const errorDialog = document.getElementById('dialog');
-    const errorClose = document.getElementById('cancel');
-
-    socket.on('connect', function() {
-        $('.js-status').html('Beagle is available.').addClass('status--ready');
-    });
-
-    form.on("submit", function(e){
-        let siteUrl = $("#url").val();
-
-        if(!siteUrl) {
-            $('.error').css('display', 'block');
-        } else {
-            $('.error').css('display', 'none');
-            $('body').addClass('is-sending');
-            socket.emit ('send site', { url: siteUrl });
-        }
-        e.preventDefault();
-    });
-
-    socket.on('beagle-result', function (data) {
-        console.log(data);
-
-        if(data.errors) {
-            errorHandler(data);
-        } else {
-            buildReport(data);
-        }
-    });
-
-    function errorHandler(data){
-        $('js-data-code').html(data.code);
-        const errorContainer = $('.js-errors');
-
-        $.each( data.errors, function( key, value ) {
-            let error = document.createElement("p");
-            error.innerHTML = "<strong>" + value.domain + ":</strong><span>" + value.message + "</span>";
-            errorContainer.append(error);
-        });
-
-        $('body').addClass('has-error');
-        errorDialog.showModal();
-
-        errorClose.addEventListener('click', function() {
-            errorDialog.close();
-        });
-    }
-
-    function buildReport(data){
-        $(resultSummary).html(data.site);
-        $('body').addClass('has-report');
-
-        const tr = $('.js-row');
-        const audit = $('.js-audit');
-        const report = data.report.formatted;
-        const wptlink = data.report.wptlink;
-        const lhAudit = data.report.lhAudit;
-        let size = 0;
-        let sum = 0;
-
-        $('.js-wpt-link').attr('href', wptlink);
-
-        $.each( lhAudit, function( key, value ) {
-            let itemClass = "audit__item";
-            let score = '';
-
-            let description = marked(value.description);
-            let helpText = marked(value.helpText);
-
-            if(value.scoringMode === "numeric") {
-                score = value.score;
-                if(value.score < 85) {
-                    itemClass = "audit__item--fail";
-                } else {
-                    itemClass = "audit__item--pass";
-                }
-            } else {
-                if(value.score === false) {
-                    score = "Fail";
-                    itemClass = "audit__item--fail";
-                } else {
-                    score = "Pass";
-                    itemClass = "audit__item--pass";
-                }
-            }
-
-            let item = "<details class='" + itemClass + "'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
-            audit.append(item);
-        });
-
-        $.each( report, function( key, value ) {
-            let cell = document.createElement("td");
-            let cellValue = Math.round(parseInt(value.result));
-            let pastValue = Math.round(parseInt(value.pastResult));
-            let cellStyle = null;
-
-            // to be used some how
-            let difference = Math.abs(cellValue - pastValue);
-
-            size++;
-
-            const veryGood = getComputedStyle(document.body).getPropertyValue("--verygood");
-            const good = getComputedStyle(document.body).getPropertyValue("--good");
-            const average = getComputedStyle(document.body).getPropertyValue("--average");
-            const poor = getComputedStyle(document.body).getPropertyValue("--poor");
-
-            if(value.ranking.type === "high") {
-
-                sum += cellValue;
-                console.log(sum);
-
-                if(cellValue < value.ranking.poor) {
-                    cellStyle = "color:" + poor + ";";
-                } else if (cellValue >= value.ranking.poor && cellValue < value.ranking.average) {
-                    cellStyle = "color:" + average + ";";
-                } else if (cellValue >= value.ranking.average && cellValue < value.ranking.good) {
-                    cellStyle = "color:" + good + ";";
-                } else if (cellValue >= value.ranking.good && cellValue <= value.ranking.perfect) {
-                    cellStyle = "color:" + veryGood + ";";
-                }
-
-            } else {
-
-                if(cellValue <= value.ranking.perfect) {
-                    cellStyle = "color:" + veryGood + ";";
-                } else if (cellValue > value.ranking.perfect && cellValue <= value.ranking.good) {
-                    cellStyle = "color:" + good + ";";
-                } else if (cellValue > value.ranking.good && cellValue <= value.ranking.average) {
-                    cellStyle = "color:" + average + ";";
-                } else if (cellValue > value.ranking.average) {
-                    cellStyle = "color:" + poor + ";";
-                }
-
-            }
-
-            cell.innerHTML = "<h4>" + key + "</h4><span style='" + cellStyle + "'>" + cellValue + "</span><span>" + pastValue + "</span>";
-            tr.append(cell);
-        });
-    }
-</script>
+<script src="/js/chart.js"></script>
+<script src="/js/app.js"></script>
 </html>
