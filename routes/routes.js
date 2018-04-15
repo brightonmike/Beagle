@@ -43,6 +43,7 @@ module.exports = function(app, io) {
             }).removeOnComplete(true).save(function (err) {
                 if (!err) consola.info('Job ID queued: ' + job.id + ' Socket:' + socket.id);
             }).on('complete', function(result) {
+                console.log(result);
                 socket.emit('beagle-result', result);
             });
         });

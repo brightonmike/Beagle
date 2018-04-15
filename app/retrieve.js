@@ -29,7 +29,6 @@ module.exports = function (auth, job) {
                     let url = job.data.report.url;
                     let reversedArray = response.values.reverse();
                     let result = reversedArray.find(data => data[3] === url);
-
                     resolve(result);
                 }
             });
@@ -39,9 +38,6 @@ module.exports = function (auth, job) {
     }
 
     return getPastData(auth, job).then(result => {
-        consola.info('Past data:')
-        console.log(result);
-
         return result;
     }).catch(err => {
         return err;

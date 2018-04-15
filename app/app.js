@@ -19,18 +19,18 @@ module.exports = function(job, res) {
          */
         let auth = authentication.authenticate();
 
-        return auth.then(auth => {
+        return auth.then(data => {
 
             consola.info('Authenticated');
 
             /**
              * Get the previous result for this site, if exists
              */
-            return retrieveData(auth, job);
+            return retrieveData(data, job);
 
         }).then(data => {
 
-            consola.info('Past data.');
+            consola.info('Past data retrieved');
 
             if(data) {
                 job.data.report.past = {};
@@ -175,16 +175,19 @@ module.exports = function(job, res) {
             }
 
             // Store the data
-            storeData(auth, job);
-            return job.data;
+
+            return auth.then(data => {
+                return storeData(data, job);
+            }).then(data => {
+                consola.info('New data added to Sheet');
+                return data.job;
+            });
 
         }).catch(err => {
-
             consola.error('Fail');
             consola.error(err);
             return err;
-
-        });
+        })
 
 
         // Add WPT data to sheet report

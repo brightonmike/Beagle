@@ -10,7 +10,7 @@ module.exports = function (auth, job) {
 
     const spreadsheetId = process.env.SPREADSHEET_ID;
 
-    console.log('Adding?');
+    consola.info("Storing data..");
 
     function storeData(auth, job) {
 
@@ -37,16 +37,17 @@ module.exports = function (auth, job) {
                         job.data.report.seo
                     ] ]
                 }
-            }, function (err, result) {
+            }, (err, response) => {
                 if (err) {
-
-                    consola.error("Past data not retrieved");
+                    console.log('The API returned an error: ' + err);
                     reject(err);
-
                 } else {
-
-                    consola.info('Data added to sheet.');
-                    resolve(result);
+                    console.log('Data added to sheet.');
+                    let data = {
+                        response: response,
+                        job: job.data
+                    };
+                    resolve(data);
                 }
             });
 
@@ -55,8 +56,10 @@ module.exports = function (auth, job) {
     }
 
     return storeData(auth, job).then(result => {
+        consola.info('Data added to sheet');
         return result;
     }).catch(err => {
+        consola.error(err);
         return err;
     });
 
