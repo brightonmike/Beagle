@@ -72,11 +72,7 @@
               <div class="panel__header">
                   <h4>Key Scores</h4>
               </div>
-              <!--<table>-->
-                  <!--<tbody>-->
-                  <!--<tr class="js-row"><td><h4>PS Mobile Score</h4><span style="color:#c1ba7f;">75</span></td><td><h4>PS Mobile Usability</h4><span style="color:#49c0b7;">100</span></td><td><h4>PS Desktop Score</h4><span style="color:#49c0b7;">91</span></td><td><h4>LH Performance</h4><span style="color:#4abc6a;">85</span></td><td><h4>LH PWA</h4><span style="color:#4abc6a;">81</span></td><td><h4>LH a11y</h4><span style="color:#49c0b7;">100</span></td><td><h4>LH Best Practice</h4><span style="color:#4abc6a;">87</span></td><td><h4>LH SEO</h4><span style="color:#4abc6a;">88</span></td></tr>-->
-                  <!--</tbody>-->
-              <!--</table>-->
+
               <table>
                   <tbody>
                   <tr class="js-row"></tr>
@@ -89,6 +85,10 @@
 
               <div class="panel__header">
                   <h4>Lighthouse Audit</h4>
+                  <div class="filter">
+                      <button class="filter__button filter__button--pass js-pass">Pass</button>
+                      <button class="filter__button filter__button--fail js-fail">Fail</button>
+                  </div>
               </div>
               <div class="audit js-audit"></div>
 
@@ -101,6 +101,18 @@
               </div>
               <div class="audit js-pally"></div>
 
+          </div>
+
+
+          <div class="panel">
+              <div class="graph">
+
+                  <div class="panel__header">
+                      <h4>Score scale</h4>
+                  </div>
+
+                  <canvas id="polar-chart" width="400" height="400"></canvas>
+              </div>
           </div>
 
       </div>
