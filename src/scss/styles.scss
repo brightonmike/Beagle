@@ -362,6 +362,7 @@ form {
 }
 
 .panel__header {
+  position: relative;
   margin: 0 0 10px;
   padding: 20px;
   text-align: center;
@@ -373,6 +374,54 @@ form {
     margin: 0;
   }
 }
+
+.filter {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.filter__button {
+  background: none;
+  border: 1px solid #ffffff38;
+  border-radius: 11px;
+  margin-left: 12px;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 6px 12px;
+  color: #ffffff7d;
+
+  &:hover {
+    background: linear-gradient(to right, #b41cfe 0%, #fe8ba7 100%);
+    color: var(--white-color)
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.show-fail {
+  .audit__item--pass {
+    display: none;
+  }
+  .filter__button--fail {
+    background: linear-gradient(to right, #b41cfe 0%, #fe8ba7 100%);
+  }
+}
+
+.show-pass {
+  .audit__item--fail {
+    display: none;
+  }
+  .filter__button--pass {
+    background: linear-gradient(to right, #b41cfe 0%, #fe8ba7 100%);
+  }
+}
+
 
 .footer {
   min-height: 10vh;
@@ -476,6 +525,10 @@ form {
 
 [class^="audit__item"] {
   margin: 0 0 15px;
+
+  .summary + p {
+    color: var(--white-color);
+  }
 
   &:hover .summary p {
     color: var(--white-color);

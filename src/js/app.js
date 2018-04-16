@@ -32,6 +32,30 @@ socket.on('beagle-result', function (data) {
     }
 });
 
+$('.js-pass').click(function() {
+
+    let container = $(this).parent().parent().parent();
+
+    if(container.hasClass('show-pass')) {
+        container.removeClass('show-pass');
+    } else {
+        container.removeClass('show-fail').addClass('show-pass');
+    }
+
+});
+
+$('.js-fail').click(function() {
+
+    let container = $(this).parent().parent().parent();
+
+    if(container.hasClass('show-fail')) {
+        container.removeClass('show-fail');
+    } else {
+        container.removeClass('show-pass').addClass('show-fail');
+    }
+
+});
+
 function errorHandler(data){
     $('js-data-code').html(data.code);
     const errorContainer = $('.js-errors');
@@ -99,7 +123,7 @@ function buildReport(data){
         let helpText = marked(value.message);
         let selector = marked(value.selector);
 
-        let item = "<details class='audit__item'><summary class='summary'>" + helpText + "</summary>" + description + "<div>" + selector + "</div></details>";
+        let item = "<details class='audit__item'><summary class='summary'>" + helpText + "</summary>" + description + "<div><pre><code>" + selector + "</code></pre></div></details>";
         pa11ycontainer.append(item);
     });
 
@@ -159,6 +183,28 @@ function buildReport(data){
     });
 
     let ctx = document.getElementById("lh-chart").getContext('2d');
+    let polar = document.getElementById("polar-chart").getContext('2d');
+
+    let graphOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            display: true,
+            labels: {
+                fontColor: 'rgba(255, 255, 255, 0.4)'
+            }
+        },
+        scales: {
+            yAxes: [{
+                display : false
+            }]
+        },
+        title: {
+            display: true,
+            text: 'Your Scores',
+            fontColor: 'rgba(255, 255, 255, 0.8)'
+        }
+    };
 
     let myLineChart = new Chart(ctx, {
         type: 'line',
@@ -176,24 +222,28 @@ function buildReport(data){
                 fill: false
             }]
         },
+        options: graphOptions
+    });
+
+    let polarChart = new Chart(polar, {
+        data: {
+            labels: ["Mobile Score", "Mobile Usability", "Desktop Score", "LH Perf", "LH PWA", "LH A11y", "LH Best Practice", "LH SEO"],
+            datasets: [{
+                data: graphDataNew,
+                label: "Scores",
+                borderColor: ["#1f253a", "#1b1e29", "#353c58", "#1a1e3a", "#3f4c7f", "#3c4258", "#2b3354", "#242e67"],
+                backgroundColor: ["#1f253a", "#1b1e29", "#353c58", "#1a1e3a", "#3f4c7f", "#3c4258", "#2b3354", "#242e67"]
+            }]
+        },
+        type: 'polarArea',
         options: {
             responsive: true,
             maintainAspectRatio: false,
             legend: {
-                display: true,
-                labels: {
-                    fontColor: 'rgba(255, 255, 255, 0.4)'
-                }
+                display: false
             },
-            scales: {
-                yAxes: [{
-                    display : false
-                }]
-            },
-            title: {
-                display: true,
-                text: 'Your Scores',
-                fontColor: 'rgba(255, 255, 255, 0.8)'
+            ticks: {
+                display: false
             }
         }
     });
