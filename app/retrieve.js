@@ -10,6 +10,12 @@ module.exports = function (auth, job) {
 
     consola.info("Getting past data..");
 
+    /**
+     *
+     * @param auth
+     * @param job
+     * @returns {Promise<any>}
+     */
     function getPastData(auth, job) {
 
         return new Promise(function (resolve, reject) {
@@ -26,9 +32,19 @@ module.exports = function (auth, job) {
 
                 } else {
 
-                    let url = job.data.report.url;
-                    let reversedArray = response.values.reverse();
-                    let result = reversedArray.find(data => data[3] === url);
+                    let filteredArray = response.values.filter(function( obj ) {
+                        return obj[3] === job.data.report.url;
+                    }).map(function( obj ) {
+                        return obj;
+                    });
+
+                    /**
+                     * Let's only store the five previous results with our new result
+                     * So the data doesn't get too hefty. We shouldn't need to compare
+                     * further back than this.
+                     */
+                    let result = filteredArray.slice(-5);
+
                     resolve(result);
                 }
             });

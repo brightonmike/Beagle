@@ -4,12 +4,12 @@ module.exports = function (job) {
 
     const webhook = process.env.SLACK_WEBHOOK;
 
-    let message = `Beagle ran on: ${Math.round(parseInt(job.data.report.url))}. 
-         LH Perf: ${Math.round(parseInt(job.data.report.perf))}, 
-         LH PWA: ${Math.round(parseInt(job.data.report.pwa))}, 
-         LH a11y: ${Math.round(parseInt(job.data.report.accessibility))}, 
-         LH Best Practice: ${Math.round(parseInt(job.data.report.bestpractice))}, 
-         LH SEO: ${Math.round(parseInt(job.data.report.seo))}`;
+    let message = `Beagle ran on: ${job.url}. 
+         LH Perf: ${Math.round(parseInt(job.mobilescore))}, 
+         LH PWA: ${Math.round(parseInt(job.mobileusability))}, 
+         LH a11y: ${Math.round(parseInt(job.desktopscore))}, 
+         LH Best Practice: ${Math.round(parseInt(job.bestpractice))}, 
+         LH SEO: ${Math.round(parseInt(job.seo))}`;
 
     const slack = new Slack();
     slack.setWebhook(webhook);

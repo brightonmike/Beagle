@@ -6,11 +6,11 @@ const google = require('googleapis');
 const sheets = google.sheets('v4');
 const consola = require('consola');
 
-module.exports = function (auth, job) {
+module.exports = function (auth, job, allJobs) {
 
     const spreadsheetId = process.env.SPREADSHEET_ID;
 
-    consola.info("Storing data..");
+    consola.info("Storing data...");
 
     function storeData(auth, job) {
 
@@ -23,18 +23,18 @@ module.exports = function (auth, job) {
                 valueInputOption: "USER_ENTERED",
                 resource: {
                     values: [ [
+                        job.jobId,
                         job.id,
-                        job.data.id,
-                        job.data.time,
-                        job.data.report.url,
-                        job.data.report.mobilescore,
-                        job.data.report.mobileusability,
-                        job.data.report.desktopscore,
-                        job.data.report.perf,
-                        job.data.report.pwa,
-                        job.data.report.accessibility,
-                        job.data.report.bestpractice,
-                        job.data.report.seo
+                        job.reportDate,
+                        job.url,
+                        job.mobilescore,
+                        job.mobileusability,
+                        job.desktopscore,
+                        job.perf,
+                        job.pwa,
+                        job.accessibility,
+                        job.bestpractice,
+                        job.seo
                     ] ]
                 }
             }, (err, response) => {
@@ -45,7 +45,7 @@ module.exports = function (auth, job) {
                     console.log('Data added to sheet.');
                     let data = {
                         response: response,
-                        job: job.data
+                        job: allJobs
                     };
                     resolve(data);
                 }

@@ -160,17 +160,64 @@ function buildReport(data) {
     $(resultSummary).html(data.site);
     $('body').removeClass('is-sending').addClass('has-report');
 
+    var rankings = {
+        type: "high",
+        poor: 70,
+        average: 80,
+        good: 90,
+        perfect: 100
+    };
+
+    var report = {
+        "PS Mobile Score": {
+            result: data.report.mobilescore,
+            pastResult: data.report.last[4],
+            ranking: rankings
+        },
+        "PS Mobile Usability": {
+            result: data.report.mobileusability,
+            pastResult: data.report.last[5],
+            ranking: rankings
+        },
+        "PS Desktop Score": {
+            result: data.report.desktopscore,
+            pastResult: data.report.last[6],
+            ranking: rankings
+        },
+        "LH Performance": {
+            result: data.report.perf,
+            pastResult: data.report.last[7],
+            ranking: rankings
+        },
+        "LH PWA": {
+            result: data.report.pwa,
+            pastResult: data.report.last[8],
+            ranking: rankings
+        },
+        "LH a11y": {
+            result: data.report.accessibility,
+            pastResult: data.report.last[9],
+            ranking: rankings
+        },
+        "LH Best Practice": {
+            result: data.report.bestpractice,
+            pastResult: data.report.last[10],
+            ranking: rankings
+        },
+        "LH SEO": {
+            result: data.report.seo,
+            pastResult: data.report.last[11],
+            ranking: rankings
+        }
+    };
+
     var tr = $('.js-row');
     var audit = $('.js-audit');
     var pa11ycontainer = $('.js-pally');
-    var report = data.report.formatted;
-    // const wptlink = data.report.wptlink;
     var lhAudit = data.report.lhAudit;
     var pa11y = data.report.pa11y;
     var size = 0;
     var sum = 0;
-
-    // $('.js-wpt-link').attr('href', wptlink);
 
     $.each(lhAudit, function (key, value) {
         var itemClass = "audit__item";
@@ -220,9 +267,6 @@ function buildReport(data) {
 
         graphDataNew.push(cellValue);
         graphDataOld.push(pastValue);
-
-        // to be used some how
-        var difference = Math.abs(cellValue - pastValue);
 
         size++;
 
