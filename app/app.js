@@ -7,6 +7,9 @@ const PSDesktop = require('./tests/pagespeed-desktop');
 const LightHouse = require('./tests/lighthouse');
 const Pally = require('./tests/pally');
 const WebPageTest = require('./tests/wpt');
+
+const slack = require('./slack');
+
 const consola = require('consola');
 
 module.exports = function(job, res) {
@@ -179,7 +182,8 @@ module.exports = function(job, res) {
                 };
             }
 
-            // Store the data
+            // Ping Slack
+            slack(job);
 
             return auth.then(data => {
                 return storeData(data, job);
