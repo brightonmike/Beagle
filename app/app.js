@@ -7,9 +7,47 @@ const PSDesktop = require('./tests/pagespeed-desktop');
 const LightHouse = require('./tests/lighthouse');
 const Pally = require('./tests/pally');
 const WebPageTest = require('./tests/wpt');
+
+const slack = require('./slack');
+
 const consola = require('consola');
 
 module.exports = function(job, res) {
+
+    /**
+     *
+     * @param jobId
+     * @param id
+     * @param reportDate
+     * @param url
+     * @param mobilescore
+     * @param mobileusability
+     * @param desktopscore
+     * @param perf
+     * @param pwa
+     * @param accessibility
+     * @param bestpractice
+     * @param seo
+     * @param lhAudit
+     * @constructor
+     */
+
+    function SiteReport(jobId, id, reportDate, url, mobilescore, mobileusability, desktopscore, perf, pwa, accessibility, bestpractice, seo, lhAudit, pa11y){
+        this.jobId = jobId;
+        this.id = id;
+        this.reportDate = reportDate;
+        this.url = url;
+        this.mobilescore = mobilescore;
+        this.mobileusability = mobileusability;
+        this.desktopscore = desktopscore;
+        this.perf = perf;
+        this.pwa = pwa;
+        this.accessibility = accessibility;
+        this.bestpractice = bestpractice;
+        this.seo = seo;
+        this.lhAudit = lhAudit;
+        this.pa11y = pa11y;
+    }
 
     function runBeagle(job, res){
         job.data.report.url = job.data.site;
@@ -33,18 +71,26 @@ module.exports = function(job, res) {
 
             consola.info('Past data retrieved');
 
-            if(data) {
-                job.data.report.past = {};
+            /**
+             * This array will contain the previous results (up to 5)
+             * And the new result - with Lighthouse and Pa11y Audits
+             * Audits are not included with past data (too big)
+             * @type {Array}
+             */
 
-                // add past scores
-                job.data.report.past.mobilescore = data[4];
-                job.data.report.past.mobileusability = data[5];
-                job.data.report.past.desktopscore = data[6];
-                job.data.report.past.perf = data[7];
-                job.data.report.past.pwa = data[8];
-                job.data.report.past.accessibility = data[9];
-                job.data.report.past.bestpractice = data[10];
-                job.data.report.past.seo = data[11];
+            job.data.siteReports = [];
+
+            if(data) {
+
+                /**
+                 * Add the five previous results to siteReports
+                 */
+                let thisResult = null;
+                for (let i = 0; i < data.length; i++) {
+                    thisResult = new SiteReport(data[i][0], data[i][1], data[i][2], data[i][3], data[i][4], data[i][5], data[i][6], data[i][7], data[i][8], data[i][9], data[i][10], data[i][11]);
+                    job.data.siteReports.push(thisResult);
+                }
+
             }
 
             /**
@@ -62,10 +108,11 @@ module.exports = function(job, res) {
             let desktopResult = PSDesktop(res, job.data.report.url);
             let lightHouseResult = LightHouse(res, job.data.report.url, lhConfig);
             let accessibilityResult = Pally(job.data.report.url);
-            // WPT is not working currently *shrug*
-            //let webPageTestResult = WebPageTest(res, job.data.report.url);
 
-            // Now return all the promises
+            /**
+             * Return the promises
+             * @type {*[]}
+             */
             const promiseArray = [mobileResult, desktopResult, lightHouseResult, accessibilityResult];
             return Promise.all(promiseArray);
 
@@ -73,119 +120,44 @@ module.exports = function(job, res) {
 
             consola.info('Tests ran, adding to report.');
 
-            // Add PS data to sheet report
-            job.data.report.mobilescore = values[0].ruleGroups.SPEED.score;
-            job.data.report.mobileusability = values[0].ruleGroups.USABILITY.score;
-            job.data.report.desktopscore = values[1].ruleGroups.SPEED.score;
+            /**
+             * Create new SiteReport for new data
+             * @type {SiteReport}
+             */
+            let thisResult = new SiteReport(
+                job.id,
+                job.data.id,
+                job.data.time,
+                job.data.report.url,
+                values[0].ruleGroups.SPEED.score,
+                values[0].ruleGroups.USABILITY.score,
+                values[1].ruleGroups.SPEED.score,
+                values[2].reportCategories[0].score,
+                values[2].reportCategories[1].score,
+                values[2].reportCategories[2].score,
+                values[2].reportCategories[3].score,
+                values[2].reportCategories[4].score,
+                values[2].audits,
+                values[3].issues
+            );
 
-            // Add LH data to sheet report
-            job.data.report.perf = values[2].reportCategories[0].score;
-            job.data.report.pwa = values[2].reportCategories[1].score;
-            job.data.report.accessibility = values[2].reportCategories[2].score;
-            job.data.report.bestpractice = values[2].reportCategories[3].score;
-            job.data.report.seo = values[2].reportCategories[4].score;
-            job.data.report.lhAudit = values[2].audits;
+            // console.log(thisResult);
 
-            // Add Pa11y data to report
-            job.data.report.pa11y = values[3].issues;
+            /**
+             * Add new report to SiteReports array
+             */
+            job.data.siteReports.push(thisResult);
 
-            const rankings = {
-                type: "high",
-                poor: 70,
-                average: 80,
-                good: 90,
-                perfect: 100
-            };
-
-            // Formatted data for the Browser
-            if(job.data.report.past) {
-                job.data.report.formatted = {
-                    "PS Mobile Score": {
-                        result: job.data.report.mobilescore,
-                        pastResult: job.data.report.past.mobilescore,
-                        ranking: rankings
-                    },
-                    "PS Mobile Usability": {
-                        result: job.data.report.mobileusability,
-                        pastResult: job.data.report.past.mobileusability,
-                        ranking: rankings
-                    },
-                    "PS Desktop Score": {
-                        result: job.data.report.desktopscore,
-                        pastResult: job.data.report.past.desktopscore,
-                        ranking: rankings
-                    },
-                    "LH Performance": {
-                        result: job.data.report.perf,
-                        pastResult: job.data.report.past.perf,
-                        ranking: rankings
-                    },
-                    "LH PWA": {
-                        result: job.data.report.pwa,
-                        pastResult: job.data.report.past.pwa,
-                        ranking: rankings
-                    },
-                    "LH a11y": {
-                        result: job.data.report.accessibility,
-                        pastResult: job.data.report.past.accessibility,
-                        ranking: rankings
-                    },
-                    "LH Best Practice": {
-                        result: job.data.report.bestpractice,
-                        pastResult: job.data.report.past.bestpractice,
-                        ranking: rankings
-                    },
-                    "LH SEO": {
-                        result: job.data.report.seo,
-                        pastResult: job.data.report.past.seo,
-                        ranking: rankings
-                    },
-                };
-
-            } else {
-                job.data.report.formatted = {
-                    "PS Mobile Score": {
-                        result: job.data.report.mobilescore,
-                        ranking: rankings
-                    },
-                    "PS Mobile Usability": {
-                        result: job.data.report.mobileusability,
-                        ranking: rankings
-                    },
-                    "PS Desktop Score": {
-                        result: job.data.report.desktopscore,
-                        ranking: rankings
-                    },
-                    "LH Performance": {
-                        result: job.data.report.perf,
-                        ranking: rankings
-                    },
-                    "LH PWA": {
-                        result: job.data.report.pwa,
-                        ranking: rankings
-                    },
-                    "LH a11y": {
-                        result: job.data.report.accessibility,
-                        ranking: rankings
-                    },
-                    "LH Best Practice": {
-                        result: job.data.report.bestpractice,
-                        ranking: rankings
-                    },
-                    "LH SEO": {
-                        result: job.data.report.seo,
-                        ranking: rankings
-                    },
-                };
-            }
-
-            // Store the data
+            /**
+             * Ping Slack the result
+             */
+            slack(thisResult);
 
             return auth.then(data => {
-                return storeData(data, job);
+                return storeData(data, thisResult, job.data.siteReports);
             }).then(data => {
                 consola.info('New data added to Sheet');
-                return data.job;
+                return data;
             });
 
         }).catch(err => {
@@ -193,89 +165,6 @@ module.exports = function(job, res) {
             consola.error(err);
             return err;
         })
-
-
-        // Add WPT data to sheet report
-
-        //     consola.info(values[3]);
-        //
-        // job.data.report.loadTime = values[3].average.firstView.loadTime;
-        // job.data.report.TTFB = values[3].average.firstView.TTFB;
-        // job.data.report.fullyLoaded = values[3].average.firstView.fullyLoaded;
-        // job.data.report.firstPaint = values[3].average.firstView.firstPaint;
-        // job.data.report.visualComplete = values[3].average.firstView.visualComplete;
-        // job.data.report.SpeedIndex = values[3].average.firstView.SpeedIndex;
-        // job.data.report.wptlink = values[3].summary;
-
-        // const rankings = {
-        //     type: "high",
-        //     poor: 70,
-        //     average: 80,
-        //     good: 90,
-        //     perfect: 100
-        // };
-
-        // Quick Report for front end
-            // "WPT Load" : {
-            //     result: job.data.report.loadTime,
-            //     ranking: {
-            //         type: "low",
-            //         poor: 14000,
-            //         average: 9000,
-            //         good: 6000,
-            //         perfect: 3000
-            //     }
-            // },
-            // "WPT TTFB" : {
-            //     result: job.data.report.TTFB,
-            //     ranking: {
-            //         type: "low",
-            //         poor: 2000,
-            //         average: 1500,
-            //         good: 1000,
-            //         perfect: 500
-            //     }
-            // },
-            // "WPT Fully Loaded" : {
-            //     result: job.data.report.fullyLoaded,
-            //     ranking: {
-            //         type: "low",
-            //         poor: 9000,
-            //         average: 6000,
-            //         good: 4000,
-            //         perfect: 2000
-            //     }
-            // },
-            // "WPT First Paint" : {
-            //     result: job.data.report.firstPaint,
-            //     ranking: {
-            //         type: "low",
-            //         poor: 4000,
-            //         average: 3000,
-            //         good: 2000,
-            //         perfect: 1000
-            //     }
-            // },
-            // "WPT Vis-Complete" : {
-            //     result: job.data.report.visualComplete,
-            //     ranking: {
-            //         type: "low",
-            //         poor: 9000,
-            //         average: 6000,
-            //         good: 4000,
-            //         perfect: 2000
-            //     }
-            // },
-            // "WPT SpeedIndex" : {
-            //     result: job.data.report.SpeedIndex,
-            //     ranking: {
-            //         type: "low",
-            //         poor: 9000,
-            //         average: 6000,
-            //         good: 4000,
-            //         perfect: 2000
-            //     }
-            // },
 
     }
 

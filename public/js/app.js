@@ -160,17 +160,70 @@ function buildReport(data) {
     $(resultSummary).html(data.site);
     $('body').removeClass('is-sending').addClass('has-report');
 
+    var rankings = {
+        type: "high",
+        poor: 70,
+        average: 80,
+        good: 90,
+        perfect: 100
+    };
+
+    var newJob = data.job.pop();
+    var previousJob = data.job.pop();
+
+    console.log(newJob);
+    console.log(previousJob);
+
+    var report = {
+        "PS Mobile Score": {
+            result: newJob.mobilescore,
+            pastResult: previousJob.mobilescore,
+            ranking: rankings
+        },
+        "PS Mobile Usability": {
+            result: newJob.mobileusability,
+            pastResult: previousJob.mobileusability,
+            ranking: rankings
+        },
+        "PS Desktop Score": {
+            result: newJob.desktopscore,
+            pastResult: previousJob.desktopscore,
+            ranking: rankings
+        },
+        "LH Performance": {
+            result: newJob.perf,
+            pastResult: previousJob.perf,
+            ranking: rankings
+        },
+        "LH PWA": {
+            result: newJob.pwa,
+            pastResult: previousJob.pwa,
+            ranking: rankings
+        },
+        "LH a11y": {
+            result: newJob.accessibility,
+            pastResult: previousJob.accessibility,
+            ranking: rankings
+        },
+        "LH Best Practice": {
+            result: newJob.bestpractice,
+            pastResult: previousJob.bestpractice,
+            ranking: rankings
+        },
+        "LH SEO": {
+            result: newJob.seo,
+            pastResult: previousJob.seo,
+            ranking: rankings
+        }
+    };
+
     var tr = $('.js-row');
     var audit = $('.js-audit');
     var pa11ycontainer = $('.js-pally');
-    var report = data.report.formatted;
-    // const wptlink = data.report.wptlink;
-    var lhAudit = data.report.lhAudit;
-    var pa11y = data.report.pa11y;
+    var lhAudit = newJob.lhAudit;
+    var pa11y = newJob.pa11y;
     var size = 0;
     var sum = 0;
-
-    // $('.js-wpt-link').attr('href', wptlink);
 
     $.each(lhAudit, function (key, value) {
         var itemClass = "audit__item";
@@ -220,9 +273,6 @@ function buildReport(data) {
 
         graphDataNew.push(cellValue);
         graphDataOld.push(pastValue);
-
-        // to be used some how
-        var difference = Math.abs(cellValue - pastValue);
 
         size++;
 
