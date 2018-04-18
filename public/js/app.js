@@ -170,7 +170,7 @@ function buildReport(data) {
 
     var report = {
         "PS Mobile Score": {
-            result: data.report.mobilescore,
+            result: data.report.slice(-1),
             pastResult: data.report.last[4],
             ranking: rankings
         },
