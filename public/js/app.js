@@ -168,45 +168,51 @@ function buildReport(data) {
         perfect: 100
     };
 
+    var newJob = data.job.pop();
+    var previousJob = data.job.pop();
+
+    console.log(newJob);
+    console.log(previousJob);
+
     var report = {
         "PS Mobile Score": {
-            result: data.report.slice(-1),
-            pastResult: data.report.last[4],
+            result: newJob.mobilescore,
+            pastResult: previousJob.mobilescore,
             ranking: rankings
         },
         "PS Mobile Usability": {
-            result: data.report.mobileusability,
-            pastResult: data.report.last[5],
+            result: newJob.mobileusability,
+            pastResult: previousJob.mobileusability,
             ranking: rankings
         },
         "PS Desktop Score": {
-            result: data.report.desktopscore,
-            pastResult: data.report.last[6],
+            result: newJob.desktopscore,
+            pastResult: previousJob.desktopscore,
             ranking: rankings
         },
         "LH Performance": {
-            result: data.report.perf,
-            pastResult: data.report.last[7],
+            result: newJob.perf,
+            pastResult: previousJob.perf,
             ranking: rankings
         },
         "LH PWA": {
-            result: data.report.pwa,
-            pastResult: data.report.last[8],
+            result: newJob.pwa,
+            pastResult: previousJob.pwa,
             ranking: rankings
         },
         "LH a11y": {
-            result: data.report.accessibility,
-            pastResult: data.report.last[9],
+            result: newJob.accessibility,
+            pastResult: previousJob.accessibility,
             ranking: rankings
         },
         "LH Best Practice": {
-            result: data.report.bestpractice,
-            pastResult: data.report.last[10],
+            result: newJob.bestpractice,
+            pastResult: previousJob.bestpractice,
             ranking: rankings
         },
         "LH SEO": {
-            result: data.report.seo,
-            pastResult: data.report.last[11],
+            result: newJob.seo,
+            pastResult: previousJob.seo,
             ranking: rankings
         }
     };
@@ -214,8 +220,8 @@ function buildReport(data) {
     var tr = $('.js-row');
     var audit = $('.js-audit');
     var pa11ycontainer = $('.js-pally');
-    var lhAudit = data.report.lhAudit;
-    var pa11y = data.report.pa11y;
+    var lhAudit = newJob.lhAudit;
+    var pa11y = newJob.pa11y;
     var size = 0;
     var sum = 0;
 
