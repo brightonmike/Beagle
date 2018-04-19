@@ -14,7 +14,7 @@ if (process.env.REDISTOGO_URL) {
         port: 10809,
         host: 'angelfish.redistogo.com',
         auth: '41973843e0863c322704246a7640bb87',
-        db: 1, // if provided select a non-default redis db
+        db: 0, // if provided select a non-default redis db
         }
     };
 
