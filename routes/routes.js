@@ -3,22 +3,23 @@ const kue = require('kue');
 const uuidv1 = require('uuid/v1');
 const consola = require('consola');
 
+let redisConf = {};
+
 if (process.env.REDISTOGO_URL) {
 
     console.log('Heroku Redis');
+    redisConf = {
+        prefix: 'q',
+        redis: {
+        port: 10809,
+        host: 'redis://redistogo:41973843e0863c322704246a7640bb87@angelfish.redistogo.com',
+        db: 1, // if provided select a non-default redis db
+        }
+    };
 
-    var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-    var redis = require("redis").createClient(rtg.port, rtg.hostname);
+} 
 
-    redis.auth(rtg.auth.split(":")[1]);
-
-} else {
-
-    console.log('Local Redis');
-    
-}
-
-let queue = kue.createQueue();
+let queue = kue.createQueue(redisConf);
 
 module.exports = function(app, io) {
 
