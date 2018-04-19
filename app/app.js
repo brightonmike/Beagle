@@ -98,7 +98,7 @@ module.exports = function(job, res) {
              * @type {{chromeFlags: string[]}}
              */
             const lhConfig = {
-                chromeFlags: ['--show-paint-rects', '--headless']
+                chromeFlags: ['--show-paint-rects', '--headless', '--no-sandbox']
             };
 
             /**
