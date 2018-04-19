@@ -171,9 +171,6 @@ function buildReport(data) {
     var newJob = data.job.pop();
     var previousJob = data.job.pop();
 
-    console.log(newJob);
-    console.log(previousJob);
-
     var report = {
         "PS Mobile Score": {
             result: newJob.mobilescore,

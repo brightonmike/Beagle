@@ -1,8 +1,17 @@
 const Beagle = require('../app/app');
 const kue = require('kue');
-const queue = kue.createQueue();
+const redis = require('redis');
 const uuidv1 = require('uuid/v1');
 const consola = require('consola');
+
+let queue = kue.createQueue();
+
+if(process.env.HEROKU) {
+    queue = kue.createQueue(
+        {redis: 'redis://redistogo:41973843e0863c322704246a7640bb87@angelfish.redistogo.com:10809/',
+         skipConfig: true
+        });
+}
 
 module.exports = function(app, io) {
 
