@@ -1,17 +1,24 @@
 const Beagle = require('../app/app');
 const kue = require('kue');
-const redis = require('redis');
 const uuidv1 = require('uuid/v1');
 const consola = require('consola');
 
-let queue = kue.createQueue();
+if (process.env.REDISTOGO_URL) {
 
-if(process.env.HEROKU) {
-    queue = kue.createQueue(
-        {redis: 'redis://redistogo:41973843e0863c322704246a7640bb87@angelfish.redistogo.com:10809/',
-         skipConfig: true
-        });
+    console.log('Heroku Redis');
+
+    var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+    var redis = require("redis").createClient(rtg.port, rtg.hostname);
+
+    redis.auth(rtg.auth.split(":")[1]);
+
+} else {
+
+    console.log('Local Redis');
+    
 }
+
+let queue = kue.createQueue();
 
 module.exports = function(app, io) {
 
