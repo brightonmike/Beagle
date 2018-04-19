@@ -13,11 +13,11 @@ module.exports = function (url) {
     }).then((results) => {
         console.log('pa11y results');
         console.log(results);
-        browser.close();
         return results;
     }).catch(error => {
-        browser.close();
         console.log('pa11y error');
         console.log(error);
     });
+
+    browser.close();
 };
