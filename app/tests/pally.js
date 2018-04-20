@@ -29,7 +29,7 @@ module.exports = function (url) {
             console.log(2);
 
             // Output the raw result objects
-            console.log(result1);
+            // console.log(result1);
 
             return result1;
 
