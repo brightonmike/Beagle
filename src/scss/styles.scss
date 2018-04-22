@@ -539,14 +539,28 @@ form {
 
 .audit {
   max-height: 350px;
-  margin: 20px 40px;
+  margin: 20px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
 }
 
 [class^="audit__item"] {
+  position: relative;
   margin: 0 0 15px;
+  padding: 10px;
+
+  &:focus {
+    outline: none;
+  }
+
+  &[open] {
+    background: #ffffff08;
+  }
+
+  .summary:focus {
+    outline: none;
+  }
 
   .summary + p {
     color: #ffffffd1;
@@ -576,10 +590,13 @@ form {
 }
 
 .audit__score {
-  float: right;
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0 0 20px 20px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 16px;
 }
 
 .summary {

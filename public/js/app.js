@@ -233,32 +233,36 @@ function buildReport(data) {
 
     $.each(lhAudit, function (key, value) {
         var itemClass = "audit__item";
-        var score = '';
+		var score = '';
+		
+		/** ignore items that do not apply */
+		if(!("notApplicable" in value)) {
+			var description = marked(value.description);
+			var helpText = marked(value.helpText);
+	
+			if (value.scoringMode === "numeric") {
+				score = value.score;
+				if (value.score < 85) {
+					itemClass = "audit__item--fail";
+					lhCount++;
+				} else {
+					itemClass = "audit__item--pass";
+				}
+			} else {
+				if (value.score === false) {
+					score = "Fail";
+					itemClass = "audit__item--fail";
+					lhCount++;
+				} else {
+					score = "Pass";
+					itemClass = "audit__item--pass";
+				}
+			}
+	
+			var item = "<details class='" + itemClass + "'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
+			audit.append(item);
+		}
 
-        var description = marked(value.description);
-        var helpText = marked(value.helpText);
-
-        if (value.scoringMode === "numeric") {
-            score = value.score;
-            if (value.score < 85) {
-                itemClass = "audit__item--fail";
-                lhCount++;
-            } else {
-                itemClass = "audit__item--pass";
-            }
-        } else {
-            if (value.score === false) {
-                score = "Fail";
-                itemClass = "audit__item--fail";
-                lhCount++;
-            } else {
-                score = "Pass";
-                itemClass = "audit__item--pass";
-            }
-        }
-
-        var item = "<details class='" + itemClass + "'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
-        audit.append(item);
     });
 
     /**
