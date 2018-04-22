@@ -67,10 +67,26 @@
               <canvas id="lh-chart" width="400" height="400"></canvas>
           </div>
 
+          <div class="panel panel--alert">
+
+            <div class="panel__header">
+                <h4>Site has critical issues</h4>
+                <span class="score js-score-critical"></span>
+            </div>
+
+            <p>Your build has critical front-end issues which should be remedied. These issues may impact the effectiveness of the build.</p>
+
+            <div class="audit js-critical-audit">
+
+            </div>
+
+        </div>
+
           <div class="panel">
 
               <div class="panel__header">
                   <h4>Key Scores</h4>
+                  <span class="score js-score-key"></span>
               </div>
 
               <table>
@@ -85,6 +101,7 @@
 
               <div class="panel__header">
                   <h4>Lighthouse Audit</h4>
+                  <span class="score js-score-lh"></span>
                   <div class="filter">
                       <button class="filter__button filter__button--pass js-pass">Pass</button>
                       <button class="filter__button filter__button--fail js-fail">Fail</button>
@@ -98,6 +115,7 @@
 
               <div class="panel__header">
                   <h4>Pa11y Audit</h4>
+                  <span class="score js-score-pally"></span>
               </div>
               <div class="audit js-pally"></div>
 

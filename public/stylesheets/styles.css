@@ -288,21 +288,43 @@ form {
 .panel {
   background: #0000001a; }
 
+.panel > p {
+  padding: 0 20px;
+  color: #8c909a;
+  font-size: 14px; }
+
+.panel--alert {
+  grid-column: 1/3;
+  display: none; }
+
 .panel__header {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-align: center;
+  align-items: center;
   position: relative;
   margin: 0 0 10px;
-  padding: 20px;
-  text-align: center;
+  padding: 12px 20px;
   background: #0000001a; }
   .panel__header h4 {
     font-weight: 300;
     color: #ffffffb5;
     margin: 0; }
 
+.score {
+  color: #c65a81;
+  font-weight: bold;
+  background: #252e47;
+  text-align: center;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 22px; }
+
 .filter {
-  position: absolute;
-  top: 0;
-  right: 20px;
   height: 100%;
   display: -ms-flexbox;
   display: flex;
@@ -415,7 +437,7 @@ form {
   opacity: 0.8; }
 
 .audit {
-  height: 350px;
+  max-height: 350px;
   margin: 20px 40px;
   overflow-y: scroll;
   display: -ms-flexbox;
@@ -426,7 +448,9 @@ form {
 [class^="audit__item"] {
   margin: 0 0 15px; }
   [class^="audit__item"] .summary + p {
-    color: var(--white-color); }
+    color: #ffffffd1; }
+  [class^="audit__item"] a {
+    color: #48c1b8; }
   [class^="audit__item"]:hover .summary p {
     color: var(--white-color); }
 

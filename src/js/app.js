@@ -78,6 +78,8 @@ function buildReport(data){
     $(resultSummary).html(data.site);
     $('body').removeClass('is-sending').addClass('has-report');
 
+    console.log(data);
+
     const rankings = {
         type: "high",
         poor: 70,
@@ -86,8 +88,8 @@ function buildReport(data){
         perfect: 100
     };
 
-    const newJob = data.job.pop();
-    const previousJob = data.job.pop();
+    const newJob = data.job.slice(-1)[0];
+    const previousJob = data.job.slice(-2)[0];
 
 
     const report = {
@@ -138,9 +140,15 @@ function buildReport(data){
     const pa11ycontainer = $('.js-pally');
     const lhAudit = newJob.lhAudit;
     const pa11y = newJob.pa11y;
+    const veryGood = getComputedStyle(document.body).getPropertyValue("--verygood");
+    const good = getComputedStyle(document.body).getPropertyValue("--good");
+    const average = getComputedStyle(document.body).getPropertyValue("--average");
+    const poor = getComputedStyle(document.body).getPropertyValue("--poor");
     let size = 0;
     let sum = 0;
 
+    let lhCount = 0;
+    const lhScore = $('.js-score-lh');
 
     $.each( lhAudit, function( key, value ) {
         let itemClass = "audit__item";
@@ -153,6 +161,7 @@ function buildReport(data){
             score = value.score;
             if(value.score < 85) {
                 itemClass = "audit__item--fail";
+                lhCount++;
             } else {
                 itemClass = "audit__item--pass";
             }
@@ -160,6 +169,7 @@ function buildReport(data){
             if(value.score === false) {
                 score = "Fail";
                 itemClass = "audit__item--fail";
+                lhCount++;
             } else {
                 score = "Pass";
                 itemClass = "audit__item--pass";
@@ -170,14 +180,37 @@ function buildReport(data){
         audit.append(item);
     });
 
+    /**
+     * Light house scoring
+     */
+    lhScore.html(lhCount);
+    if(lhCount < 30 && lhCount > 20) {
+        lhScore.css("color", average)
+    } else if (lhCount <= 20 && lhCount > 15) {
+        lhScore.css("color", good)
+    } else if (lhCount <= 15) {
+        lhScore.css("color", veryGood)
+    }
+
+    let pa11yCount = 0;
+    const pa11yScore = $('.js-score-pally');
     $.each( pa11y, function( key, value ) {
+        pa11yCount++;
         let description = marked(value.context);
         let helpText = marked(value.message);
         let selector = marked(value.selector);
 
-        let item = "<details class='audit__item'><summary class='summary'>" + helpText + "</summary>" + description + "<div><pre><code>" + selector + "</code></pre></div></details>";
+        let item = "<details class='audit__item--fail'><summary class='summary'>" + helpText + "</summary>" + description + "<div><pre><code>" + selector + "</code></pre></div></details>";
         pa11ycontainer.append(item);
     });
+    pa11yScore.html(pa11yCount);
+    if(pa11yCount < 20 && pa11yCount > 15) {
+        pa11yScore.css("color", average)
+    } else if (pa11yCount <= 15 && pa11yCount > 10) {
+        pa11yScore.css("color", good)
+    } else if (pa11yCount <= 10) {
+        pa11yScore.css("color", veryGood)
+    }
 
     let graphDataNew = [];
     let graphDataOld = [];
@@ -192,11 +225,6 @@ function buildReport(data){
         graphDataOld.push(pastValue);
 
         size++;
-
-        const veryGood = getComputedStyle(document.body).getPropertyValue("--verygood");
-        const good = getComputedStyle(document.body).getPropertyValue("--good");
-        const average = getComputedStyle(document.body).getPropertyValue("--average");
-        const poor = getComputedStyle(document.body).getPropertyValue("--poor");
 
         if(value.ranking.type === "high") {
 
@@ -231,8 +259,70 @@ function buildReport(data){
         tr.append(cell);
     });
 
-    let ctx = document.getElementById("lh-chart").getContext('2d');
-    let polar = document.getElementById("polar-chart").getContext('2d');
+
+    /**
+     * Critical Failure Test
+     */
+    let criticalFailMobile = false,
+    criticalFailHttps = false,
+    criticalFailCrawlable = false,
+    criticalFailFirstInteractive = false,
+    criticalFailFirstPaint = false,
+    criticalArray = new Array();
+
+    if(lhAudit['is-crawlable']['score'] === false) {
+        criticalFailCrawlable = true;
+        criticalArray.push(lhAudit['is-crawlable']);
+    }
+    
+    if(lhAudit['is-on-https']['score'] === false) {
+        criticalFailHttps = true;
+        criticalArray.push(lhAudit['is-on-https']);
+    }
+
+    if(lhAudit['mobile-friendly']['score'] === false) {
+        criticalFailMobile = true;
+        criticalArray.push(lhAudit['mobile-friendly']);
+    }
+
+    if(lhAudit['first-interactive']['score'] < 60) {
+        criticalFailFirstInteractive = true;
+        criticalArray.push(lhAudit['first-interactive']);
+    }
+    
+    if(lhAudit['first-meaningful-paint']['score'] < 75) {
+        criticalFailFirstPaint = true;
+        criticalArray.push(lhAudit['first-meaningful-paint']);
+    }
+
+
+    if(criticalArray){
+        $('.panel--alert').show();
+
+
+        console.log(criticalArray);
+        const failContainer = $('.js-critical-audit');
+
+        let criticalCount = 0;
+        for (var i = 0; i < criticalArray.length; i++) {
+            criticalCount++;
+            console.log(criticalArray[i]);
+            let description = marked(criticalArray[i]['description']);
+            let helpText = marked(criticalArray[i]['helpText']);
+            let score = criticalArray[i]['score'];
+    
+            let item = "<details class='audit__item--fail'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
+            failContainer.append(item);
+        }
+
+        $('.js-score-critical').html(criticalCount);
+    }
+
+    /** Charts
+     * 
+     */
+
+    let perfChartEl = document.getElementById("lh-chart").getContext('2d');
 
     let graphOptions = {
         responsive: true,
@@ -245,7 +335,10 @@ function buildReport(data){
         },
         scales: {
             yAxes: [{
-                display : false
+                display : false,
+                ticks: {
+                    beginAtZero: true
+                }
             }]
         },
         title: {
@@ -255,45 +348,43 @@ function buildReport(data){
         }
     };
 
-    let myLineChart = new Chart(ctx, {
+    let perfDataArray = new Array();
+    for (let i = 0; i < data.job.length; i++) {
+        perfDataArray.push(data.job[i].perf);
+    }
+
+    let pwaDataArray = new Array();
+    for (let i = 0; i < data.job.length; i++) {
+        pwaDataArray.push(data.job[i].pwa);
+    }
+
+    let a11yDataArray = new Array();
+    for (let i = 0; i < data.job.length; i++) {
+        a11yDataArray.push(data.job[i].accessibility);
+    }
+
+    let perfChart = new Chart(perfChartEl, {
         type: 'line',
         data: {
-            labels: ["Mobile Score", "Mobile Usability", "Desktop Score", "LH Perf", "LH PWA", "LH A11y", "LH Best Practice", "LH SEO"],
+            labels: ["1", "2", "3", "4", "5"],
             datasets: [{
-                data: graphDataNew,
-                label: "Scores",
+                data: perfDataArray,
+                label: "Perf",
                 borderColor: "#b1447f",
                 fill: false
-            }, {
-                data: graphDataOld,
-                label: "Previous Scores",
+            },{
+                data: pwaDataArray,
+                label: "PWA",
                 borderColor: "#fc8564",
+                fill: false
+            },{
+                data: a11yDataArray,
+                label: "a11y",
+                borderColor: "#49c0b7",
                 fill: false
             }]
         },
         options: graphOptions
     });
 
-    let polarChart = new Chart(polar, {
-        data: {
-            labels: ["Mobile Score", "Mobile Usability", "Desktop Score", "LH Perf", "LH PWA", "LH A11y", "LH Best Practice", "LH SEO"],
-            datasets: [{
-                data: graphDataNew,
-                label: "Scores",
-                borderColor: ["#1f253a", "#1b1e29", "#353c58", "#1a1e3a", "#3f4c7f", "#3c4258", "#2b3354", "#242e67"],
-                backgroundColor: ["#1f253a", "#1b1e29", "#353c58", "#1a1e3a", "#3f4c7f", "#3c4258", "#2b3354", "#242e67"]
-            }]
-        },
-        type: 'polarArea',
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: {
-                display: false
-            },
-            ticks: {
-                display: false
-            }
-        }
-    });
 }

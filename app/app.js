@@ -82,6 +82,7 @@ module.exports = function(job, res) {
 
             if(data) {
 
+                console.log('adding past data');
                 /**
                  * Add the five previous results to siteReports
                  */
@@ -117,7 +118,8 @@ module.exports = function(job, res) {
             return Promise.all(promiseArray);
 
         }).then(values => {
-
+            
+            console.log(values);
             consola.info('Tests ran, adding to report.');
 
             /**
