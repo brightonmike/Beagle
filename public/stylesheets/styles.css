@@ -438,7 +438,7 @@ form {
 
 .audit {
   max-height: 350px;
-  margin: 20px 40px;
+  margin: 20px;
   overflow-y: scroll;
   display: -ms-flexbox;
   display: flex;
@@ -446,7 +446,15 @@ form {
   flex-direction: column; }
 
 [class^="audit__item"] {
-  margin: 0 0 15px; }
+  position: relative;
+  margin: 0 0 15px;
+  padding: 10px; }
+  [class^="audit__item"]:focus {
+    outline: none; }
+  [class^="audit__item"][open] {
+    background: #ffffff08; }
+  [class^="audit__item"] .summary:focus {
+    outline: none; }
   [class^="audit__item"] .summary + p {
     color: #ffffffd1; }
   [class^="audit__item"] a {
@@ -461,10 +469,13 @@ form {
   color: var(--poor); }
 
 .audit__score {
-  float: right;
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0 0 20px 20px; }
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 16px; }
 
 .summary {
   display: -ms-flexbox;
