@@ -170,13 +170,8 @@ function buildReport(data) {
         perfect: 100
     };
 
-<<<<<<< HEAD
-    var newJob = data.job.pop();
-    var previousJob = data.job.pop();
-=======
     var newJob = data.job.slice(-1)[0];
     var previousJob = data.job.slice(-2)[0];
->>>>>>> 236bf8f0bc75b9e60c6ff778145385bcf0d02298
 
     var report = {
         "PS Mobile Score": {
