@@ -1,8 +1,26 @@
 const Beagle = require('../app/app');
 const kue = require('kue');
-const queue = kue.createQueue();
 const uuidv1 = require('uuid/v1');
 const consola = require('consola');
+
+let redisConf = {};
+
+if (process.env.REDISTOGO_URL) {
+
+    console.log('Heroku Redis');
+    redisConf = {
+        prefix: 'q',
+        redis: {
+        port: 10809,
+        host: 'angelfish.redistogo.com',
+        auth: '41973843e0863c322704246a7640bb87',
+        db: 0, // if provided select a non-default redis db
+        }
+    };
+
+} 
+
+let queue = kue.createQueue(redisConf);
 
 module.exports = function(app, io) {
 
