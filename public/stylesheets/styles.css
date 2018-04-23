@@ -206,7 +206,22 @@ form {
   background: linear-gradient(to right, #b41cfe 0%, #fe8ba7 100%);
   border-radius: 30px; }
 
-[type=color], [type=date], [type=datetime-local], [type=datetime], [type=email], [type=month], [type=number], [type=password], [type=search], [type=tel], [type=text], [type=time], [type=url], [type=week], textarea, select {
+[type=color],
+[type=date],
+[type=datetime-local],
+[type=datetime],
+[type=email],
+[type=month],
+[type=number],
+[type=password],
+[type=search],
+[type=tel],
+[type=text],
+[type=time],
+[type=url],
+[type=week],
+textarea,
+select {
   height: var(--base-height);
   width: calc(100% - 2px);
   border: 1px solid transparent;
@@ -215,7 +230,22 @@ form {
   padding-left: 20px;
   margin: 1px;
   border-radius: 25px; }
-  [type=color]:focus, [type=date]:focus, [type=datetime-local]:focus, [type=datetime]:focus, [type=email]:focus, [type=month]:focus, [type=number]:focus, [type=password]:focus, [type=search]:focus, [type=tel]:focus, [type=text]:focus, [type=time]:focus, [type=url]:focus, [type=week]:focus, textarea:focus, select:focus {
+  [type=color]:focus,
+  [type=date]:focus,
+  [type=datetime-local]:focus,
+  [type=datetime]:focus,
+  [type=email]:focus,
+  [type=month]:focus,
+  [type=number]:focus,
+  [type=password]:focus,
+  [type=search]:focus,
+  [type=tel]:focus,
+  [type=text]:focus,
+  [type=time]:focus,
+  [type=url]:focus,
+  [type=week]:focus,
+  textarea:focus,
+  select:focus {
     outline: none; }
 
 .error {
@@ -326,6 +356,8 @@ form {
 
 .filter {
   height: 100%;
+  margin-left: auto;
+  margin-right: 20px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;

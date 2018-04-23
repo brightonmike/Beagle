@@ -5,19 +5,21 @@ const form = $('.js-get-report');
 const errorDialog = document.getElementById('dialog');
 const errorClose = document.getElementById('cancel');
 
-socket.on('connect', function() {
+socket.on('connect', function () {
     $('.js-status').html('Beagle is available.').addClass('status--ready');
 });
 
-form.on("submit", function(e){
+form.on("submit", function (e) {
     let siteUrl = $("#url").val();
 
-    if(!siteUrl) {
+    if (!siteUrl) {
         $('.error').css('display', 'block');
     } else {
         $('.error').css('display', 'none');
         $('body').addClass('is-sending');
-        socket.emit ('send site', { url: siteUrl });
+        socket.emit('send site', {
+            url: siteUrl
+        });
     }
     e.preventDefault();
 });
@@ -25,18 +27,18 @@ form.on("submit", function(e){
 socket.on('beagle-result', function (data) {
     console.log(data);
 
-    if(data.errors) {
+    if (data.errors) {
         errorHandler(data);
     } else {
         buildReport(data);
     }
 });
 
-$('.js-pass').click(function() {
+$('.js-pass').click(function () {
 
     let container = $(this).parent().parent().parent();
 
-    if(container.hasClass('show-pass')) {
+    if (container.hasClass('show-pass')) {
         container.removeClass('show-pass');
     } else {
         container.removeClass('show-fail').addClass('show-pass');
@@ -44,11 +46,11 @@ $('.js-pass').click(function() {
 
 });
 
-$('.js-fail').click(function() {
+$('.js-fail').click(function () {
 
     let container = $(this).parent().parent().parent();
 
-    if(container.hasClass('show-fail')) {
+    if (container.hasClass('show-fail')) {
         container.removeClass('show-fail');
     } else {
         container.removeClass('show-pass').addClass('show-fail');
@@ -56,11 +58,11 @@ $('.js-fail').click(function() {
 
 });
 
-function errorHandler(data){
+function errorHandler(data) {
     $('js-data-code').html(data.code);
     const errorContainer = $('.js-errors');
 
-    $.each( data.errors, function( key, value ) {
+    $.each(data.errors, function (key, value) {
         let error = document.createElement("p");
         error.innerHTML = "<strong>" + value.domain + ":</strong><span>" + value.message + "</span>";
         errorContainer.append(error);
@@ -69,12 +71,12 @@ function errorHandler(data){
     $('body').addClass('has-error');
     errorDialog.showModal();
 
-    errorClose.addEventListener('click', function() {
+    errorClose.addEventListener('click', function () {
         errorDialog.close();
     });
 }
 
-function buildReport(data){
+function buildReport(data) {
     $(resultSummary).html(data.site);
     $('body').removeClass('is-sending').addClass('has-report');
 
@@ -150,23 +152,23 @@ function buildReport(data){
     let lhCount = 0;
     const lhScore = $('.js-score-lh');
 
-    $.each( lhAudit, function( key, value ) {
+    $.each(lhAudit, function (key, value) {
         let itemClass = "audit__item";
         let score = '';
 
         let description = marked(value.description);
         let helpText = marked(value.helpText);
 
-        if(value.scoringMode === "numeric") {
+        if (value.scoringMode === "numeric") {
             score = value.score;
-            if(value.score < 85) {
+            if (value.score < 85) {
                 itemClass = "audit__item--fail";
                 lhCount++;
             } else {
                 itemClass = "audit__item--pass";
             }
         } else {
-            if(value.score === false) {
+            if (value.score === false) {
                 score = "Fail";
                 itemClass = "audit__item--fail";
                 lhCount++;
@@ -184,7 +186,7 @@ function buildReport(data){
      * Light house scoring
      */
     lhScore.html(lhCount);
-    if(lhCount < 30 && lhCount > 20) {
+    if (lhCount < 30 && lhCount > 20) {
         lhScore.css("color", average)
     } else if (lhCount <= 20 && lhCount > 15) {
         lhScore.css("color", good)
@@ -194,7 +196,7 @@ function buildReport(data){
 
     let pa11yCount = 0;
     const pa11yScore = $('.js-score-pally');
-    $.each( pa11y, function( key, value ) {
+    $.each(pa11y, function (key, value) {
         pa11yCount++;
         let description = marked(value.context);
         let helpText = marked(value.message);
@@ -204,7 +206,7 @@ function buildReport(data){
         pa11ycontainer.append(item);
     });
     pa11yScore.html(pa11yCount);
-    if(pa11yCount < 20 && pa11yCount > 15) {
+    if (pa11yCount < 20 && pa11yCount > 15) {
         pa11yScore.css("color", average)
     } else if (pa11yCount <= 15 && pa11yCount > 10) {
         pa11yScore.css("color", good)
@@ -215,7 +217,7 @@ function buildReport(data){
     let graphDataNew = [];
     let graphDataOld = [];
 
-    $.each( report, function( key, value ) {
+    $.each(report, function (key, value) {
         let cell = document.createElement("td");
         let cellValue = Math.round(parseInt(value.result));
         let pastValue = Math.round(parseInt(value.pastResult));
@@ -226,12 +228,12 @@ function buildReport(data){
 
         size++;
 
-        if(value.ranking.type === "high") {
+        if (value.ranking.type === "high") {
 
             sum += cellValue;
             console.log(sum);
 
-            if(cellValue < value.ranking.poor) {
+            if (cellValue < value.ranking.poor) {
                 cellStyle = "color:" + poor + ";";
             } else if (cellValue >= value.ranking.poor && cellValue < value.ranking.average) {
                 cellStyle = "color:" + average + ";";
@@ -243,7 +245,7 @@ function buildReport(data){
 
         } else {
 
-            if(cellValue <= value.ranking.perfect) {
+            if (cellValue <= value.ranking.perfect) {
                 cellStyle = "color:" + veryGood + ";";
             } else if (csellValue > value.ranking.perfect && cellValue <= value.ranking.good) {
                 cellStyle = "color:" + good + ";";
@@ -264,39 +266,39 @@ function buildReport(data){
      * Critical Failure Test
      */
     let criticalFailMobile = false,
-    criticalFailHttps = false,
-    criticalFailCrawlable = false,
-    criticalFailFirstInteractive = false,
-    criticalFailFirstPaint = false,
-    criticalArray = new Array();
+        criticalFailHttps = false,
+        criticalFailCrawlable = false,
+        criticalFailFirstInteractive = false,
+        criticalFailFirstPaint = false,
+        criticalArray = new Array();
 
-    if(lhAudit['is-crawlable']['score'] === false) {
+    if (lhAudit['is-crawlable']['score'] === false) {
         criticalFailCrawlable = true;
         criticalArray.push(lhAudit['is-crawlable']);
     }
-    
-    if(lhAudit['is-on-https']['score'] === false) {
+
+    if (lhAudit['is-on-https']['score'] === false) {
         criticalFailHttps = true;
         criticalArray.push(lhAudit['is-on-https']);
     }
 
-    if(lhAudit['mobile-friendly']['score'] === false) {
+    if (lhAudit['mobile-friendly']['score'] === false) {
         criticalFailMobile = true;
         criticalArray.push(lhAudit['mobile-friendly']);
     }
 
-    if(lhAudit['first-interactive']['score'] < 60) {
+    if (lhAudit['first-interactive']['score'] < 60) {
         criticalFailFirstInteractive = true;
         criticalArray.push(lhAudit['first-interactive']);
     }
-    
-    if(lhAudit['first-meaningful-paint']['score'] < 75) {
+
+    if (lhAudit['first-meaningful-paint']['score'] < 75) {
         criticalFailFirstPaint = true;
         criticalArray.push(lhAudit['first-meaningful-paint']);
     }
 
 
-    if(criticalArray){
+    if (criticalArray) {
         $('.panel--alert').show();
 
 
@@ -310,7 +312,7 @@ function buildReport(data){
             let description = marked(criticalArray[i]['description']);
             let helpText = marked(criticalArray[i]['helpText']);
             let score = criticalArray[i]['score'];
-    
+
             let item = "<details class='audit__item--fail'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
             failContainer.append(item);
         }
@@ -335,7 +337,7 @@ function buildReport(data){
         },
         scales: {
             yAxes: [{
-                display : false,
+                display: false,
                 ticks: {
                     beginAtZero: true
                 }
@@ -372,12 +374,12 @@ function buildReport(data){
                 label: "Perf",
                 borderColor: "#b1447f",
                 fill: false
-            },{
+            }, {
                 data: pwaDataArray,
                 label: "PWA",
                 borderColor: "#fc8564",
                 fill: false
-            },{
+            }, {
                 data: a11yDataArray,
                 label: "a11y",
                 borderColor: "#49c0b7",

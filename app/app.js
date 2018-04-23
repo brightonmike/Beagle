@@ -12,7 +12,7 @@ const slack = require('./slack');
 
 const consola = require('consola');
 
-module.exports = function(job, res) {
+module.exports = function (job, res) {
 
     /**
      *
@@ -32,24 +32,24 @@ module.exports = function(job, res) {
      * @constructor
      */
 
-    function SiteReport(jobId, id, reportDate, url, mobilescore, mobileusability, desktopscore, perf, pwa, accessibility, bestpractice, seo, lhAudit, pa11y){
-        this.jobId = jobId;
-        this.id = id;
-        this.reportDate = reportDate;
-        this.url = url;
-        this.mobilescore = mobilescore;
-        this.mobileusability = mobileusability;
-        this.desktopscore = desktopscore;
-        this.perf = perf;
-        this.pwa = pwa;
-        this.accessibility = accessibility;
-        this.bestpractice = bestpractice;
-        this.seo = seo;
-        this.lhAudit = lhAudit;
-        this.pa11y = pa11y;
+    function SiteReport(jobId, id, reportDate, url, mobilescore, mobileusability, desktopscore, perf, pwa, accessibility, bestpractice, seo, lhAudit, pa11y) {
+        jobId;
+        id;
+        reportDate;
+        url;
+        mobilescore;
+        mobileusability;
+        desktopscore;
+        perf;
+        pwa;
+        accessibility;
+        bestpractice;
+        seo;
+        lhAudit;
+        pa11y;
     }
 
-    function runBeagle(job, res){
+    function runBeagle(job, res) {
         job.data.report.url = job.data.site;
         consola.start('Running Beagle on.. ' + job.id + " Site: " + job.data.report.url);
 
@@ -80,7 +80,7 @@ module.exports = function(job, res) {
 
             job.data.siteReports = [];
 
-            if(data) {
+            if (data) {
 
                 console.log('adding past data');
                 /**
@@ -118,7 +118,7 @@ module.exports = function(job, res) {
             return Promise.all(promiseArray);
 
         }).then(values => {
-            
+
             console.log(values);
             consola.info('Tests ran, adding to report.');
 
@@ -178,4 +178,3 @@ module.exports = function(job, res) {
         return err;
     });
 };
-
