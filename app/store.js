@@ -39,15 +39,14 @@ module.exports = function (auth, job, allJobs) {
                 }
             }, (err, response) => {
                 if (err) {
-                    console.log('The API returned an error: ' + err);
+                    consola.error('The API returned an error: ' + err);
                     reject(err);
                 } else {
-                    console.log('Data added to sheet.');
+                    consola.info('Data added to sheet.');
                     let data = {
                         response: response,
                         job: allJobs
                     };
-                    console.log(data.allJobs);
                     resolve(data);
                 }
             });

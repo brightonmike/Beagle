@@ -1,6 +1,8 @@
+const consola = require('consola');
+
 module.exports = function (url) {
     // run the tests and output the results in the console
-    console.log('Running pa11y...');
+    consola.info('Running pa11y...');
 
     const pa11y = require('pa11y');
     const puppeteer = require('puppeteer');
@@ -36,8 +38,8 @@ module.exports = function (url) {
         } catch (error) {
 
             // Output an error if it occurred
-            console.error('Error!');
-            console.error(error.message);
+            consola.error('Error!');
+            consola.error(error.message);
 
             // Close the browser instance and pages if theys exist
             if (pages) {

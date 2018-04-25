@@ -48,20 +48,22 @@ module.exports = function (job, res) {
         lhAudit,
         pa11y
     ) {
-        jobId;
-        id;
-        reportDate;
-        url;
-        mobilescore;
-        mobileusability;
-        desktopscore;
-        perf;
-        pwa;
-        accessibility;
-        bestpractice;
-        seo;
-        lhAudit;
-        pa11y;
+        return {
+            jobId,
+            id,
+            reportDate,
+            url,
+            mobilescore,
+            mobileusability,
+            desktopscore,
+            perf,
+            pwa,
+            accessibility,
+            bestpractice,
+            seo,
+            lhAudit,
+            pa11y
+        }    
     }
 
     function runBeagle(job, res) {
@@ -98,7 +100,6 @@ module.exports = function (job, res) {
             if (data) {
 
                 consola.info('adding past data');
-                console.log(data);
                 /**
                  * Add the five previous results to siteReports
                  */
@@ -109,8 +110,6 @@ module.exports = function (job, res) {
                 }
 
             }
-
-            console.log(job.data.siteReports[0])
 
             /**
              * Chrome headless flags
@@ -160,25 +159,20 @@ module.exports = function (job, res) {
                 values[3].issues
             );
 
-            // console.log(thisResult);
-
             /**
              * Add new report to SiteReports array
              */
             job.data.siteReports.push(thisResult);
 
-            console.log(job.data.siteReports);
-
             /**
              * Ping Slack the result
              */
-            // let channel = "#perfpete";
-            // if(job.data.channel){
-            //     channel = "#" + job.data.channel;
-            // }
+            let channel = "#perfpete";
+            if(job.data.slackChannel){
+                channel = job.data.slackChannel;
+            }
 
-            // console.log(job.data);
-            // slack(thisResult, channel);
+            slack(job.data.siteReports, channel);
 
             return auth.then(data => {
                 return storeData(data, thisResult, job.data.siteReports);

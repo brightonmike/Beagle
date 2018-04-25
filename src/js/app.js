@@ -1,4 +1,4 @@
-import dummyData from './dummydata';
+// import dummyData from './dummydata';
 import lighthouse from './reports/lighthouse';
 import pa11y from './reports/pally';
 import keyScores from './reports/keyscores';
@@ -65,7 +65,7 @@ class SiteReport {
 
     criticalFailure() {
         const { lhAudit } = this;
-        let criticalFailMobile = false,
+        let criticalFailPWALoad = false,
         criticalFailHttps = false,
         criticalFailCrawlable = false,
         criticalFailFirstInteractive = false,
@@ -82,9 +82,9 @@ class SiteReport {
             criticalArray.push(lhAudit['is-on-https']);
         }
 
-        if (lhAudit['mobile-friendly']['score'] === false) {
-            criticalFailMobile = true;
-            criticalArray.push(lhAudit['mobile-friendly']);
+        if (lhAudit['load-fast-enough-for-pwa']['score'] === false) {
+            criticalFailPWALoad = true;
+            criticalArray.push(lhAudit['load-fast-enough-for-pwa']);
         }
 
         if (lhAudit['first-interactive']['score'] < 60) {
@@ -105,11 +105,16 @@ class SiteReport {
             let criticalCount = 0;
             for (var i = 0; i < criticalArray.length; i++) {
                 criticalCount++;
-                let description = marked(criticalArray[i]['description']);
-                let helpText = marked(criticalArray[i]['helpText']);
-                let score = criticalArray[i]['score'];
+                let description = marked(criticalArray[i]['description']),
+                    helpText = marked(criticalArray[i]['helpText']),
+                    score = criticalArray[i]['score'],
+                    display = criticalArray[i]['displayValue'];
 
-                let item = "<details class='audit__item--fail'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
+                let item = `<details class='audit__item--fail'>
+                                <summary class='summary'>${description} (${displayValue})</summary>
+                                ${helpText}
+                                <div class='audit__score'>${score}</div>
+                            </details>`;
                 failContainer.append(item);
             }
 

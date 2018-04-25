@@ -7,8 +7,9 @@ module.exports = {
             let itemClass = "audit__item";
             let score = '';
 
-            let description = marked(value.description);
-            let helpText = marked(value.helpText);
+            let description = marked(value.description),
+                helpText = marked(value.helpText),
+                display = value.displayValue;
 
             if (value.scoringMode === "numeric") {
                 score = value.score;
@@ -30,7 +31,7 @@ module.exports = {
             }
 
             let item = `<details class='${itemClass}'>
-                            <summary class='summary'>${description}</summary>
+                            <summary class='summary'>${description} (${display})</summary>
                             ${helpText}
                             <div class='audit__score'>${score}</div>
                         </details>`;
