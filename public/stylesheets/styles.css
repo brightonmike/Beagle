@@ -111,7 +111,7 @@ table td span:last-of-type {
   font-size: 28px; }
   .menu a span {
     display: block;
-    height: 0px;
+    height: 0;
     overflow: hidden;
     transition: 1s 2s ease-in-out; }
 
@@ -152,13 +152,13 @@ table td span:last-of-type {
   width: 100%;
   max-width: 500px;
   opacity: 1;
-  transition: all 0.2s ease-in-out; }
+  transition: all .2s ease-in-out; }
 
 /*/ Report sent /*/
 .has-report .page {
   opacity: 0;
   pointer-events: none;
-  transition: all 0.2s ease-in-out; }
+  transition: all .2s ease-in-out; }
 
 .has-report .report {
   opacity: 1;
@@ -206,7 +206,22 @@ form {
   background: linear-gradient(to right, #b41cfe 0%, #fe8ba7 100%);
   border-radius: 30px; }
 
-[type=color], [type=date], [type=datetime-local], [type=datetime], [type=email], [type=month], [type=number], [type=password], [type=search], [type=tel], [type=text], [type=time], [type=url], [type=week], textarea, select {
+[type=color],
+[type=date],
+[type=datetime-local],
+[type=datetime],
+[type=email],
+[type=month],
+[type=number],
+[type=password],
+[type=search],
+[type=tel],
+[type=text],
+[type=time],
+[type=url],
+[type=week],
+textarea,
+select {
   height: var(--base-height);
   width: calc(100% - 2px);
   border: 1px solid transparent;
@@ -215,7 +230,22 @@ form {
   padding-left: 20px;
   margin: 1px;
   border-radius: 25px; }
-  [type=color]:focus, [type=date]:focus, [type=datetime-local]:focus, [type=datetime]:focus, [type=email]:focus, [type=month]:focus, [type=number]:focus, [type=password]:focus, [type=search]:focus, [type=tel]:focus, [type=text]:focus, [type=time]:focus, [type=url]:focus, [type=week]:focus, textarea:focus, select:focus {
+  [type=color]:focus,
+  [type=date]:focus,
+  [type=datetime-local]:focus,
+  [type=datetime]:focus,
+  [type=email]:focus,
+  [type=month]:focus,
+  [type=number]:focus,
+  [type=password]:focus,
+  [type=search]:focus,
+  [type=tel]:focus,
+  [type=text]:focus,
+  [type=time]:focus,
+  [type=url]:focus,
+  [type=week]:focus,
+  textarea:focus,
+  select:focus {
     outline: none; }
 
 .error {
@@ -237,7 +267,7 @@ form {
 .report {
   opacity: 0;
   pointer-events: none;
-  transition: all 0.2s ease-in-out;
+  transition: all .2s ease-in-out;
   position: fixed;
   top: 0;
   z-index: 99;
@@ -326,6 +356,8 @@ form {
 
 .filter {
   height: 100%;
+  margin-left: auto;
+  margin-right: 20px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -361,7 +393,7 @@ form {
 .footer {
   min-height: 10vh;
   padding: 30px 0;
-  opacity: 0.3; }
+  opacity: .3; }
 
 .loading {
   position: absolute;
@@ -372,7 +404,7 @@ form {
   text-align: center;
   opacity: 0;
   height: 0;
-  transition: opacity 0.8s 0s;
+  transition: opacity .8s 0s;
   pointer-events: none;
   display: -ms-flexbox;
   display: flex;
@@ -389,7 +421,7 @@ form {
   .loading h5 span {
     display: block;
     margin: 10px 0;
-    opacity: 0.4;
+    opacity: .4;
     font-size: 14px; }
 
 .pulse {
@@ -411,7 +443,7 @@ form {
 .dialog {
   max-width: 600px;
   border: none;
-  box-shadow: 0px 0px 20px 0px #00000078;
+  box-shadow: 0 0 20px 0 #00000078;
   text-align: center; }
   .dialog h4 {
     color: var(--error-color);
@@ -434,24 +466,32 @@ form {
   margin-right: 10px;
   text-transform: uppercase;
   font-size: 80%;
-  opacity: 0.8; }
+  opacity: .8; }
 
 .audit {
   max-height: 350px;
-  margin: 20px 40px;
+  margin: 20px;
   overflow-y: scroll;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column; }
 
-[class^="audit__item"] {
-  margin: 0 0 15px; }
-  [class^="audit__item"] .summary + p {
+[class^='audit__item'] {
+  position: relative;
+  margin: 0 0 15px;
+  padding: 10px; }
+  [class^='audit__item']:focus {
+    outline: none; }
+  [class^='audit__item'][open] {
+    background: #ffffff08; }
+  [class^='audit__item'] .summary:focus {
+    outline: none; }
+  [class^='audit__item'] .summary + p {
     color: #ffffffd1; }
-  [class^="audit__item"] a {
+  [class^='audit__item'] a {
     color: #48c1b8; }
-  [class^="audit__item"]:hover .summary p {
+  [class^='audit__item']:hover .summary p {
     color: var(--white-color); }
 
 .audit__item--pass .summary {
@@ -461,10 +501,13 @@ form {
   color: var(--poor); }
 
 .audit__score {
-  float: right;
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0 0 20px 20px; }
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 16px; }
 
 .summary {
   display: -ms-flexbox;
@@ -472,7 +515,7 @@ form {
   -ms-flex-align: center;
   align-items: center; }
   .summary p {
-    transition: all 0.2s ease;
+    transition: all .2s ease;
     font-size: 16px;
     margin: 0;
     color: #ffffff63; }
