@@ -32,21 +32,38 @@ module.exports = function (job, res) {
      * @constructor
      */
 
-    function SiteReport(jobId, id, reportDate, url, mobilescore, mobileusability, desktopscore, perf, pwa, accessibility, bestpractice, seo, lhAudit, pa11y) {
-        jobId;
-        id;
-        reportDate;
-        url;
-        mobilescore;
-        mobileusability;
-        desktopscore;
-        perf;
-        pwa;
-        accessibility;
-        bestpractice;
-        seo;
-        lhAudit;
-        pa11y;
+    function SiteReport(
+        jobId,
+        id,
+        reportDate,
+        url,
+        mobilescore,
+        mobileusability,
+        desktopscore,
+        perf,
+        pwa,
+        accessibility,
+        bestpractice,
+        seo,
+        lhAudit,
+        pa11y
+    ) {
+        return {
+            jobId,
+            id,
+            reportDate,
+            url,
+            mobilescore,
+            mobileusability,
+            desktopscore,
+            perf,
+            pwa,
+            accessibility,
+            bestpractice,
+            seo,
+            lhAudit,
+            pa11y
+        }    
     }
 
     function runBeagle(job, res) {
@@ -82,7 +99,7 @@ module.exports = function (job, res) {
 
             if (data) {
 
-                console.log('adding past data');
+                consola.info('adding past data');
                 /**
                  * Add the five previous results to siteReports
                  */
@@ -119,7 +136,6 @@ module.exports = function (job, res) {
 
         }).then(values => {
 
-            console.log(values);
             consola.info('Tests ran, adding to report.');
 
             /**
@@ -143,8 +159,6 @@ module.exports = function (job, res) {
                 values[3].issues
             );
 
-            // console.log(thisResult);
-
             /**
              * Add new report to SiteReports array
              */
@@ -153,7 +167,12 @@ module.exports = function (job, res) {
             /**
              * Ping Slack the result
              */
-            slack(thisResult);
+            let channel = "#perfpete";
+            if(job.data.slackChannel){
+                channel = job.data.slackChannel;
+            }
+
+            slack(job.data.siteReports, channel);
 
             return auth.then(data => {
                 return storeData(data, thisResult, job.data.siteReports);

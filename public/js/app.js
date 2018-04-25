@@ -169,7 +169,7 @@ var SiteReport = function () {
         value: function criticalFailure() {
             var lhAudit = this.lhAudit;
 
-            var criticalFailMobile = false,
+            var criticalFailPWALoad = false,
                 criticalFailHttps = false,
                 criticalFailCrawlable = false,
                 criticalFailFirstInteractive = false,
@@ -186,9 +186,9 @@ var SiteReport = function () {
                 criticalArray.push(lhAudit['is-on-https']);
             }
 
-            if (lhAudit['mobile-friendly']['score'] === false) {
-                criticalFailMobile = true;
-                criticalArray.push(lhAudit['mobile-friendly']);
+            if (lhAudit['load-fast-enough-for-pwa']['score'] === false) {
+                criticalFailPWALoad = true;
+                criticalArray.push(lhAudit['load-fast-enough-for-pwa']);
             }
 
             if (lhAudit['first-interactive']['score'] < 60) {
@@ -208,11 +208,12 @@ var SiteReport = function () {
                 var criticalCount = 0;
                 for (var i = 0; i < criticalArray.length; i++) {
                     criticalCount++;
-                    var description = marked(criticalArray[i]['description']);
-                    var helpText = marked(criticalArray[i]['helpText']);
-                    var score = criticalArray[i]['score'];
+                    var description = marked(criticalArray[i]['description']),
+                        helpText = marked(criticalArray[i]['helpText']),
+                        score = criticalArray[i]['score'],
+                        display = criticalArray[i]['displayValue'];
 
-                    var item = "<details class='audit__item--fail'><summary class='summary'>" + description + "</summary>" + helpText + "<div class='audit__score'>" + score + "</div></details>";
+                    var item = '<details class=\'audit__item--fail\'>\n                                <summary class=\'summary\'>' + description + ' (' + displayValue + ')</summary>\n                                ' + helpText + '\n                                <div class=\'audit__score\'>' + score + '</div>\n                            </details>';
                     failContainer.append(item);
                 }
 
@@ -316,8 +317,9 @@ module.exports = {
             var itemClass = "audit__item";
             var score = '';
 
-            var description = marked(value.description);
-            var helpText = marked(value.helpText);
+            var description = marked(value.description),
+                helpText = marked(value.helpText),
+                display = value.displayValue;
 
             if (value.scoringMode === "numeric") {
                 score = value.score;
@@ -338,7 +340,7 @@ module.exports = {
                 }
             }
 
-            var item = '<details class=\'' + itemClass + '\'>\n                            <summary class=\'summary\'>' + description + '</summary>\n                            ' + helpText + '\n                            <div class=\'audit__score\'>' + score + '</div>\n                        </details>';
+            var item = '<details class=\'' + itemClass + '\'>\n                            <summary class=\'summary\'>' + description + ' (' + display + ')</summary>\n                            ' + helpText + '\n                            <div class=\'audit__score\'>' + score + '</div>\n                        </details>';
             lhAuditContainer.append(item);
         });
 
