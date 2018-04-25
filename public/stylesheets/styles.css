@@ -111,7 +111,7 @@ table td span:last-of-type {
   font-size: 28px; }
   .menu a span {
     display: block;
-    height: 0px;
+    height: 0;
     overflow: hidden;
     transition: 1s 2s ease-in-out; }
 
@@ -152,13 +152,13 @@ table td span:last-of-type {
   width: 100%;
   max-width: 500px;
   opacity: 1;
-  transition: all 0.2s ease-in-out; }
+  transition: all .2s ease-in-out; }
 
 /*/ Report sent /*/
 .has-report .page {
   opacity: 0;
   pointer-events: none;
-  transition: all 0.2s ease-in-out; }
+  transition: all .2s ease-in-out; }
 
 .has-report .report {
   opacity: 1;
@@ -267,7 +267,7 @@ select {
 .report {
   opacity: 0;
   pointer-events: none;
-  transition: all 0.2s ease-in-out;
+  transition: all .2s ease-in-out;
   position: fixed;
   top: 0;
   z-index: 99;
@@ -393,7 +393,7 @@ select {
 .footer {
   min-height: 10vh;
   padding: 30px 0;
-  opacity: 0.3; }
+  opacity: .3; }
 
 .loading {
   position: absolute;
@@ -404,7 +404,7 @@ select {
   text-align: center;
   opacity: 0;
   height: 0;
-  transition: opacity 0.8s 0s;
+  transition: opacity .8s 0s;
   pointer-events: none;
   display: -ms-flexbox;
   display: flex;
@@ -421,7 +421,7 @@ select {
   .loading h5 span {
     display: block;
     margin: 10px 0;
-    opacity: 0.4;
+    opacity: .4;
     font-size: 14px; }
 
 .pulse {
@@ -443,7 +443,7 @@ select {
 .dialog {
   max-width: 600px;
   border: none;
-  box-shadow: 0px 0px 20px 0px #00000078;
+  box-shadow: 0 0 20px 0 #00000078;
   text-align: center; }
   .dialog h4 {
     color: var(--error-color);
@@ -466,7 +466,7 @@ select {
   margin-right: 10px;
   text-transform: uppercase;
   font-size: 80%;
-  opacity: 0.8; }
+  opacity: .8; }
 
 .audit {
   max-height: 350px;
@@ -477,21 +477,21 @@ select {
   -ms-flex-direction: column;
   flex-direction: column; }
 
-[class^="audit__item"] {
+[class^='audit__item'] {
   position: relative;
   margin: 0 0 15px;
   padding: 10px; }
-  [class^="audit__item"]:focus {
+  [class^='audit__item']:focus {
     outline: none; }
-  [class^="audit__item"][open] {
+  [class^='audit__item'][open] {
     background: #ffffff08; }
-  [class^="audit__item"] .summary:focus {
+  [class^='audit__item'] .summary:focus {
     outline: none; }
-  [class^="audit__item"] .summary + p {
+  [class^='audit__item'] .summary + p {
     color: #ffffffd1; }
-  [class^="audit__item"] a {
+  [class^='audit__item'] a {
     color: #48c1b8; }
-  [class^="audit__item"]:hover .summary p {
+  [class^='audit__item']:hover .summary p {
     color: var(--white-color); }
 
 .audit__item--pass .summary {
@@ -515,7 +515,7 @@ select {
   -ms-flex-align: center;
   align-items: center; }
   .summary p {
-    transition: all 0.2s ease;
+    transition: all .2s ease;
     font-size: 16px;
     margin: 0;
     color: #ffffff63; }
