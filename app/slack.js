@@ -1,6 +1,6 @@
 const Slack = require('slack-node');
 
-module.exports = function (job) {
+module.exports = function (job, channel) {
 
     const webhook = process.env.SLACK_WEBHOOK;
 
@@ -21,12 +21,12 @@ module.exports = function (job) {
         return new Promise(function (resolve, reject) {
             // slack emoji
             slack.webhook({
-                channel: "#perfpete",
+                channel: channel,
                 username: "PerformancePete",
                 icon_emoji: ":ghost:",
                 text: message
             }, function (err, response) {
-                console.log(response);
+                // console.log(response);
                 resolve(response);
 
                 if(err){

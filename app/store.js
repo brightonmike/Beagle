@@ -47,6 +47,7 @@ module.exports = function (auth, job, allJobs) {
                         response: response,
                         job: allJobs
                     };
+                    console.log(data.allJobs);
                     resolve(data);
                 }
             });

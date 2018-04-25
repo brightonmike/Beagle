@@ -32,7 +32,22 @@ module.exports = function (job, res) {
      * @constructor
      */
 
-    function SiteReport(jobId, id, reportDate, url, mobilescore, mobileusability, desktopscore, perf, pwa, accessibility, bestpractice, seo, lhAudit, pa11y) {
+    function SiteReport(
+        jobId,
+        id,
+        reportDate,
+        url,
+        mobilescore,
+        mobileusability,
+        desktopscore,
+        perf,
+        pwa,
+        accessibility,
+        bestpractice,
+        seo,
+        lhAudit,
+        pa11y
+    ) {
         jobId;
         id;
         reportDate;
@@ -82,7 +97,8 @@ module.exports = function (job, res) {
 
             if (data) {
 
-                console.log('adding past data');
+                consola.info('adding past data');
+                console.log(data);
                 /**
                  * Add the five previous results to siteReports
                  */
@@ -93,6 +109,8 @@ module.exports = function (job, res) {
                 }
 
             }
+
+            console.log(job.data.siteReports[0])
 
             /**
              * Chrome headless flags
@@ -119,7 +137,6 @@ module.exports = function (job, res) {
 
         }).then(values => {
 
-            console.log(values);
             consola.info('Tests ran, adding to report.');
 
             /**
@@ -150,10 +167,18 @@ module.exports = function (job, res) {
              */
             job.data.siteReports.push(thisResult);
 
+            console.log(job.data.siteReports);
+
             /**
              * Ping Slack the result
              */
-            slack(thisResult);
+            // let channel = "#perfpete";
+            // if(job.data.channel){
+            //     channel = "#" + job.data.channel;
+            // }
+
+            // console.log(job.data);
+            // slack(thisResult, channel);
 
             return auth.then(data => {
                 return storeData(data, thisResult, job.data.siteReports);

@@ -80,6 +80,7 @@ module.exports = function(app, io) {
             title: 'job ran at ' + Date.now(),
             time: +new Date(),
             site: req.query.url,
+            slackChannel: req.query.channel,
             id: uuidv1(),
             report: {}
         }).save(function (err) {

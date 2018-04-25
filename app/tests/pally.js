@@ -18,19 +18,13 @@ module.exports = function (url) {
 
             const page = await browser.newPage();
 
-            console.log(1);
-
             // Test http://example.com/ with our shared browser
             const result1 = await pa11y(url, {
                 browser: browser,
                 page: page
             });
 
-            console.log(2);
-
             // Output the raw result objects
-            // console.log(result1);
-
             return result1;
 
             // Close the browser instance and pages now we're done with it
@@ -42,6 +36,7 @@ module.exports = function (url) {
         } catch (error) {
 
             // Output an error if it occurred
+            console.error('Error!');
             console.error(error.message);
 
             // Close the browser instance and pages if theys exist
