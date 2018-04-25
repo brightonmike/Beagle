@@ -54,7 +54,7 @@ class SiteReport {
 
         $('body').removeClass('is-sending').addClass('has-report');
         $(resultSummary).html(siteUrl);
-
+        
         lighthouse.create(lhAuditContainer, lhAudit, veryGood, good, average, poor);
         pa11y.create(pa11yAuditContainer, pa11yAudit, veryGood, good, average, poor);
         keyScores.get(newJob, previousJob, rankings, veryGood, good, average, poor);
