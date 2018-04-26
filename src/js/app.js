@@ -98,7 +98,7 @@ class SiteReport {
         }
 
 
-        if (criticalArray) {
+        if (criticalArray.length > 0) {
             $('.panel--alert').show();
             const failContainer = $('.js-critical-audit');
 
