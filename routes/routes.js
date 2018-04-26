@@ -76,6 +76,7 @@ module.exports = function(app, io) {
 
     // Generate end point for web hooks
     app.get('/generate', (req, res) => {
+        res.sendStatus(200);
         let job = queue.create('test', {
             title: 'job ran at ' + Date.now(),
             time: +new Date(),
@@ -86,7 +87,7 @@ module.exports = function(app, io) {
         }).save(function (err) {
             if (!err) consola.info('Job ID queued: ' + job.id);
         }).on('complete', function(result) {
-            res.send(result);
+            consola.log('Completed job');
         });
     });
 };
