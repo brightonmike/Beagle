@@ -172,7 +172,11 @@ module.exports = function (job, res) {
                 channel = job.data.slackChannel;
             }
 
-            slack(job.data.siteReports, channel);
+           // slack(job.data.siteReports, channel);
+
+
+            const MongoStore = require('./models/reports');
+            MongoStore(thisResult);
 
             return auth.then(data => {
                 return storeData(data, thisResult, job.data.siteReports);

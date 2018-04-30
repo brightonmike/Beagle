@@ -76,7 +76,9 @@ module.exports = function(app, io) {
 
     // Generate end point for web hooks
     app.get('/generate', (req, res) => {
-        res.sendStatus(200);
+        // We always want to send a 200. Deploybot will trigger a failed deployment if anything other 
+        // than a 200 is sent. This is why we are not returning res. 
+         
         let job = queue.create('test', {
             title: 'job ran at ' + Date.now(),
             time: +new Date(),
