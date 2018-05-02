@@ -1,12 +1,17 @@
 const lighthouse = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');
+const config = require('../lib/lhconfig');
 const consola = require('consola');
 
-module.exports = function (res, url, opts) {
+module.exports = function (res, url) {
 
     consola.info("Running lighthouse..");
 
-    function launchChromeAndRunLighthouse(url, opts, config = null) {
+    const opts = {
+        chromeFlags: ['--show-paint-rects', '--headless', '--no-sandbox=true']
+    };
+
+    function launchChromeAndRunLighthouse(url, opts, config) {
         return chromeLauncher.launch({chromeFlags: opts.chromeFlags}).then(chrome => {
             opts.port = chrome.port;
             return lighthouse(url, opts, config).then(results => {
